@@ -51,16 +51,18 @@
                             </select>
                         </div>
 
-                        <!-- Location -->
+                        <!-- Department -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Location</label>
-                            <select name="location"
-                                class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg
-                                    dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                                <option value="">Select Location</option>
-                                <option value="Main Office" selected>Main Office</option>
-                                <option value="Warehouse 1">Warehouse 1</option>
-                                <option value="Warehouse 2">Warehouse 2</option>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Department</label>
+                            <select name="department"
+                                class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg 
+        dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="">Select Department</option>
+                                <option value="HR">Human Resources</option>
+                                <option value="IT">Information Technology</option>
+                                <option value="Finance">Finance</option>
+                                <option value="Operations">Operations</option>
+                                <option value="Logistics">Logistics</option>
                             </select>
                         </div>
 
@@ -132,10 +134,10 @@
 
                     <!-- Buttons -->
                     <div class="flex justify-end space-x-2 pt-4 border-t border-gray-200 dark:border-gray-700">
-                        <button type="button" id="cancelEditAsset"
+                        <a href="{{ route('assets.index') }}"
                             class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600">
                             Cancel
-                        </button>
+                        </a>
                         <button type="submit"
                             class="px-4 py-2 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500">
                             Update Asset

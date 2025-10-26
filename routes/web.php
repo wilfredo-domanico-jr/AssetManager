@@ -1,9 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AssetsController;
+use App\Http\Controllers\AssetController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportsController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DepartmentController;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -21,10 +23,7 @@ Route::middleware('auth')->group(function () {
 
 
 //  FOR ASSETS PAGE
-Route::get('/assets', [AssetsController::class, 'index'])->name('assets.index');
-Route::get('/assets/create', [AssetsController::class, 'create'])->name('assets.create');
-Route::get('/assets/{id?}/edit', [AssetsController::class, 'edit'])->name('assets.edit');
-// Route::put('/assets/{id}', [AssetsController::class, 'update'])->name('assets.update');
+Route::resource('assets', AssetController::class);
 
 //  FOR REPORTS PAGE
 
@@ -33,5 +32,13 @@ Route::get('/reports/inventory', [ReportsController::class, 'inventory'])->name(
 Route::get('/reports/lifecycle', [ReportsController::class, 'lifecycle'])->name('reports.lifecycle');
 
 
+/* =================================== ADMIN SETTINGS =================================== */
 
-require __DIR__.'/auth.php';
+// CATEGORY MAINTENANCE
+
+Route::resource('/admin/category', CategoryController::class);
+Route::resource('/admin/department', DepartmentController::class);
+
+
+
+require __DIR__ . '/auth.php';

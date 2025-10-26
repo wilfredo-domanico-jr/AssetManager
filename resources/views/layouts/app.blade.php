@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,14 +27,12 @@
             x-show="sidebarOpen"
             class="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
             @click="sidebarOpen = false"
-            x-cloak
-        ></div>
+            x-cloak></div>
 
         <!-- Sidebar -->
         <aside
             :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
-            class="fixed lg:static inset-y-0 left-0 z-40 w-64 bg-white dark:bg-gray-800 shadow-md transform transition-transform duration-300 lg:translate-x-0 flex flex-col"
-        >
+            class="fixed lg:static inset-y-0 left-0 z-40 w-64 bg-white dark:bg-gray-800 shadow-md transform transition-transform duration-300 lg:translate-x-0 flex flex-col">
             <div class="h-16 flex items-center justify-between px-4 border-b border-gray-200 dark:border-gray-700">
                 <span class="text-xl font-semibold text-gray-700 dark:text-gray-100">{{ config('app.name', 'Asset Manager') }}</span>
                 <button class="lg:hidden text-gray-500 dark:text-gray-300" @click="sidebarOpen = false">
@@ -43,7 +42,7 @@
 
             <nav class="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
                 <a href="{{ route('dashboard') }}"
-                   class="flex items-center gap-3 px-3 py-2 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 {{ request()->routeIs('dashboard') ? 'bg-gray-200 dark:bg-gray-700 font-semibold' : '' }}">
+                    class="flex items-center gap-3 px-3 py-2 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 {{ request()->routeIs('dashboard') ? 'bg-gray-200 dark:bg-gray-700 font-semibold' : '' }}">
                     <i class="fa-solid fa-chart-line text-gray-500 dark:text-gray-300"></i>
                     <span>Dashboard</span>
                 </a>
@@ -55,13 +54,32 @@
                     <i class="fa-solid fa-file-lines text-gray-500 dark:text-gray-300"></i>
                     <span>Reports</span>
                 </a>
+
+
+                <!-- 🔹 Separator -->
+                <hr class="border-t border-gray-300 dark:border-gray-700 my-2">
+                <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider mt-4 mb-2 px-3">
+                    Admin Section
+                </div>
+                <a href="{{ route('category.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 {{ request()->routeIs('category.*') ? 'bg-gray-200 dark:bg-gray-700 font-semibold' : '' }}">
+                    <i class="fa-solid fa-file-lines text-gray-500 dark:text-gray-300"></i>
+                    <span>Categories</span>
+                </a>
+
+                <a href="{{ route('department.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 {{ request()->routeIs('department.*') ? 'bg-gray-200 dark:bg-gray-700 font-semibold' : '' }}">
+                    <i class="fa-solid fa-file-lines text-gray-500 dark:text-gray-300"></i>
+                    <span>Departments</span>
+                </a>
+
+
+
             </nav>
 
             <div class="border-t border-gray-200 dark:border-gray-700 p-4">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit"
-                            class="w-full flex items-center gap-3 px-3 py-2 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700">
+                        class="w-full flex items-center gap-3 px-3 py-2 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700">
                         <i class="fa-solid fa-power-off text-gray-500 dark:text-gray-300"></i>
                         <span>Logout</span>
                     </button>
@@ -78,7 +96,7 @@
                         <i class="fa-solid fa-bars text-xl"></i>
                     </button>
                     @isset($header)
-                        {{ $header }}
+                    {{ $header }}
                     @endisset
                 </div>
             </header>
@@ -93,4 +111,5 @@
     <!-- Alpine.js for toggle -->
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </body>
+
 </html>
