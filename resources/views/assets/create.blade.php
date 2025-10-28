@@ -27,15 +27,20 @@
 
             <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm p-6 space-y-6">
 
-                <form id="addAssetForm" class="space-y-6">
+                <form id="addAssetForm" class="space-y-6" method="POST" action="{{ route('assets.store') }}" enctype="multipart/form-data">
+                    @csrf
                     <!-- Grid Container -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <!-- Asset Name -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Asset Name</label>
                             <input type="text" name="asset_name" placeholder="e.g., ITV0002"
+                                value="{{ old('asset_name') }}"
                                 class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg 
-                        dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            @error('asset_name')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <!-- Category -->
@@ -43,12 +48,17 @@
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
                             <select name="category"
                                 class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg 
-                        dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                                <option value="">Select Category</option>
-                                <option value="Mouse">Mouse</option>
-                                <option value="Keyboard">Keyboard</option>
-                                <option value="Monitor">Monitor</option>
+                dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="" selected>Select Category</option>
+                                @foreach ($categories as $category)
+                                <option value="{{ $category->id }}" {{ old('category') == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                                @endforeach
                             </select>
+                            @error('category')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <!-- Department -->
@@ -56,47 +66,65 @@
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Department</label>
                             <select name="department"
                                 class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg 
-        dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                                <option value="">Select Department</option>
-                                <option value="HR">Human Resources</option>
-                                <option value="IT">Information Technology</option>
-                                <option value="Finance">Finance</option>
-                                <option value="Operations">Operations</option>
-                                <option value="Logistics">Logistics</option>
+                dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="" selected>Select Department</option>
+                                @foreach ($departments as $department)
+                                <option value="{{ $department->id }}" {{ old('department') == $department->id ? 'selected' : '' }}>
+                                    {{ $department->name }}
+                                </option>
+                                @endforeach
                             </select>
+                            @error('department')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
                         </div>
-
 
                         <!-- Purchase Date -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Purchase Date</label>
                             <input type="date" name="purchase_date"
+                                value="{{ old('purchase_date') }}"
                                 class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg 
-                        dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            @error('purchase_date')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <!-- Purchase Cost -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Purchase Cost (₱)</label>
                             <input type="number" name="purchase_cost" placeholder="0.00"
+                                value="{{ old('purchase_cost') }}"
                                 class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg 
-                        dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            @error('purchase_cost')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <!-- Useful Life -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Useful Life (Years)</label>
                             <input type="number" name="useful_life" placeholder="e.g., 2"
+                                value="{{ old('useful_life') }}"
                                 class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg 
-                        dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            @error('useful_life')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <!-- Supplier -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Supplier</label>
                             <input type="text" name="supplier" placeholder="e.g., Freyfil"
+                                value="{{ old('supplier') }}"
                                 class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg 
-                        dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            @error('supplier')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <!-- Condition -->
@@ -104,22 +132,28 @@
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Condition</label>
                             <select name="condition"
                                 class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg 
-                        dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                                 <option value="">Select Condition</option>
-                                <option value="Excellent">Excellent</option>
-                                <option value="Good">Good</option>
-                                <option value="Needs Repair">Needs Repair</option>
+                                <option value="Excellent" {{ old('condition') == 'Excellent' ? 'selected' : '' }}>Excellent</option>
+                                <option value="Good" {{ old('condition') == 'Good' ? 'selected' : '' }}>Good</option>
+                                <option value="Needs Repair" {{ old('condition') == 'Needs Repair' ? 'selected' : '' }}>Needs Repair</option>
                             </select>
+                            @error('condition')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <!-- Image Upload -->
                         <div class="md:col-span-2">
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Upload Image</label>
-                            <input type="file" id="assetImage" accept="image/*"
+                            <input type="file" id="assetImage" accept="image/*" name="image"
                                 class="mt-1 block w-full text-sm text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-700 rounded-lg cursor-pointer bg-white dark:bg-gray-900 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                             <div id="imagePreview" class="mt-3 flex justify-center">
                                 <img id="previewImg" class="hidden w-48 h-48 object-cover rounded-lg shadow-md border border-gray-300 dark:border-gray-700" alt="Preview">
                             </div>
+                            @error('image')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
 
@@ -128,7 +162,10 @@
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description (Optional)</label>
                         <textarea name="description" rows="3" placeholder="Additional notes about this asset..."
                             class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg 
-                    dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+            dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">{{ old('description') }}</textarea>
+                        @error('description')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <!-- Buttons -->
@@ -143,6 +180,8 @@
                         </button>
                     </div>
                 </form>
+
+
 
             </div>
 

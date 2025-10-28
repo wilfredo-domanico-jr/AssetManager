@@ -27,6 +27,13 @@
                 </a>
             </div>
 
+                {{-- Flash Message --}}
+            @if (session('success'))
+            <div class="bg-green-100 text-green-800 px-4 py-2 rounded-lg mb-4">
+                {{ session('success') }}
+            </div>
+            @endif
+
             <!-- Filters -->
             <div class="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-2 md:space-y-0 w-full mb-6">
                 <form method="GET" action="{{ route('assets.index') }}" id="filterForm" class="flex flex-wrap gap-2 w-full">
