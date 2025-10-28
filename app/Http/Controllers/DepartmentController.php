@@ -16,14 +16,14 @@ class DepartmentController extends Controller
                 ->orWhere('description', 'like', "%{$search}%");
         }
 
-        $departments = $query->latest()->paginate(8);
+        $departments = $query->latest()->paginate(5);
 
         return view('departments.index', compact('departments'));
     }
 
     public function create()
     {
-        return view('depatment.create');
+        return view('departments.create');
     }
 
     public function store(Request $request)
@@ -35,29 +35,29 @@ class DepartmentController extends Controller
 
         Department::create($request->only('name', 'description'));
 
-        return redirect()->route('depatment.index')->with('success', 'Department added successfully!');
+        return redirect()->route('department.index')->with('success', 'Department added successfully!');
     }
 
-    public function edit(Department $depatment)
+    public function edit(Department $department)
     {
-        return view('depatment.edit', compact('depatment'));
+        return view('departments.edit', compact('department'));
     }
 
-    public function update(Request $request, Department $depatment)
+    public function update(Request $request, Department $department)
     {
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);
 
-        $depatment->update($request->only('name', 'description'));
+        $department->update($request->only('name', 'description'));
 
-        return redirect()->route('depatment.index')->with('success', 'Department updated successfully!');
+        return redirect()->route('department.index')->with('success', 'Department updated successfully!');
     }
 
     public function destroy(Department $department)
     {
         $department->delete();
-        return redirect()->route('depatment.index')->with('success', 'Department deleted successfully!');
+        return redirect()->route('department.index')->with('success', 'Department deleted successfully!');
     }
 }

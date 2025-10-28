@@ -2,10 +2,10 @@
     <x-slot name="header">
         <div>
             <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100">
-                Department Manager
+                Asset Manager
             </h2>
             <p class="text-sm text-gray-500 dark:text-gray-400">
-                Manage and organize your asset departments
+                Track and manage your equipment assets
             </p>
         </div>
     </x-slot>

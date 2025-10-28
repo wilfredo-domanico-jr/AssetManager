@@ -1,11 +1,11 @@
 <x-app-layout>
-    <x-slot name="header">
+     <x-slot name="header">
         <div>
             <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100">
-                Category Manager
+                Asset Manager
             </h2>
             <p class="text-sm text-gray-500 dark:text-gray-400">
-                Manage and organize your asset categories
+                Track and manage your equipment assets
             </p>
         </div>
     </x-slot>
@@ -57,7 +57,7 @@
                         </a>
                         <button type="submit"
                             class="px-4 py-2 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500">
-                            Save Asset
+                            Update Category
                         </button>
                     </div>
                 </form>

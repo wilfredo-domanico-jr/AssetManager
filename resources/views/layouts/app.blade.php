@@ -62,12 +62,12 @@
                     Admin Section
                 </div>
                 <a href="{{ route('category.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 {{ request()->routeIs('category.*') ? 'bg-gray-200 dark:bg-gray-700 font-semibold' : '' }}">
-                    <i class="fa-solid fa-file-lines text-gray-500 dark:text-gray-300"></i>
+                    <i class="fa-solid fa-folder text-gray-500 dark:text-gray-300"></i>
                     <span>Categories</span>
                 </a>
 
                 <a href="{{ route('department.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 {{ request()->routeIs('department.*') ? 'bg-gray-200 dark:bg-gray-700 font-semibold' : '' }}">
-                    <i class="fa-solid fa-file-lines text-gray-500 dark:text-gray-300"></i>
+                    <i class="fa-solid fa-building text-gray-500 dark:text-gray-300"></i>
                     <span>Departments</span>
                 </a>
 

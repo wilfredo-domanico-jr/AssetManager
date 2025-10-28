@@ -16,7 +16,7 @@ class CategoryController extends Controller
                 ->orWhere('description', 'like', "%{$search}%");
         }
 
-        $categories = $query->latest()->paginate(8);
+        $categories = $query->latest()->paginate(5);
 
         return view('categories.index', compact('categories'));
     }

@@ -2,10 +2,10 @@
     <x-slot name="header">
         <div>
             <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100">
-                Department Manager
+                Asset Manager
             </h2>
             <p class="text-sm text-gray-500 dark:text-gray-400">
-                Manage and organize your asset departments
+                Track and manage your equipment assets
             </p>
         </div>
     </x-slot>
@@ -50,13 +50,13 @@
 
                     <!-- Buttons -->
                     <div class="flex justify-end space-x-2 pt-4 border-t border-gray-200 dark:border-gray-700">
-                        <a href="{{ route('category.index') }}"
+                        <a href="{{ route('department.index') }}"
                             class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600">
                             Cancel
                         </a>
                         <button type="submit"
                             class="px-4 py-2 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500">
-                            Save Asset
+                            Save Department
                         </button>
                     </div>
                 </form>
