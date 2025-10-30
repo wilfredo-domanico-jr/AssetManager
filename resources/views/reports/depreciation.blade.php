@@ -76,19 +76,19 @@
                     <!-- Total Purchase Cost -->
                     <div class="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg p-4 shadow-sm text-center">
                         <h3 class="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Total Purchase Cost</h3>
-                        <p class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100">₱120,000.00</p>
+                        <p class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100">₱{{ number_format($totalPurchaseCost, 2) }}</p>
                     </div>
 
                     <!-- Total Purchase Value -->
                     <div class="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg p-4 shadow-sm text-center">
                         <h3 class="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Total Purchase Value</h3>
-                        <p class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100">₱95,000.00</p>
+                        <p class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100">₱{{ number_format($totalBookValue, 2) }}</p>
                     </div>
 
                     <!-- Total Depreciation -->
                     <div class="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg p-4 shadow-sm text-center">
                         <h3 class="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Total Depreciation</h3>
-                        <p class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100">₱25,000.00</p>
+                        <p class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100">₱{{ number_format($totalDepreciation, 2) }}</p>
                     </div>
                 </div>
             </div>
