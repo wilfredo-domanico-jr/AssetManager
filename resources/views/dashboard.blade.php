@@ -86,11 +86,11 @@
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 flex justify-between items-center hover:shadow-md transition">
                     <div>
                         <h3 class="text-sm text-gray-500 dark:text-gray-400">Assets by Category</h3>
-                        <p class="text-lg font-bold text-gray-900 dark:text-gray-100 mt-1">Mouse</p>
+                        <p class="text-lg font-bold text-gray-900 dark:text-gray-100 mt-1">{{$highestByCategory->category->name}}</p>
                     </div>
                     <!-- Number in bordered box -->
                     <div class="flex items-center justify-center w-14 h-14 border-2 border-purple-500 rounded-xl text-purple-600 font-bold text-2xl">
-                        3
+                        {{$highestByCategory->total}}
                     </div>
                 </div>
 
@@ -98,11 +98,11 @@
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 flex justify-between items-center hover:shadow-md transition">
                     <div>
                         <h3 class="text-sm text-gray-500 dark:text-gray-400">Assets by Condition</h3>
-                        <p class="text-lg font-bold text-gray-900 dark:text-gray-100 mt-1">Excellent</p>
+                        <p class="text-lg font-bold text-gray-900 dark:text-gray-100 mt-1">{{$highestCondition->condition}}</p>
                     </div>
                     <!-- Number in bordered box -->
                     <div class="flex items-center justify-center w-14 h-14 border-2 border-teal-500 rounded-xl text-teal-600 font-bold text-2xl">
-                        3
+                        {{$highestCondition->total}}
                     </div>
                 </div>
 
@@ -137,7 +137,30 @@
                     <div class="flex items-center space-x-3">
                         <div class="text-right">
                             <p class="font-semibold text-gray-800 dark:text-gray-100">
-                                ₱{{ number_format($asset->BookValue ?? 0, 2) }}
+
+                                 @php
+
+                     
+                                    $purchaseCost = $asset->purchase_cost ?? 0;
+                                
+                                    $purchaseCost = $asset->purchase_cost ?? 0;
+                                    $usefulLife = $asset->useful_life ?? 1; // prevent divide by zero
+
+                                    // Parse the purchase date safely
+                                    $purchaseDate = $asset->purchase_date ? \Carbon\Carbon::parse($asset->purchase_date) : null;
+
+                                    // Ensure monthsUsed is always positive
+                                    $monthsUsed = $purchaseDate ? $purchaseDate->diffInMonths(\Carbon\Carbon::now()) : 0;
+
+                                    // Convert to years (decimal, not rounded)
+                                    $yearsUsed = $monthsUsed / 12;
+
+                                    // Straight-line depreciation
+                                    $depreciationPerYear = $purchaseCost / $usefulLife;
+                                    $bookValue = max($purchaseCost - ($depreciationPerYear * $yearsUsed), 0);
+                                @endphp
+
+                                ₱{{ number_format($bookValue, 2) }}
                             </p>
                             <p class="text-xs text-gray-500 dark:text-gray-400">Book Value</p>
                         </div>
