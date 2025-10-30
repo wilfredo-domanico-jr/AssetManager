@@ -72,89 +72,88 @@
                     </button>
                 </div>
 
-                <!-- Inner Card 1 -->
+                @forelse ($assets as $asset)
+
+                 <!-- Inner Card 1 -->
                 <div class="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg p-4 shadow-inner mb-3">
                     <div class="flex justify-between items-start mb-6">
                         <div>
-                            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">ITV0001</h3>
+                            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">{{$asset->asset_name}}</h3>
                             <p class="text-sm text-gray-600 dark:text-gray-400">
-                                Freyfil
+                               {{$asset->supplier}}
                             </p>
                         </div>
                         <div class="flex space-x-2">
                             <span class="px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-medium">
-                                Mouse
+
+                              {{ $asset->category->name ?? 'Not Available' }}
                             </span>
-                            <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-medium">
-                                Excellent
-                            </span>
+                             <span class="px-3 py-1 rounded-full 
+                                        @if($asset->condition == 'Excellent') bg-green-100 text-green-700
+                                        @elseif($asset->condition == 'Good') bg-blue-100 text-blue-700
+                                        @else bg-yellow-100 text-yellow-700 @endif
+                                        text-xs font-medium">
+                                    {{ $asset->condition ?? 'Unknown' }}
+                                </span>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                         <div>
-                            <span class="text-md text-gray-600 dark:text-gray-400 block">Location</span>
-                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">Main Office</p>
+                            <span class="text-md text-gray-600 dark:text-gray-400 block">Department</span>
+                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ $asset->department->name ?? 'N/A' }}</p>
                         </div>
 
                         <div>
                             <span class="text-md text-gray-600 dark:text-gray-400 block">Purchase Date</span>
-                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">16/10/2025</p>
+                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ $asset->purchase_date->format('d/m/Y') }}</p>
                         </div>
 
                         <div>
                             <span class="text-md text-gray-600 dark:text-gray-400 block">Original Cost</span>
-                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">₱1,000.00</p>
+                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">₱{{number_format($asset->purchase_cost,2)}}</p>
                         </div>
 
                         <div>
                             <span class="text-md text-gray-600 dark:text-gray-400 block">Current Value</span>
-                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">₱1,000.00</p>
+
+                            @php
+
+                                $purchaseCost = $asset->purchase_cost ?? 0;
+                            
+                                $purchaseCost = $asset->purchase_cost ?? 0;
+                                $usefulLife = $asset->useful_life ?? 1; // prevent divide by zero
+
+                                // Parse the purchase date safely
+                                $purchaseDate = $asset->purchase_date ? \Carbon\Carbon::parse($asset->purchase_date) : null;
+
+                                // Ensure monthsUsed is always positive
+                                $monthsUsed = $purchaseDate ? $purchaseDate->diffInMonths(\Carbon\Carbon::now()) : 0;
+
+                                // Convert to years (decimal, not rounded)
+                                $yearsUsed = $monthsUsed / 12;
+
+                                // Straight-line depreciation
+                                $depreciationPerYear = $purchaseCost / $usefulLife;
+                                $bookValue = max($purchaseCost - ($depreciationPerYear * $yearsUsed), 0);
+                            @endphp
+                            
+                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">₱{{number_format($bookValue,2)}}</p>
                         </div>
                     </div>
                 </div>
 
-                  <!-- Inner Card 2 -->
-                <div class="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg p-4 shadow-inner mb-3">
-                    <div class="flex justify-between items-start mb-6">
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">ITV0001</h3>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">
-                                Freyfil
-                            </p>
-                        </div>
-                        <div class="flex space-x-2">
-                            <span class="px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-medium">
-                                Mouse
-                            </span>
-                            <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-medium">
-                                Excellent
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-                        <div>
-                            <span class="text-md text-gray-600 dark:text-gray-400 block">Location</span>
-                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">Main Office</p>
-                        </div>
-
-                        <div>
-                            <span class="text-md text-gray-600 dark:text-gray-400 block">Purchase Date</span>
-                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">16/10/2025</p>
-                        </div>
-
-                        <div>
-                            <span class="text-md text-gray-600 dark:text-gray-400 block">Original Cost</span>
-                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">₱1,000.00</p>
-                        </div>
-
-                        <div>
-                            <span class="text-md text-gray-600 dark:text-gray-400 block">Current Value</span>
-                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">₱1,000.00</p>
-                        </div>
-                    </div>
+                @empty
+                <div class="text-center text-gray-500 dark:text-gray-400 py-10">
+                    <i class="fa-solid fa-box-open text-4xl mb-3"></i>
+                    <p>No assets found.</p>
                 </div>
+                @endforelse
+
+                {{ $assets->appends(request()->query())->links() }}
+
+               
+
 
 
             </div>

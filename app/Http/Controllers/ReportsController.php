@@ -52,7 +52,15 @@ class ReportsController extends Controller
 
     public function inventory()
     {
-         return view('reports.inventory');
+        
+        $assets = Asset::with('category','department')->paginate(3); 
+
+
+        $data = [
+                'assets' => $assets
+        ];
+
+         return view('reports.inventory', $data);
     }
 
      public function lifecycle()
