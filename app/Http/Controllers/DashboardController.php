@@ -32,10 +32,10 @@ class DashboardController extends Controller
 
 
         // Group assets by category and count
-        $assetByCategory = Asset::select('category_id', DB::raw('COUNT(*) as total'))
-                        ->groupBy('category_id')
+        $assetByCategory = Asset::join('categories', 'assets.category_id', '=', 'categories.id')
+                        ->select('categories.name as category_name', DB::raw('COUNT(*) as total'))
+                        ->groupBy('categories.name')
                         ->orderByDesc('total')
-                        ->with('category') // eager load category details
                         ->get();
 
         $highestByCategory = $assetByCategory->first();

@@ -86,11 +86,11 @@
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 flex justify-between items-center hover:shadow-md transition">
                     <div>
                         <h3 class="text-sm text-gray-500 dark:text-gray-400">Assets by Category</h3>
-                        <p class="text-lg font-bold text-gray-900 dark:text-gray-100 mt-1">{{$highestByCategory->category->name}}</p>
+                        <p class="text-lg font-bold text-gray-900 dark:text-gray-100 mt-1">{{ $highestByCategory->category_name ?? 'N/A' }}</p>
                     </div>
                     <!-- Number in bordered box -->
                     <div class="flex items-center justify-center w-14 h-14 border-2 border-purple-500 rounded-xl text-purple-600 font-bold text-2xl">
-                        {{$highestByCategory->total}}
+                         {{ $highestByCategory->total ?? 0 }}
                     </div>
                 </div>
 
@@ -98,11 +98,11 @@
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 flex justify-between items-center hover:shadow-md transition">
                     <div>
                         <h3 class="text-sm text-gray-500 dark:text-gray-400">Assets by Condition</h3>
-                        <p class="text-lg font-bold text-gray-900 dark:text-gray-100 mt-1">{{$highestCondition->condition}}</p>
+                        <p class="text-lg font-bold text-gray-900 dark:text-gray-100 mt-1">{{$highestCondition->condition ?? 'N/A' }}</p>
                     </div>
                     <!-- Number in bordered box -->
                     <div class="flex items-center justify-center w-14 h-14 border-2 border-teal-500 rounded-xl text-teal-600 font-bold text-2xl">
-                        {{$highestCondition->total}}
+                        {{$highestCondition->total  ?? 0 }}
                     </div>
                 </div>
 
