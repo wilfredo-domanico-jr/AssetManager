@@ -31,7 +31,7 @@
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 flex justify-between items-center hover:shadow-md transition">
                     <div>
                         <h3 class="text-sm text-gray-500 dark:text-gray-400">Total Assets</h3>
-                        <p class="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-1">3</p>
+                        <p class="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-1">{{$totalAssets}}</p>
                         <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Registered Items</p>
                     </div>
                     <div class="text-indigo-500">
@@ -112,72 +112,59 @@
 
 
 
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 w-full">
-                <!-- Header -->
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Recent Assets</h3>
-                    <a href="{{ route('assets.index') }}" class="text-sm text-indigo-600 dark:text-indigo-400 hover:underline">
-                        View All
-                    </a>
-                </div>
+          <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 w-full">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Recent Assets</h3>
 
-                <!-- Asset List -->
-                <div class="divide-y divide-gray-200 dark:divide-gray-700">
-                    <!-- Asset Row -->
-                    <div class="flex justify-between items-center py-4">
-                        <div>
-                            <p class="font-semibold text-gray-800 dark:text-gray-100">IVT0001</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">Mouse</p>
-                        </div>
+        @if ($recentAssets->isNotEmpty())
+            <a href="{{ route('assets.index') }}" class="text-sm text-indigo-600 dark:text-indigo-400 hover:underline">
+                View All
+            </a>
+        @endif
+    </div>
 
-                        <div class="flex items-center space-x-3">
-                            <div class="text-right">
-                                <p class="font-semibold text-gray-800 dark:text-gray-100">₱1,000.00</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">Book Value</p>
-                            </div>
-                            <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-medium">
-                                Active
-                            </span>
-                        </div>
+    <!-- Asset List -->
+    <div class="divide-y divide-gray-200 dark:divide-gray-700">
+        @if ($recentAssets->isNotEmpty())
+            @foreach ($recentAssets as $asset)
+                <div class="flex justify-between items-center py-4 border-b border-gray-200 dark:border-gray-700">
+                    <div>
+                        <p class="font-semibold text-gray-800 dark:text-gray-100">{{ $asset->asset_name ?? 'N/A' }}</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ $asset->category->name ?? 'No category' }}</p>
                     </div>
 
-                    <!-- Asset Row -->
-                    <div class="flex justify-between items-center py-4">
-                        <div>
-                            <p class="font-semibold text-gray-800 dark:text-gray-100">IVT0002</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">Mouse</p>
+                    <div class="flex items-center space-x-3">
+                        <div class="text-right">
+                            <p class="font-semibold text-gray-800 dark:text-gray-100">
+                                ₱{{ number_format($asset->BookValue ?? 0, 2) }}
+                            </p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Book Value</p>
                         </div>
 
-                        <div class="flex items-center space-x-3">
-                            <div class="text-right">
-                                <p class="font-semibold text-gray-800 dark:text-gray-100">₱1,000.00</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">Book Value</p>
-                            </div>
-                            <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-medium">
-                                Active
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- Asset Row -->
-                    <div class="flex justify-between items-center py-4">
-                        <div>
-                            <p class="font-semibold text-gray-800 dark:text-gray-100">IVT0003</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">Mouse</p>
-                        </div>
-
-                        <div class="flex items-center space-x-3">
-                            <div class="text-right">
-                                <p class="font-semibold text-gray-800 dark:text-gray-100">₱0.00</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">Book Value</p>
-                            </div>
-                            <span class="px-3 py-1 rounded-full bg-gray-200 text-gray-700 text-xs font-medium">
-                                Fully Depreciated
-                            </span>
-                        </div>
+                        <span class="px-3 py-1 rounded-full text-xs font-medium
+                            @if ($asset->condition == 'Excellent')
+                                bg-green-100 text-green-700
+                            @elseif ($asset->condition == 'Good')
+                                bg-blue-100 text-blue-700
+                            @elseif ($asset->condition == 'Needs Repair')
+                                bg-yellow-100 text-yellow-700
+                            @else
+                                bg-gray-100 text-gray-700
+                            @endif">
+                            {{ $asset->condition ?? 'Unknown' }}
+                        </span>
                     </div>
                 </div>
+            @endforeach
+        @else
+            <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+                No recent asset
             </div>
+        @endif
+    </div>
+</div>
+
 
 
 

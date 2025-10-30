@@ -11,6 +11,10 @@ class AssetController extends Controller
 {
     public function index(Request $request)
     {
+
+        $categories = Category::all();
+        $departments = Department::all();
+
         $assets = Asset::query()
             ->when(
                 $request->search,
@@ -20,7 +24,7 @@ class AssetController extends Controller
             ->when(
                 $request->category,
                 fn($q) =>
-                $q->where('category', $request->category)
+                $q->where('category_id', $request->category)
             )
             ->when(
                 $request->department,
@@ -35,7 +39,13 @@ class AssetController extends Controller
             ->latest()
             ->get();
 
-        return view('assets.index', compact('assets'));
+            $data = [
+                'categories' => $categories,
+                'departments' => $departments,
+                'assets' => $assets
+            ];
+
+        return view('assets.index', $data);
     }
 
 
@@ -56,7 +66,7 @@ class AssetController extends Controller
     {
         $validated = $request->validate([
             'asset_name' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
+            'category_id' => 'required|string|max:255',
             'department' => 'required|string|max:255',
             'purchase_date' => 'required|date',
             'purchase_cost' => 'required|numeric',
@@ -99,7 +109,7 @@ class AssetController extends Controller
     {
         $validated = $request->validate([
             'asset_name' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
+            'category_id' => 'required|string|max:255',
             'department' => 'required|string|max:255',
             'purchase_date' => 'required|date',
             'purchase_cost' => 'required|numeric',

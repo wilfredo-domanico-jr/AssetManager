@@ -47,17 +47,17 @@
                         <!-- Category -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
-                            <select name="category"
+                            <select name="category_id"
                                 class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg
                                     dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                                 <option value="" selected>Select Category</option>
                                 @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}" {{ old('category', $asset->category) == $category->id ? 'selected' : '' }}>
+                                    <option value="{{ $category->id }}" {{ old('category_id', $asset->category_id) == $category->id ? 'selected' : '' }}>
                                         {{ $category->name }}
                                     </option>
                                 @endforeach
                             </select>
-                            @error('category')
+                            @error('category_id')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
@@ -143,17 +143,31 @@
                         <!-- Image Upload -->
                         <div class="md:col-span-2">
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Update Image</label>
+
                             <input type="file" id="editAssetImage" accept="image/*" name="image"
                                 class="mt-1 block w-full text-sm text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-700 rounded-lg cursor-pointer bg-white dark:bg-gray-900 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+
                             <div id="editImagePreview" class="mt-3 flex justify-center">
-                                <img id="editPreviewImg" src="{{ asset('storage/' . $asset->image) }}"
-                                    class="w-48 h-48 object-cover rounded-lg shadow-md border border-gray-300 dark:border-gray-700"
-                                    alt="Current Asset Image">
+                                @if (!empty($asset->image) && file_exists(public_path('storage/' . $asset->image)))
+                                    <!-- Show current image -->
+                                    <img id="editPreviewImg"
+                                        src="{{ asset('storage/' . $asset->image) }}"
+                                        class="w-48 h-48 object-cover rounded-lg shadow-md border border-gray-300 dark:border-gray-700"
+                                        alt="Current Asset Image">
+                                @else
+                                    <!-- Placeholder if no image -->
+                                    <div
+                                        class="w-48 h-48 flex items-center justify-center text-gray-400 dark:text-gray-500 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg">
+                                        <span class="text-sm">No image available</span>
+                                    </div>
+                                @endif
                             </div>
+
                             @error('image')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
+
                     </div>
 
                     <!-- Description -->

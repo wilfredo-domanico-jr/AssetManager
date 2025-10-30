@@ -56,8 +56,11 @@
                     focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 
                     dark:bg-gray-800 dark:text-gray-100 appearance-none">
                             <option value="">All Categories</option>
-                            <option value="PPE" {{ request('category') == 'PPE' ? 'selected' : '' }}>PPE</option>
-                            <option value="Small Tools" {{ request('category') == 'Small Tools' ? 'selected' : '' }}>Small Tools</option>
+                            @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
+                            @endforeach
                         </select>
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                             <i class="fa-solid fa-chevron-down text-gray-400 dark:text-gray-300"></i>
@@ -71,9 +74,11 @@
                     focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 
                     dark:bg-gray-800 dark:text-gray-100">
                             <option value="">All Departments</option>
-                            <option value="Main Office" {{ request('department') == 'Main Office' ? 'selected' : '' }}>Main Office</option>
-                            <option value="Warehouse 1" {{ request('department') == 'Warehouse 1' ? 'selected' : '' }}>Warehouse 1</option>
-                            <option value="Warehouse 2" {{ request('department') == 'Warehouse 2' ? 'selected' : '' }}>Warehouse 2</option>
+                             @foreach ($departments as $department)
+                                    <option value="{{ $department->id }}" {{ request('department') == $department->id ? 'selected' : '' }}>
+                                        {{ $department->name }}
+                                    </option>
+                            @endforeach
                         </select>
                     </div>
 
@@ -105,7 +110,7 @@
                                 {{ $asset->asset_name }}
                             </h3>
                             <div class="flex flex-wrap gap-2 mt-1">
-                                <span class="px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-medium">{{ $asset->category }}</span>
+                                <span class="px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-medium">{{ $asset->category->name }}</span>
                                 <span class="px-3 py-1 rounded-full 
                                         @if($asset->condition == 'Excellent') bg-green-100 text-green-700
                                         @elseif($asset->condition == 'Good') bg-blue-100 text-blue-700

@@ -46,17 +46,17 @@
                         <!-- Category -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
-                            <select name="category"
+                            <select name="category_id"
                                 class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg 
                 dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                                 <option value="" selected>Select Category</option>
                                 @foreach ($categories as $category)
-                                <option value="{{ $category->id }}" {{ old('category') == $category->id ? 'selected' : '' }}>
+                                <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
                                     {{ $category->name }}
                                 </option>
                                 @endforeach
                             </select>
-                            @error('category')
+                            @error('category_id')
                             <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
                         </div>

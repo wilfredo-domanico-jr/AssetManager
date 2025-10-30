@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('assets', function (Blueprint $table) {
             $table->id();
             $table->string('asset_name');
-            $table->string('category');
+            $table->string('category_id');
             $table->string('department')->nullable();
             $table->date('purchase_date')->nullable();
             $table->decimal('purchase_cost', 12, 2)->nullable();

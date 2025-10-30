@@ -14,4 +14,10 @@ class Category extends Model
         'name',
         'description',
     ];
+
+
+    public function assets()
+{
+    return $this->hasMany(Asset::class, 'id','category_id');
+}
 }

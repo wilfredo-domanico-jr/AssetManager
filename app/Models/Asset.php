@@ -13,7 +13,7 @@ class Asset extends Model
 
     protected $fillable = [
         'asset_name',
-        'category',
+        'category_id',
         'department',
         'purchase_date',
         'purchase_cost',
@@ -23,4 +23,11 @@ class Asset extends Model
         'image',
         'description',
     ];
+
+
+    public function category()
+{
+    return $this->belongsTo(Category::class, 'category_id','id');
+}
+
 }
