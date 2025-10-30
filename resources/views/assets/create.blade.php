@@ -64,17 +64,17 @@
                         <!-- Department -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Department</label>
-                            <select name="department"
+                            <select name="department_id"
                                 class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg 
                 dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                                 <option value="" selected>Select Department</option>
                                 @foreach ($departments as $department)
-                                <option value="{{ $department->id }}" {{ old('department') == $department->id ? 'selected' : '' }}>
+                                <option value="{{ $department->id }}" {{ old('department_id') == $department->id ? 'selected' : '' }}>
                                     {{ $department->name }}
                                 </option>
                                 @endforeach
                             </select>
-                            @error('department')
+                            @error('department_id')
                             <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
@@ -95,6 +95,8 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Purchase Cost (₱)</label>
                             <input type="number" name="purchase_cost" placeholder="0.00"
+                             step="0.01"
+                             min="0"min="0"
                                 value="{{ old('purchase_cost') }}"
                                 class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg 
                 dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
@@ -108,6 +110,7 @@
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Useful Life (Years)</label>
                             <input type="number" name="useful_life" placeholder="e.g., 2"
                                 value="{{ old('useful_life') }}"
+                                min="1"
                                 class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg 
                 dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                             @error('useful_life')
@@ -118,7 +121,7 @@
                         <!-- Supplier -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Supplier</label>
-                            <input type="text" name="supplier" placeholder="e.g., Freyfil"
+                            <input type="text" name="supplier" placeholder="e.g., EasyPC"
                                 value="{{ old('supplier') }}"
                                 class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg 
                 dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">

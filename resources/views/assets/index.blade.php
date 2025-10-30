@@ -1,3 +1,5 @@
+
+
 <x-app-layout>
     <x-slot name="header">
         <div>
@@ -110,7 +112,7 @@
                                 {{ $asset->asset_name }}
                             </h3>
                             <div class="flex flex-wrap gap-2 mt-1">
-                                <span class="px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-medium">{{ $asset->category->name }}</span>
+                                <span class="px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-xs font-medium">{{ $asset->category->name ?? 'Not Available' }}</span>
                                 <span class="px-3 py-1 rounded-full 
                                         @if($asset->condition == 'Excellent') bg-green-100 text-green-700
                                         @elseif($asset->condition == 'Good') bg-blue-100 text-blue-700
@@ -136,40 +138,70 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-                        <div>
-                            <span class="text-md text-gray-600 dark:text-gray-400 block">Purchase Cost</span>
-                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
-                                ₱{{ number_format($asset->purchase_cost ?? 0, 2) }}
-                            </p>
-                        </div>
 
-                        <div>
-                            <span class="text-md text-gray-600 dark:text-gray-400 block">Book Value</span>
-                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
-                                ₱{{ number_format($asset->purchase_cost ?? 0, 2) }}
-                            </p>
-                        </div>
+                    @php
 
-                        <div>
-                            <span class="text-md text-gray-600 dark:text-gray-400 block">Age</span>
-                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
-                                {{ $asset->purchase_date ? now()->diffInYears($asset->purchase_date) . ' years' : 'N/A' }}
-                            </p>
-                        </div>
+                     
+                        $purchaseCost = $asset->purchase_cost ?? 0;
+                       
+                        $purchaseCost = $asset->purchase_cost ?? 0;
+                        $usefulLife = $asset->useful_life ?? 1; // prevent divide by zero
 
-                        <div>
-                            <span class="text-md text-gray-600 dark:text-gray-400 block">Department</span>
-                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ $asset->department ?? 'N/A' }}</p>
+                        // Parse the purchase date safely
+                        $purchaseDate = $asset->purchase_date ? \Carbon\Carbon::parse($asset->purchase_date) : null;
+
+                        // Ensure monthsUsed is always positive
+                        $monthsUsed = $purchaseDate ? $purchaseDate->diffInMonths(\Carbon\Carbon::now()) : 0;
+
+                        // Convert to years (decimal, not rounded)
+                        $yearsUsed = $monthsUsed / 12;
+
+                        // Straight-line depreciation
+                        $depreciationPerYear = $purchaseCost / $usefulLife;
+                        $bookValue = max($purchaseCost - ($depreciationPerYear * $yearsUsed), 0);
+                    @endphp
+
+                    
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                            <div>
+                                <span class="text-md text-gray-600 dark:text-gray-400 block">Purchase Cost</span>
+                                <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
+                                    ₱{{ number_format($purchaseCost, 2) }}
+                                </p>
+                            </div>
+
+                            <div>
+                                <span class="text-md text-gray-600 dark:text-gray-400 block">Book Value</span>
+                                <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
+                                    ₱{{ number_format($bookValue, 2) }}
+                                </p>
+                            </div>
+
+                            <div>
+                                <span class="text-md text-gray-600 dark:text-gray-400 block">Age</span>
+                                <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
+                                    {{ number_format($yearsUsed, 2) }} {{ number_format($yearsUsed, 2) <= 1 ? 'year' : 'years' }}
+                                </p>
+                            </div>
+
+                            <div>
+                                <span class="text-md text-gray-600 dark:text-gray-400 block">Department</span>
+                                <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
+                                    {{ $asset->department->name ?? 'N/A' }}
+                                </p>
+                            </div>`
                         </div>
-                    </div>
                 </div>
+
+                
                 @empty
                 <div class="text-center text-gray-500 dark:text-gray-400 py-10">
                     <i class="fa-solid fa-box-open text-4xl mb-3"></i>
                     <p>No assets found.</p>
                 </div>
                 @endforelse
+
+                {{ $assets->appends(request()->query())->links() }}
             </div>
 
         </div>

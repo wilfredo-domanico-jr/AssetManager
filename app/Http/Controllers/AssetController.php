@@ -29,7 +29,7 @@ class AssetController extends Controller
             ->when(
                 $request->department,
                 fn($q) =>
-                $q->where('department', $request->department)
+                $q->where('department_id', $request->department)
             )
             ->when(
                 $request->condition,
@@ -37,7 +37,7 @@ class AssetController extends Controller
                 $q->where('condition', $request->condition)
             )
             ->latest()
-            ->get();
+             ->paginate(3); 
 
             $data = [
                 'categories' => $categories,
@@ -67,10 +67,10 @@ class AssetController extends Controller
         $validated = $request->validate([
             'asset_name' => 'required|string|max:255',
             'category_id' => 'required|string|max:255',
-            'department' => 'required|string|max:255',
+            'department_id' => 'required|string|max:255',
             'purchase_date' => 'required|date',
             'purchase_cost' => 'required|numeric',
-            'useful_life' => 'required|integer',
+            'useful_life' => 'required|integer|min:1',
             'supplier' => 'required|string|max:255',
             'condition' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -110,10 +110,10 @@ class AssetController extends Controller
         $validated = $request->validate([
             'asset_name' => 'required|string|max:255',
             'category_id' => 'required|string|max:255',
-            'department' => 'required|string|max:255',
+            'department_id' => 'required|string|max:255',
             'purchase_date' => 'required|date',
             'purchase_cost' => 'required|numeric',
-            'useful_life' => 'required|integer',
+            'useful_life' => 'required|integer|min:1',
             'supplier' => 'required|string|max:255',
             'condition' => 'required|string|max:255',
             'description' => 'nullable|string',

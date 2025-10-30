@@ -65,17 +65,17 @@
                         <!-- Department -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Department</label>
-                                <select name="department"
+                                <select name="department_id"
                                     class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg
                                         dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                                     <option value="" selected>Select Department</option>
                                     @foreach ($departments as $department)
-                                        <option value="{{ $department->id }}" {{ old('department', $asset->department) == $department->id ? 'selected' : '' }}>
+                                        <option value="{{ $department->id }}" {{ old('department_id', $asset->department_id) == $department->id ? 'selected' : '' }}>
                                             {{ $department->name }}
                                         </option>
                                     @endforeach
                                 </select>
-                                @error('department')
+                                @error('department_id')
                                     <span class="text-red-500 text-sm">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -83,9 +83,11 @@
                         <!-- Purchase Date -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Purchase Date</label>
-                            <input type="date" name="purchase_date" value="{{ old('purchase_date', $asset->purchase_date) }}"
-                                class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg
-                                    dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            <input type="date" 
+                            name="purchase_date"
+                            value="{{ old('purchase_date', \Carbon\Carbon::parse($asset->purchase_date)->format('Y-m-d')) }}"
+                            class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg
+                                dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                             @error('purchase_date')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
@@ -94,7 +96,10 @@
                         <!-- Purchase Cost -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Purchase Cost (₱)</label>
-                            <input type="number" name="purchase_cost" value="{{ old('purchase_cost', $asset->purchase_cost) }}"
+                            <input type="number" name="purchase_cost" 
+                              step="0.01"
+                             min="0"min="0"
+                            value="{{ old('purchase_cost', $asset->purchase_cost) }}"
                                 class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg
                                     dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                             @error('purchase_cost')
@@ -106,6 +111,7 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Useful Life (Years)</label>
                             <input type="number" name="useful_life" value="{{ old('useful_life', $asset->useful_life) }}"
+                             min="1"
                                 class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg
                                     dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                             @error('useful_life')

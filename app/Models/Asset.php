@@ -11,10 +11,14 @@ class Asset extends Model
 
     protected $table = 'assets';
 
+    protected $casts = [
+    'purchase_date' => 'date',
+];
+
     protected $fillable = [
         'asset_name',
         'category_id',
-        'department',
+        'department_id',
         'purchase_date',
         'purchase_cost',
         'useful_life',
@@ -28,6 +32,11 @@ class Asset extends Model
     public function category()
 {
     return $this->belongsTo(Category::class, 'category_id','id');
+}
+
+    public function department()
+{
+    return $this->belongsTo(Department::class, 'department_id','id');
 }
 
 }
