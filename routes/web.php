@@ -1,5 +1,7 @@
 <?php
 
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\InventorySummaryCsvExport;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\ProfileController;
@@ -31,6 +33,12 @@ Route::get('/reports', [ReportsController::class, 'index'])->name('reports.index
 Route::get('/reports/inventory', [ReportsController::class, 'inventory'])->name('reports.inventory');
 Route::get('/reports/lifecycle', [ReportsController::class, 'lifecycle'])->name('reports.lifecycle');
 
+
+// EXPORT CSV FUNCTIONS
+
+Route::get('/export-inventory-summary-csv', function () {
+    return Excel::download(new InventorySummaryCsvExport, 'inventory-summary.csv');
+});
 
 /* =================================== ADMIN SETTINGS =================================== */
 
