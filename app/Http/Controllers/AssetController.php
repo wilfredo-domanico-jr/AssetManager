@@ -37,13 +37,13 @@ class AssetController extends Controller
                 $q->where('condition', $request->condition)
             )
             ->latest()
-             ->paginate(3); 
+            ->paginate(3);
 
-            $data = [
-                'categories' => $categories,
-                'departments' => $departments,
-                'assets' => $assets
-            ];
+        $data = [
+            'categories' => $categories,
+            'departments' => $departments,
+            'assets' => $assets
+        ];
 
         return view('assets.index', $data);
     }
@@ -77,7 +77,7 @@ class AssetController extends Controller
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-     
+
         // Handle file upload
         if ($request->hasFile('image')) {
 
@@ -118,7 +118,11 @@ class AssetController extends Controller
             'condition' => 'required|string|max:255',
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'deployed_name' => 'required|string',
+            'deployed_designation' => 'required|string'
         ]);
+
+
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('assets', 'public');

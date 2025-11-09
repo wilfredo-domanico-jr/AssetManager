@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('asset_name');
             $table->string('category_id');
-            $table->string('department')->nullable();
+            $table->string('department_id')->nullable();
             $table->date('purchase_date')->nullable();
             $table->decimal('purchase_cost', 12, 2)->nullable();
             $table->integer('useful_life')->nullable();
@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('condition')->nullable();
             $table->string('image')->nullable();
             $table->text('description')->nullable();
+            $table->string('deployed_name')->nullable();
+            $table->string('deployed_designation')->nullable();
             $table->timestamps();
         });
     }

@@ -43,7 +43,7 @@
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 flex justify-between items-center hover:shadow-md transition">
                     <div>
                         <h3 class="text-sm text-gray-500 dark:text-gray-400">Deployed Asset</h3>
-                        <p class="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-1">3</p>
+                        <p class="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-1">{{$deployedAssets}}</p>
                         <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Active Deployment</p>
                     </div>
                     <div class="text-green-500">
@@ -55,7 +55,7 @@
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 flex justify-between items-center hover:shadow-md transition">
                     <div>
                         <h3 class="text-sm text-gray-500 dark:text-gray-400">In stock</h3>
-                        <p class="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-1">1</p>
+                        <p class="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-1">{{$inStockAssets}}</p>
                         <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Available items in storage</p>
                     </div>
                     <div class="text-yellow-500">
@@ -68,7 +68,7 @@
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 flex justify-between items-center hover:shadow-md transition">
                     <div>
                         <h3 class="text-sm text-gray-500 dark:text-gray-400">Critial Assets</h3>
-                        <p class="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-1">1</p>
+                        <p class="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-1">{{$criticalAsset}}</p>
                         <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Need Attention</p>
                     </div>
                     <div class="text-red-500">
@@ -90,7 +90,7 @@
                     </div>
                     <!-- Number in bordered box -->
                     <div class="flex items-center justify-center w-14 h-14 border-2 border-purple-500 rounded-xl text-purple-600 font-bold text-2xl">
-                         {{ $highestByCategory->total ?? 0 }}
+                        {{ $highestByCategory->total ?? 0 }}
                     </div>
                 </div>
 
@@ -102,7 +102,7 @@
                     </div>
                     <!-- Number in bordered box -->
                     <div class="flex items-center justify-center w-14 h-14 border-2 border-teal-500 rounded-xl text-teal-600 font-bold text-2xl">
-                        {{$highestCondition->total  ?? 0 }}
+                        {{$highestCondition->total ?? 0 }}
                     </div>
                 </div>
 
@@ -112,37 +112,37 @@
 
 
 
-          <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 w-full">
-    <!-- Header -->
-    <div class="flex justify-between items-center mb-4">
-        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Recent Assets</h3>
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 w-full">
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Recent Assets</h3>
 
-        @if ($recentAssets->isNotEmpty())
-            <a href="{{ route('assets.index') }}" class="text-sm text-indigo-600 dark:text-indigo-400 hover:underline">
-                View All
-            </a>
-        @endif
-    </div>
+                    @if ($recentAssets->isNotEmpty())
+                    <a href="{{ route('assets.index') }}" class="text-sm text-indigo-600 dark:text-indigo-400 hover:underline">
+                        View All
+                    </a>
+                    @endif
+                </div>
 
-    <!-- Asset List -->
-    <div class="divide-y divide-gray-200 dark:divide-gray-700">
-        @if ($recentAssets->isNotEmpty())
-            @foreach ($recentAssets as $asset)
-                <div class="flex justify-between items-center py-4 border-b border-gray-200 dark:border-gray-700">
-                    <div>
-                        <p class="font-semibold text-gray-800 dark:text-gray-100">{{ $asset->asset_name ?? 'N/A' }}</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ $asset->category->name ?? 'No category' }}</p>
-                    </div>
+                <!-- Asset List -->
+                <div class="divide-y divide-gray-200 dark:divide-gray-700">
+                    @if ($recentAssets->isNotEmpty())
+                    @foreach ($recentAssets as $asset)
+                    <div class="flex justify-between items-center py-4 border-b border-gray-200 dark:border-gray-700">
+                        <div>
+                            <p class="font-semibold text-gray-800 dark:text-gray-100">{{ $asset->asset_name ?? 'N/A' }}</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">{{ $asset->category->name ?? 'No category' }}</p>
+                        </div>
 
-                    <div class="flex items-center space-x-3">
-                        <div class="text-right">
-                            <p class="font-semibold text-gray-800 dark:text-gray-100">
+                        <div class="flex items-center space-x-3">
+                            <div class="text-right">
+                                <p class="font-semibold text-gray-800 dark:text-gray-100">
 
-                                 @php
+                                    @php
 
-                     
+
                                     $purchaseCost = $asset->purchase_cost ?? 0;
-                                
+
                                     $purchaseCost = $asset->purchase_cost ?? 0;
                                     $usefulLife = $asset->useful_life ?? 1; // prevent divide by zero
 
@@ -158,14 +158,14 @@
                                     // Straight-line depreciation
                                     $depreciationPerYear = $purchaseCost / $usefulLife;
                                     $bookValue = max($purchaseCost - ($depreciationPerYear * $yearsUsed), 0);
-                                @endphp
+                                    @endphp
 
-                                ₱{{ number_format($bookValue, 2) }}
-                            </p>
-                            <p class="text-xs text-gray-500 dark:text-gray-400">Book Value</p>
-                        </div>
+                                    ₱{{ number_format($bookValue, 2) }}
+                                </p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Book Value</p>
+                            </div>
 
-                        <span class="px-3 py-1 rounded-full text-xs font-medium
+                            <span class="px-3 py-1 rounded-full text-xs font-medium
                             @if ($asset->condition == 'Excellent')
                                 bg-green-100 text-green-700
                             @elseif ($asset->condition == 'Good')
@@ -175,18 +175,18 @@
                             @else
                                 bg-gray-100 text-gray-700
                             @endif">
-                            {{ $asset->condition ?? 'Unknown' }}
-                        </span>
+                                {{ $asset->condition ?? 'Unknown' }}
+                            </span>
+                        </div>
                     </div>
+                    @endforeach
+                    @else
+                    <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+                        No recent asset
+                    </div>
+                    @endif
                 </div>
-            @endforeach
-        @else
-            <div class="text-center py-8 text-gray-500 dark:text-gray-400">
-                No recent asset
             </div>
-        @endif
-    </div>
-</div>
 
 
 

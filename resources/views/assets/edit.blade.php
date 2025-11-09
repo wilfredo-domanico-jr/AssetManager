@@ -23,12 +23,12 @@
                 </div>
             </div>
 
-             <!-- Form -->
+            <!-- Form -->
             <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm p-6 space-y-6">
 
-                <form id="editAssetForm"  class="space-y-6" method="POST" action="{{ route('assets.update', $asset->id) }}" enctype="multipart/form-data">
-                      @csrf
-                      @method('PUT') <!-- Use PUT method for update -->
+                <form id="editAssetForm" class="space-y-6" method="POST" action="{{ route('assets.update', $asset->id) }}" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT') <!-- Use PUT method for update -->
 
                     <!-- Grid Container -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -40,7 +40,7 @@
                                 class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg
                                     dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                             @error('asset_name')
-                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
 
@@ -52,58 +52,58 @@
                                     dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                                 <option value="" selected>Select Category</option>
                                 @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}" {{ old('category_id', $asset->category_id) == $category->id ? 'selected' : '' }}>
-                                        {{ $category->name }}
-                                    </option>
+                                <option value="{{ $category->id }}" {{ old('category_id', $asset->category_id) == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
                                 @endforeach
                             </select>
                             @error('category_id')
-                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
 
                         <!-- Department -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Department</label>
-                                <select name="department_id"
-                                    class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Department</label>
+                            <select name="department_id"
+                                class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg
                                         dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                                    <option value="" selected>Select Department</option>
-                                    @foreach ($departments as $department)
-                                        <option value="{{ $department->id }}" {{ old('department_id', $asset->department_id) == $department->id ? 'selected' : '' }}>
-                                            {{ $department->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('department_id')
-                                    <span class="text-red-500 text-sm">{{ $message }}</span>
-                                @enderror
-                            </div>
+                                <option value="" selected>Select Department</option>
+                                @foreach ($departments as $department)
+                                <option value="{{ $department->id }}" {{ old('department_id', $asset->department_id) == $department->id ? 'selected' : '' }}>
+                                    {{ $department->name }}
+                                </option>
+                                @endforeach
+                            </select>
+                            @error('department_id')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
 
                         <!-- Purchase Date -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Purchase Date</label>
-                            <input type="date" 
-                            name="purchase_date"
-                            value="{{ old('purchase_date', \Carbon\Carbon::parse($asset->purchase_date)->format('Y-m-d')) }}"
-                            class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg
+                            <input type="date"
+                                name="purchase_date"
+                                value="{{ old('purchase_date', \Carbon\Carbon::parse($asset->purchase_date)->format('Y-m-d')) }}"
+                                class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg
                                 dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                             @error('purchase_date')
-                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
 
                         <!-- Purchase Cost -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Purchase Cost (₱)</label>
-                            <input type="number" name="purchase_cost" 
-                              step="0.01"
-                             min="0"min="0"
-                            value="{{ old('purchase_cost', $asset->purchase_cost) }}"
+                            <input type="number" name="purchase_cost"
+                                step="0.01"
+                                min="0" min="0"
+                                value="{{ old('purchase_cost', $asset->purchase_cost) }}"
                                 class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg
                                     dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                             @error('purchase_cost')
-                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
 
@@ -111,11 +111,11 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Useful Life (Years)</label>
                             <input type="number" name="useful_life" value="{{ old('useful_life', $asset->useful_life) }}"
-                             min="1"
+                                min="1"
                                 class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg
                                     dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                             @error('useful_life')
-                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
 
@@ -126,7 +126,7 @@
                                 class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg
                                     dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                             @error('supplier')
-                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
 
@@ -142,7 +142,7 @@
                                 <option value="Needs Repair" {{ old('condition', $asset->condition) == 'Needs Repair' ? 'selected' : '' }}>Needs Repair</option>
                             </select>
                             @error('condition')
-                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
 
@@ -155,37 +155,74 @@
 
                             <div id="editImagePreview" class="mt-3 flex justify-center">
                                 @if (!empty($asset->image) && file_exists(public_path('storage/' . $asset->image)))
-                                    <!-- Show current image -->
-                                    <img id="editPreviewImg"
-                                        src="{{ asset('storage/' . $asset->image) }}"
-                                        class="w-48 h-48 object-cover rounded-lg shadow-md border border-gray-300 dark:border-gray-700"
-                                        alt="Current Asset Image">
+                                <!-- Show current image -->
+                                <img id="editPreviewImg"
+                                    src="{{ asset('storage/' . $asset->image) }}"
+                                    class="w-48 h-48 object-cover rounded-lg shadow-md border border-gray-300 dark:border-gray-700"
+                                    alt="Current Asset Image">
                                 @else
-                                    <!-- Placeholder if no image -->
-                                    <div
-                                        class="w-48 h-48 flex items-center justify-center text-gray-400 dark:text-gray-500 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg">
-                                        <span class="text-sm">No image available</span>
-                                    </div>
+                                <!-- Placeholder if no image -->
+                                <div
+                                    class="w-48 h-48 flex items-center justify-center text-gray-400 dark:text-gray-500 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg">
+                                    <span class="text-sm">No image available</span>
+                                </div>
                                 @endif
                             </div>
 
                             @error('image')
-                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
 
+
+                        <!-- Description -->
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description (Optional)</label>
+                            <textarea name="description" rows="3"
+                                class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg
+                                dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">{{ old('description', $asset->description) }}</textarea>
+                            @error('description')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <hr class="border-t border-gray-200 dark:border-gray-700 mb-3">
+
+                            <label class="block text-center font-medium text-gray-700 dark:text-gray-300">Deployment</label>
+
+                        </div>
+
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
+                            <input type="text" name="deployed_name" value="{{ old('deployed_name', $asset->deployed_name) }}"
+                                class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg
+                                    dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            @error('deployed_name')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Designation</label>
+                            <input type="text" name="deployed_designation" value="{{ old('deployed_designation', $asset->deployed_designation) }}"
+                                class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg
+                                    dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            @error('deployed_designation')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+
                     </div>
 
-                    <!-- Description -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description (Optional)</label>
-                        <textarea name="description" rows="3"
-                            class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg
-                                dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">{{ old('description', $asset->description) }}</textarea>
-                        @error('description')
-                            <span class="text-red-500 text-sm">{{ $message }}</span>
-                        @enderror
-                    </div>
+
+
+
+
+
 
                     <!-- Buttons -->
                     <div class="flex justify-end space-x-2 pt-4 border-t border-gray-200 dark:border-gray-700">
@@ -193,12 +230,17 @@
                             class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600">
                             Cancel
                         </a>
+
+
                         <button type="submit"
                             class="px-4 py-2 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500">
                             Update Asset
                         </button>
                     </div>
                 </form>
+
+
+
             </div>
         </div>
     </div>
