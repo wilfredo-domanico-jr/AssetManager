@@ -16,6 +16,7 @@ class InventorySummaryCsvExport implements FromCollection, WithHeadings, WithMap
         return Asset::with('category', 'department')->get();
     }
 
+
     public function headings(): array
     {
         return [

@@ -1,14 +1,15 @@
 <?php
 
 use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\InventorySummaryCsvExport;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AssetController;
+use App\Exports\InventorySummaryCsvExport;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\ReportEmailSettingController;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -46,7 +47,10 @@ Route::get('/export-inventory-summary-csv', function () {
 
 Route::resource('/admin/category', CategoryController::class);
 Route::resource('/admin/department', DepartmentController::class);
+Route::resource('/admin/report-email-setting', ReportEmailSettingController::class);
 
 
+Route::get('/admin/report-email-setting', [ReportEmailSettingController::class, 'index'])->name('admin.report-email-setting.index');
+Route::post('/admin/report-email-setting/update', [ReportEmailSettingController::class, 'update'])->name('admin.report-email-setting.update');
 
 require __DIR__ . '/auth.php';
