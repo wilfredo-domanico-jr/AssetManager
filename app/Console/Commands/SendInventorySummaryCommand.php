@@ -11,7 +11,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class SendInventorySummaryCommand extends Command
 {
-    protected $signature = 'report:send-inventory-summary';
+    protected $signature = 'emailSending:send-inventory-summary';
     protected $description = 'Send inventory summary report to configured emails';
 
     public function handle()
@@ -24,17 +24,17 @@ class SendInventorySummaryCommand extends Command
             return Command::SUCCESS;
         }
 
-        // Ensure the public/reports folder exists
-        $publicDir = public_path('reports');
+        // Ensure the public/generated_reports folder exists
+        $publicDir = public_path('generated_reports');
         if (!is_dir($publicDir)) {
             mkdir($publicDir, 0777, true);
         }
 
         // Generate file name and paths
         $fileName = 'inventory_summary_' . now()->format('Y_m_d_His') . '.csv';
-        $relativePath = 'reports/' . $fileName;                   // Relative to public for URL
+        $relativePath = 'generated_reports/' . $fileName;                   // Relative to public for URL
 
-        // Generate CSV in public/reports
+        // Generate CSV in public/generated_reports
         Excel::store(new InventorySummaryCsvExport, $relativePath, 'public'); // 'public' disk
         $filePath = storage_path('app/public/' . $relativePath); // attach to mail
         // Safety check: file exists before sending

@@ -30,9 +30,9 @@ Route::resource('assets', AssetController::class);
 
 //  FOR REPORTS PAGE
 
-Route::get('/reports', [ReportsController::class, 'index'])->name('reports.index');
-Route::get('/reports/inventory', [ReportsController::class, 'inventory'])->name('reports.inventory');
-Route::get('/reports/lifecycle', [ReportsController::class, 'lifecycle'])->name('reports.lifecycle');
+Route::get('/reporting', [ReportsController::class, 'index'])->name('reporting.index');
+Route::get('/reporting/inventory', [ReportsController::class, 'inventory'])->name('reporting.inventory');
+Route::get('/reporting/lifecycle', [ReportsController::class, 'lifecycle'])->name('reporting.lifecycle');
 
 
 // EXPORT CSV FUNCTIONS
@@ -47,7 +47,6 @@ Route::get('/export-inventory-summary-csv', function () {
 
 Route::resource('/admin/category', CategoryController::class);
 Route::resource('/admin/department', DepartmentController::class);
-Route::resource('/admin/report-email-setting', ReportEmailSettingController::class);
 
 
 Route::get('/admin/report-email-setting', [ReportEmailSettingController::class, 'index'])->name('admin.report-email-setting.index');

@@ -50,7 +50,7 @@
                     <i class="fa-solid fa-boxes-stacked text-gray-500 dark:text-gray-300"></i>
                     <span>Assets</span>
                 </a>
-                <a href="{{ route('reports.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 {{ request()->routeIs('reports.*') ? 'bg-gray-200 dark:bg-gray-700 font-semibold' : '' }}">
+                <a href="{{ route('reporting.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 {{ request()->routeIs('reporting.*') ? 'bg-gray-200 dark:bg-gray-700 font-semibold' : '' }}">
                     <i class="fa-solid fa-file-lines text-gray-500 dark:text-gray-300"></i>
                     <span>Reports</span>
                 </a>

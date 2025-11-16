@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Asset;
-use Illuminate\Http\Request;
 
 class ReportsController extends Controller
 {
@@ -13,33 +12,34 @@ class ReportsController extends Controller
      */
     public function index()
     {
-            $assets = Asset::all();
-            // 1️⃣ Total Purchase Cost
-            $totalPurchaseCost = Asset::sum('purchase_cost');
 
-            // 2️⃣ Total Book Value (based on depreciation)
-            $totalBookValue = $assets->sum(function ($asset) {
-                $purchaseCost = $asset->purchase_cost ?? 0;
-                $usefulLife = $asset->useful_life ?? 1; // prevent divide by zero
+        $assets = Asset::all();
+        // 1️⃣ Total Purchase Cost
+        $totalPurchaseCost = Asset::sum('purchase_cost');
 
-                // Parse the purchase date safely
-                $purchaseDate = $asset->purchase_date ? Carbon::parse($asset->purchase_date) : null;
+        // 2️⃣ Total Book Value (based on depreciation)
+        $totalBookValue = $assets->sum(function ($asset) {
+            $purchaseCost = $asset->purchase_cost ?? 0;
+            $usefulLife = $asset->useful_life ?? 1; // prevent divide by zero
 
-                // Ensure monthsUsed is always positive
-                $monthsUsed = $purchaseDate ? $purchaseDate->diffInMonths(Carbon::now()) : 0;
+            // Parse the purchase date safely
+            $purchaseDate = $asset->purchase_date ? Carbon::parse($asset->purchase_date) : null;
 
-                // Convert to years (decimal)
-                $yearsUsed = $monthsUsed / 12;
+            // Ensure monthsUsed is always positive
+            $monthsUsed = $purchaseDate ? $purchaseDate->diffInMonths(Carbon::now()) : 0;
 
-                // Straight-line depreciation
-                $depreciationPerYear = $purchaseCost / $usefulLife;
-                $bookValue = max($purchaseCost - ($depreciationPerYear * $yearsUsed), 0);
+            // Convert to years (decimal)
+            $yearsUsed = $monthsUsed / 12;
 
-                return $bookValue;
-            });
+            // Straight-line depreciation
+            $depreciationPerYear = $purchaseCost / $usefulLife;
+            $bookValue = max($purchaseCost - ($depreciationPerYear * $yearsUsed), 0);
 
-            // 3️⃣ Total Depreciation
-            $totalDepreciation = $totalPurchaseCost - $totalBookValue;
+            return $bookValue;
+        });
+
+        // 3️⃣ Total Depreciation
+        $totalDepreciation = $totalPurchaseCost - $totalBookValue;
 
 
         $data = [
@@ -47,72 +47,24 @@ class ReportsController extends Controller
             'totalBookValue' => $totalBookValue,
             'totalDepreciation' => $totalDepreciation
         ];
-        return view('reports.depreciation',$data);
+        return view('reporting.depreciation', $data);
     }
 
     public function inventory()
     {
-        
-        $assets = Asset::with('category','department')->paginate(3); 
+
+        $assets = Asset::with('category', 'department')->paginate(3);
 
 
         $data = [
-                'assets' => $assets
+            'assets' => $assets
         ];
 
-         return view('reports.inventory', $data);
+        return view('reporting.inventory', $data);
     }
 
-     public function lifecycle()
+    public function lifecycle()
     {
-         return view('reports.lifecycle');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return view('reporting.lifecycle');
     }
 }

@@ -26,25 +26,25 @@
             <div class="flex flex-col sm:flex-row border-b border-gray-200 dark:border-gray-700 mb-4 rounded-lg overflow-hidden">
 
                 <!-- Depreciation Tab -->
-                <a href="{{ url('/reports') }}"
+                <a href="{{ url('/reporting') }}"
                     class="flex-1 flex items-center justify-center space-x-2 py-2 font-medium border-b sm:border-b-0 sm:border-r border-gray-300 dark:border-gray-700
-                    {{ request()->is('reports') ? 'bg-white text-gray-800' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-white hover:text-gray-800 transition' }}">
+                    {{ request()->is('reporting') ? 'bg-white text-gray-800' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-white hover:text-gray-800 transition' }}">
                     <i class="fa-solid fa-coins text-yellow-500"></i>
                     <span>Depreciation</span>
                 </a>
 
                 <!-- Inventory Tab -->
-                <a href="{{ url('/reports/inventory') }}"
+                <a href="{{ url('/reporting/inventory') }}"
                     class="flex-1 flex items-center justify-center space-x-2 py-2 font-medium border-b sm:border-b-0 sm:border-r border-gray-300 dark:border-gray-700
-                    {{ request()->is('reports/inventory') ? 'bg-white text-gray-800' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-white hover:text-gray-800 transition' }}">
+                    {{ request()->is('reporting/inventory') ? 'bg-white text-gray-800' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-white hover:text-gray-800 transition' }}">
                     <i class="fa-solid fa-boxes-stacked text-blue-500"></i>
                     <span>Inventory</span>
                 </a>
 
                 <!-- Lifecycle Tab -->
-                <a href="{{ url('/reports/lifecycle') }}"
+                <a href="{{ url('/reporting/lifecycle') }}"
                     class="flex-1 flex items-center justify-center space-x-2 py-2 font-medium focus:outline-none
-                    {{ request()->is('reports/lifecycle') ? 'bg-white text-gray-800' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-white hover:text-gray-800 transition' }}">
+                    {{ request()->is('reporting/lifecycle') ? 'bg-white text-gray-800' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-white hover:text-gray-800 transition' }}">
                     <i class="fa-solid fa-recycle text-green-500"></i>
                     <span>Lifecycle</span>
                 </a>
