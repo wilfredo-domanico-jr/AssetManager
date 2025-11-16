@@ -63,12 +63,12 @@
                     </div>
 
                     <!-- Export button -->
-                    <button
-                        type="button"
+                    <a
+                        href="/export-depreciation-summary-csv"
                         class="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg shadow-sm transition-all dark:bg-blue-500 dark:hover:bg-blue-600 w-full sm:w-auto">
                         <i class="fa-solid fa-download"></i>
                         Export to CSV
-                    </button>
+                    </a>
                 </div>
 
                 <!-- Stat Cards -->

@@ -4,6 +4,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AssetController;
 use App\Exports\InventorySummaryCsvExport;
+use App\Exports\DepreciationSummaryCsvExport;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\CategoryController;
@@ -39,6 +40,10 @@ Route::get('/reporting/lifecycle', [ReportsController::class, 'lifecycle'])->nam
 
 Route::get('/export-inventory-summary-csv', function () {
     return Excel::download(new InventorySummaryCsvExport, 'inventory-summary.csv');
+});
+
+Route::get('/export-depreciation-summary-csv', function () {
+    return Excel::download(new DepreciationSummaryCsvExport, 'depreciation-summary.csv');
 });
 
 /* =================================== ADMIN SETTINGS =================================== */
