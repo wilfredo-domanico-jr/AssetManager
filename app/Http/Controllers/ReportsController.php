@@ -41,11 +41,12 @@ class ReportsController extends Controller
         // 3️⃣ Total Depreciation
         $totalDepreciation = $totalPurchaseCost - $totalBookValue;
 
-
+        $assets = Asset::with('category', 'department')->paginate(3);
         $data = [
             'totalPurchaseCost' => $totalPurchaseCost,
             'totalBookValue' => $totalBookValue,
-            'totalDepreciation' => $totalDepreciation
+            'totalDepreciation' => $totalDepreciation,
+            'assets' => $assets
         ];
         return view('reporting.depreciation', $data);
     }
