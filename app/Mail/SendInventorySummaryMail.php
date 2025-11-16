@@ -10,20 +10,39 @@ class SendInventorySummaryMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $filePath;
+    public $files; // Array of file paths
 
-    public function __construct($filePath)
+    /**
+     * Create a new message instance.
+     *
+     * @param array $files
+     */
+    public function __construct(array $files)
     {
-        $this->filePath = $filePath;
+        $this->files = $files;
     }
 
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
     public function build()
     {
-        return $this->subject('Inventory Summary Report')
-            ->view('emails.inventory-summary')
-            ->attach($this->filePath, [
-                'as' => 'inventory_summary.csv',
+        $email = $this->subject('Asset Manager Reports')
+            ->view('emails.email-summary');
+
+        // Attach each file individually
+        foreach ($this->files as $filePath) {
+            // Use the actual filename from the path
+            $fileName = basename($filePath);
+
+            $email->attach($filePath, [
+                'as' => $fileName,
                 'mime' => 'text/csv',
             ]);
+        }
+
+        return $email;
     }
 }
