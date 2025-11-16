@@ -56,12 +56,19 @@ class DepreciationSummaryCsvExport implements FromCollection, WithHeadings, With
             ? ($accumulatedDep / $purchaseCost) * 100
             : 0;
 
-        $status = $asset->deployed_name ? "Active" : "Inactive";
+        $status  =  $yearsUsed < $usefulLife;
+
+        $isActive = "Active";
+
+        if (!$status) {
+            $isActive = "Fully Depreciated";
+        }
+
 
         return [
             $asset->asset_name ?? 'N/A',
             $asset->category?->name ?? 'N/A',
-            $status,
+            $isActive,
             number_format($purchaseCost, 2),
             number_format($accumulatedDep, 2),
             number_format($bookValue, 2),

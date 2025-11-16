@@ -66,6 +66,14 @@ class ReportsController extends Controller
 
     public function lifecycle()
     {
-        return view('reporting.lifecycle');
+        $assets = Asset::with('category', 'department')->paginate(3);
+
+
+        $data = [
+            'assets' => $assets
+        ];
+
+
+        return view('reporting.lifecycle', $data);
     }
 }

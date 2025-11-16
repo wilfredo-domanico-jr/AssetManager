@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AssetController;
 use App\Exports\InventorySummaryCsvExport;
 use App\Exports\DepreciationSummaryCsvExport;
+use App\Exports\LifeCycleSummaryCsvExport;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\CategoryController;
@@ -44,6 +45,11 @@ Route::get('/export-inventory-summary-csv', function () {
 
 Route::get('/export-depreciation-summary-csv', function () {
     return Excel::download(new DepreciationSummaryCsvExport, 'depreciation-summary.csv');
+});
+
+
+Route::get('/export-lifecycle-summary-csv', function () {
+    return Excel::download(new LifeCycleSummaryCsvExport, 'lifecycle-summary.csv');
 });
 
 /* =================================== ADMIN SETTINGS =================================== */

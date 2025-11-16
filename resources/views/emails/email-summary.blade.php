@@ -5,6 +5,7 @@
 <ul>
     <li><strong>Inventory Summary Report</strong> (CSV)</li>
     <li><strong>Depreciation Summary Report</strong> (CSV)</li>
+    <li><strong>Lifecycle Summary Report</strong> (CSV)</li>
 </ul>
 
 <p>These reports contain the most recent data available in the system.</p>

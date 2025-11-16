@@ -67,27 +67,112 @@
                             Lifecycle Report
                         </h2>
                         <p class="text-sm text-gray-500 dark:text-gray-400">
-                            Comprehensive overview of asset lifespan and valuation
+                            Equipment aging analysis and replacement recommendations
                         </p>
                     </div>
 
                     <!-- Export button -->
-                    <button
-                        type="button"
+                    <a
+                        href="/export-lifecycle-summary-csv"
                         class="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg shadow-sm transition-all dark:bg-blue-500 dark:hover:bg-blue-600 w-full sm:w-auto">
                         <i class="fa-solid fa-download"></i>
                         Export to CSV
-                    </button>
+                    </a>
                 </div>
 
 
 
+                @forelse ($assets as $asset)
 
+                @php
+                $purchaseCost = $asset->purchase_cost ?? 0;
+                $usefulLife = $asset->useful_life ?? 1; // in years
 
+                // Parse purchase date safely
+                $purchaseDate = $asset->purchase_date
+                ? \Carbon\Carbon::parse($asset->purchase_date)
+                : null;
+
+                // Age in years (decimal)
+                $yearsUsed = $purchaseDate
+                ? $purchaseDate->diffInMonths(\Carbon\Carbon::now()) / 12
+                : 0;
+
+                // Remaining life
+                $remainingLife = max($usefulLife - $yearsUsed, 0);
+
+                // Current book value (straight-line depreciation)
+                $depreciationPerYear = $purchaseCost / $usefulLife;
+                $bookValue = max($purchaseCost - ($depreciationPerYear * $yearsUsed), 0);
+                $status = $yearsUsed < $usefulLife ? 'Active' : 'Fully Depreciated' ;
+                    $bgClass=$yearsUsed < $usefulLife ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-700' ;
+                    @endphp
+
+                    <div class="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg p-4 shadow-inner mb-3">
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">{{ $asset->asset_name }}</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">{{ $asset->category?->name ?? 'Not Available' }}</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <span class="px-3 py-1 rounded-full {{ $bgClass }} text-xs font-medium">
+                                {{ $status }}
+                            </span>
+                            <span class="px-3 py-1 rounded-full 
+                    @if($asset->condition == 'Excellent') bg-green-100 text-green-700
+                    @elseif($asset->condition == 'Good') bg-blue-100 text-blue-700
+                    @else bg-yellow-100 text-yellow-700 @endif
+                    text-xs font-medium">
+                                {{ $asset->condition ?? 'Unknown' }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                        <!-- Age -->
+                        <div>
+                            <span class="text-md text-gray-600 dark:text-gray-400 block">Age</span>
+                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ number_format($yearsUsed, 1) }} yrs</p>
+                        </div>
+
+                        <!-- Useful Life -->
+                        <div>
+                            <span class="text-md text-gray-600 dark:text-gray-400 block">Useful Life</span>
+                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ $usefulLife }} yrs</p>
+                        </div>
+
+                        <!-- Remaining Life -->
+                        <div>
+                            <span class="text-md text-gray-600 dark:text-gray-400 block">Remaining Life</span>
+                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ number_format($remainingLife, 1) }} yrs</p>
+                        </div>
+
+                        <!-- Current Value -->
+                        <div>
+                            <span class="text-md text-gray-600 dark:text-gray-400 block">Current Value</span>
+                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">₱{{ number_format($bookValue, 2) }}</p>
+                        </div>
+                    </div>
             </div>
+
+            @empty
+            <div class="text-center text-gray-500 dark:text-gray-400 py-10">
+                <i class="fa-solid fa-box-open text-4xl mb-3"></i>
+                <p>No assets found.</p>
+            </div>
+            @endforelse
+
+            {{ $assets->appends(request()->query())->links() }}
+
+
+
 
 
 
         </div>
+
+
+
+    </div>
     </div>
 </x-app-layout>

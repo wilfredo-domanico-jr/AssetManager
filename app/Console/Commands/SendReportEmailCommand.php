@@ -6,6 +6,7 @@ use App\Mail\SendInventorySummaryMail;
 use App\Models\ReportEmail;
 use App\Exports\InventorySummaryCsvExport;
 use App\Exports\DepreciationSummaryCsvExport;
+use App\Exports\LifeCycleSummaryCsvExport;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
@@ -36,18 +37,21 @@ class SendReportEmailCommand extends Command
 
         $inventorySummaryFile = "inventory_summary_{$timestamp}.csv";
         $depreciationSummaryFile = "depreciation_summary_{$timestamp}.csv";
+        $lifecycleSummaryFile = "lifecycle_summary_{$timestamp}.csv";
 
         // Paths to store
         $inventorySummaryFilePath = "generated_reports/{$inventorySummaryFile}";
         $depreciationSummaryFilePath = "generated_reports/{$depreciationSummaryFile}";
-
+        $lifecycleSummaryFilePath = "generated_reports/{$lifecycleSummaryFile}";
         // Generate CSV files
         Excel::store(new InventorySummaryCsvExport, $inventorySummaryFilePath, 'public');
         Excel::store(new DepreciationSummaryCsvExport, $depreciationSummaryFilePath, 'public');
+        Excel::store(new LifeCycleSummaryCsvExport, $lifecycleSummaryFilePath, 'public');
 
         // Full storage paths
         $inventorySummary = storage_path("app/public/{$inventorySummaryFilePath}");
         $depreciationSummary = storage_path("app/public/{$depreciationSummaryFilePath}");
+        $lifecycleSummary = storage_path("app/public/{$lifecycleSummaryFilePath}");
 
         // Safety checks
         if (!file_exists($inventorySummary)) {
@@ -60,11 +64,16 @@ class SendReportEmailCommand extends Command
             return Command::FAILURE;
         }
 
+        if (!file_exists($lifecycleSummary)) {
+            $this->error("CSV file not found at: {$lifecycleSummary}");
+            return Command::FAILURE;
+        }
+
         // Send email to each recipient
         foreach ($emails as $email) {
             try {
                 Mail::to($email)->send(
-                    new SendInventorySummaryMail([$inventorySummary, $depreciationSummary])
+                    new SendInventorySummaryMail([$inventorySummary, $depreciationSummary, $lifecycleSummary])
                 );
 
                 $this->info("Report sent to: {$email}");
