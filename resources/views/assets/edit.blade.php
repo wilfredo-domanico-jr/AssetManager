@@ -26,9 +26,11 @@
             <!-- Form -->
             <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm p-6 space-y-6">
 
+
+
                 <form id="editAssetForm" class="space-y-6" method="POST" action="{{ route('assets.update', $asset->id) }}" enctype="multipart/form-data">
                     @csrf
-                    @method('PUT') <!-- Use PUT method for update -->
+                    @method('PUT')
 
                     <!-- Grid Container -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -38,7 +40,7 @@
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Asset Name</label>
                             <input type="text" name="asset_name" value="{{ old('asset_name', $asset->asset_name) }}"
                                 class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg
-                                    dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                             @error('asset_name')
                             <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
@@ -98,7 +100,6 @@
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Purchase Cost (₱)</label>
                             <input type="number" name="purchase_cost"
                                 step="0.01"
-                                min="0" min="0"
                                 value="{{ old('purchase_cost', $asset->purchase_cost) }}"
                                 class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg
                                     dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
@@ -111,7 +112,6 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Useful Life (Years)</label>
                             <input type="number" name="useful_life" value="{{ old('useful_life', $asset->useful_life) }}"
-                                min="1"
                                 class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg
                                     dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                             @error('useful_life')
@@ -151,17 +151,14 @@
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Update Image</label>
 
                             <input type="file" id="editAssetImage" accept="image/*" name="image"
-                                class="mt-1 block w-full text-sm text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-700 rounded-lg cursor-pointer bg-white dark:bg-gray-900 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                class="mt-1 block w-full text-sm text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-700 rounded-lg cursor-pointer bg-white dark:bg-gray-900">
 
                             <div id="editImagePreview" class="mt-3 flex justify-center">
                                 @if (!empty($asset->image) && file_exists(public_path('storage/' . $asset->image)))
-                                <!-- Show current image -->
                                 <img id="editPreviewImg"
                                     src="{{ asset('storage/' . $asset->image) }}"
-                                    class="w-48 h-48 object-cover rounded-lg shadow-md border border-gray-300 dark:border-gray-700"
-                                    alt="Current Asset Image">
+                                    class="w-48 h-48 object-cover rounded-lg shadow-md border border-gray-300 dark:border-gray-700">
                                 @else
-                                <!-- Placeholder if no image -->
                                 <div
                                     class="w-48 h-48 flex items-center justify-center text-gray-400 dark:text-gray-500 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg">
                                     <span class="text-sm">No image available</span>
@@ -174,55 +171,56 @@
                             @enderror
                         </div>
 
+                        <!-- Toggle Deployment -->
+                        <div class="md:col-span-2 flex items-center space-x-3 mt-4">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Deployed?
+                            </label>
 
-                        <!-- Description -->
-                        <div class="md:col-span-2">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description (Optional)</label>
-                            <textarea name="description" rows="3"
-                                class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg
-                                dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">{{ old('description', $asset->description) }}</textarea>
-                            @error('description')
-                            <span class="text-red-500 text-sm">{{ $message }}</span>
-                            @enderror
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="is_deployed" name="is_deployed"
+                                    class="sr-only peer"
+                                    {{ old('is_deployed', $asset->is_deployed) ? 'checked' : '' }}>
+
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer 
+                                    dark:bg-gray-700 peer-checked:bg-indigo-600
+                                    after:content-[''] after:absolute after:top-[2px] after:left-[2px]
+                                    after:bg-white after:border-gray-300 after:border after:rounded-full 
+                                    after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full">
+                                </div>
+                            </label>
                         </div>
 
-                        <div class="md:col-span-2">
-                            <hr class="border-t border-gray-200 dark:border-gray-700 mb-3">
+                        <!-- Deployment Fields -->
+                        <div id="deploymentFields" class="{{ old('is_deployed', $asset->is_deployed) ? '' : 'hidden' }} md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
 
-                            <label class="block text-center font-medium text-gray-700 dark:text-gray-300">Deployment</label>
+                            <div class="md:col-span-2">
+                                <hr class="border-t border-gray-200 dark:border-gray-700 mb-3">
+                                <label class="block text-center font-medium text-gray-700 dark:text-gray-300">
+                                    Deployment Details
+                                </label>
+                            </div>
 
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
+                                <input type="text" id="deployed_name" name="deployed_name" value="{{ old('deployed_name', $asset->deployed_name) }}"
+                                    class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg
+                                        dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+
+                                <span id="error_name" class="text-red-500 text-sm hidden">Name is required when deployed.</span>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Designation</label>
+                                <input type="text" id="deployed_designation" name="deployed_designation" value="{{ old('deployed_designation', $asset->deployed_designation) }}"
+                                    class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg
+                                        dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+
+                                <span id="error_designation" class="text-red-500 text-sm hidden">Designation is required when deployed.</span>
+                            </div>
                         </div>
-
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
-                            <input type="text" name="deployed_name" value="{{ old('deployed_name', $asset->deployed_name) }}"
-                                class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg
-                                    dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                            @error('deployed_name')
-                            <span class="text-red-500 text-sm">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Designation</label>
-                            <input type="text" name="deployed_designation" value="{{ old('deployed_designation', $asset->deployed_designation) }}"
-                                class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg
-                                    dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                            @error('deployed_designation')
-                            <span class="text-red-500 text-sm">{{ $message }}</span>
-                            @enderror
-                        </div>
-
 
                     </div>
-
-
-
-
-
-
 
                     <!-- Buttons -->
                     <div class="flex justify-end space-x-2 pt-4 border-t border-gray-200 dark:border-gray-700">
@@ -231,7 +229,6 @@
                             Cancel
                         </a>
 
-
                         <button type="submit"
                             class="px-4 py-2 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500">
                             Update Asset
@@ -239,21 +236,90 @@
                     </div>
                 </form>
 
-
-
             </div>
         </div>
     </div>
 
-    <script>
-        const editAssetImage = document.getElementById('editAssetImage');
-        const editPreviewImg = document.getElementById('editPreviewImg');
 
-        editAssetImage.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (file) {
-                editPreviewImg.src = URL.createObjectURL(file);
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            // Shared elements
+            const isDeployedCheckbox = document.getElementById("is_deployed");
+            const deploymentFields = document.getElementById("deploymentFields");
+
+            const deployedName = document.getElementById("deployed_name");
+            const deployedDesignation = document.getElementById("deployed_designation");
+            const errorName = document.getElementById("error_name");
+            const errorDesignation = document.getElementById("error_designation");
+
+            const editAssetForm = document.getElementById("editAssetForm");
+
+
+            /* -----------------------
+                IMAGE PREVIEW
+            ------------------------*/
+            const imageInput = document.getElementById("editAssetImage");
+            const previewImg = document.getElementById("editPreviewImg");
+
+            if (imageInput) {
+                imageInput.addEventListener("change", function() {
+                    const file = this.files[0];
+                    if (file) previewImg.src = URL.createObjectURL(file);
+                });
             }
+
+
+            /* -----------------------
+                TOGGLE DEPLOYMENT FIELDS
+            ------------------------*/
+            function toggleDeployment() {
+                if (isDeployedCheckbox.checked) {
+                    deploymentFields.classList.remove("hidden");
+                } else {
+                    deploymentFields.classList.add("hidden");
+                }
+            }
+
+            isDeployedCheckbox.addEventListener("change", toggleDeployment);
+            toggleDeployment(); // run on load
+
+
+            /* -----------------------
+                FORM VALIDATION
+            ------------------------*/
+            editAssetForm.addEventListener("submit", function(event) {
+
+                // Reset errors first
+                errorName.classList.add("hidden");
+                errorDesignation.classList.add("hidden");
+                deployedName.classList.remove("border-red-500");
+                deployedDesignation.classList.remove("border-red-500");
+
+                // If checkbox is not checked, allow submit
+                if (!isDeployedCheckbox.checked) return;
+
+                let hasError = false;
+
+                if (deployedName.value.trim() === "") {
+                    errorName.classList.remove("hidden");
+                    deployedName.classList.add("border-red-500");
+                    hasError = true;
+                }
+
+                if (deployedDesignation.value.trim() === "") {
+                    errorDesignation.classList.remove("hidden");
+                    deployedDesignation.classList.add("border-red-500");
+                    hasError = true;
+                }
+
+                if (hasError) {
+                    event.preventDefault(); // STOP submit
+                }
+            });
+
         });
     </script>
+
+
 </x-app-layout>

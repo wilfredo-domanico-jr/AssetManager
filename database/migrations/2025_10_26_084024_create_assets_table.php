@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('condition')->nullable();
             $table->string('image')->nullable();
             $table->text('description')->nullable();
+            $table->boolean('is_deployed')->default(false);
             $table->string('deployed_name')->nullable();
             $table->string('deployed_designation')->nullable();
             $table->timestamps();

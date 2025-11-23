@@ -26,6 +26,7 @@ class Asset extends Model
         'condition',
         'image',
         'description',
+        'is_deployed',
         'deployed_name',
         'deployed_designation'
     ];

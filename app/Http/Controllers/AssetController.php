@@ -107,6 +107,7 @@ class AssetController extends Controller
 
     public function update(Request $request, Asset $asset)
     {
+
         $validated = $request->validate([
             'asset_name' => 'required|string|max:255',
             'category_id' => 'required|string|max:255',
@@ -117,11 +118,19 @@ class AssetController extends Controller
             'supplier' => 'required|string|max:255',
             'condition' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'deployed_name' => 'required|string',
-            'deployed_designation' => 'required|string'
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
+        $asset->is_deployed = $request->has('is_deployed');
+
+        if ($asset->is_deployed) {
+            $asset->deployed_name = $request->deployed_name;
+            $asset->deployed_designation = $request->deployed_designation;
+        } else {
+            // Clear fields when not deployed
+            $asset->deployed_name = null;
+            $asset->deployed_designation = null;
+        }
 
 
         if ($request->hasFile('image')) {
