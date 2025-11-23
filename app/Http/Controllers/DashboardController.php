@@ -12,7 +12,7 @@ class DashboardController extends Controller
 
         // Bilangin lahat ng asset na nacreate.
         $totalAssets = Asset::count();
-        $deployedAssets = Asset::whereNotNull('deployed_name')->count();
+        $deployedAssets = Asset::whereIsDeployed(true)->count();
 
         $inStockAssets = $totalAssets - $deployedAssets;
 

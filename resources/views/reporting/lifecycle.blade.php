@@ -104,8 +104,16 @@
                 // Current book value (straight-line depreciation)
                 $depreciationPerYear = $purchaseCost / $usefulLife;
                 $bookValue = max($purchaseCost - ($depreciationPerYear * $yearsUsed), 0);
-                $status = $yearsUsed < $usefulLife ? 'Active' : 'Fully Depreciated' ;
-                    $bgClass=$yearsUsed < $usefulLife ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-700' ;
+
+                // Determine lifecycle status
+                    if ($remainingLife <= 0) {
+                        $status="Fully Depreciated" ;
+                    } elseif ($remainingLife / $usefulLife <=0.2) { // < 20% remaining
+                        $status="Near End" ;
+                    } else {
+                        $status="Good" ;
+                    }
+                    
                     @endphp
 
                     <div class="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg p-4 shadow-inner mb-3">
@@ -115,9 +123,7 @@
                             <p class="text-sm text-gray-600 dark:text-gray-400">{{ $asset->category?->name ?? 'Not Available' }}</p>
                         </div>
                         <div class="flex space-x-2">
-                            <span class="px-3 py-1 rounded-full {{ $bgClass }} text-xs font-medium">
-                                {{ $status }}
-                            </span>
+                            
                             <span class="px-3 py-1 rounded-full 
                     @if($asset->condition == 'Excellent') bg-green-100 text-green-700
                     @elseif($asset->condition == 'Good') bg-blue-100 text-blue-700
@@ -147,10 +153,10 @@
                             <p class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ number_format($remainingLife, 1) }} yrs</p>
                         </div>
 
-                        <!-- Current Value -->
+                        <!-- Status -->
                         <div>
-                            <span class="text-md text-gray-600 dark:text-gray-400 block">Current Value</span>
-                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">₱{{ number_format($bookValue, 2) }}</p>
+                            <span class="text-md text-gray-600 dark:text-gray-400 block">Status</span>
+                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ $status }}</p>
                         </div>
                     </div>
             </div>

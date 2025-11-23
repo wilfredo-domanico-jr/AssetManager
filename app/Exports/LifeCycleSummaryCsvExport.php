@@ -26,8 +26,7 @@ class LifeCycleSummaryCsvExport implements FromCollection, WithHeadings, WithMap
             'CONDITION',
             'AGE',
             'USEFUL LIFE',
-            'REMAINING LIFE',
-            'RECOMENDATION'
+            'REMAINING LIFE'
         ];
     }
 
@@ -51,25 +50,24 @@ class LifeCycleSummaryCsvExport implements FromCollection, WithHeadings, WithMap
         $remainingLife = max($usefulLife - $yearsUsed, 0);
 
 
-        $status = $yearsUsed < $usefulLife;
-
-        $isActive = "Active";
-
-        if (!$status) {
-            $isActive = "Fully Depreciated";
+        // Determine status
+        if ($remainingLife <= 0) {
+            $status = "Fully Depreciated";
+        } elseif ($remainingLife / $usefulLife <= 0.2) { // less than 20% remaining
+            $status = "Near End";
+        } else {
+            $status = "Good";
         }
-
 
 
         return [
             $asset->asset_name ?? 'N/A',
             $asset->category?->name ?? 'N/A',
-            $isActive,
+            $status,
             $asset->condition,
             number_format($yearsUsed, 1) . " yrs",
             number_format($usefulLife, 1) . " yrs",
-            number_format($remainingLife, 1) . " yrs",
-            "Recommendation"
+            number_format($remainingLife, 1) . " yrs"
 
         ];
     }
