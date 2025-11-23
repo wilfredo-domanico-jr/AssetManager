@@ -8,5 +8,10 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
+// I execute per minute - for testing only
+// Schedule::command('emailSending:send-report-summary')
+//     ->everyMinute();
+
+// I execute weekly every Saturday at 8PM
 Schedule::command('emailSending:send-report-summary')
-    ->dailyAt('08:00'); // or ->weeklyOn(1, '08:00') for Mondays
+    ->weeklyOn(6, '20:00'); // Saturday at 8 PM
