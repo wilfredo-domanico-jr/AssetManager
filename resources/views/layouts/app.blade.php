@@ -71,6 +71,12 @@
                     <span>Departments</span>
                 </a>
 
+
+                <a href="{{ route('user.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 {{ request()->routeIs('user.*') ? 'bg-gray-200 dark:bg-gray-700 font-semibold' : '' }}">
+                    <i class="fa-solid fa-building text-gray-500 dark:text-gray-300"></i>
+                    <span>Users</span>
+                </a>
+
                 <a href="{{ route('admin.report-email-setting.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 {{ request()->routeIs('admin.report-email-setting.*') ? 'bg-gray-200 dark:bg-gray-700 font-semibold' : '' }}">
                     <i class="fa-solid fa-paper-plane text-gray-500 dark:text-gray-300"></i>
                     <span>Report Email Setting</span>
