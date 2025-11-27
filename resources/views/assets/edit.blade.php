@@ -212,11 +212,24 @@
 
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Designation</label>
-                                <input type="text" id="deployed_designation" name="deployed_designation" value="{{ old('deployed_designation', $asset->deployed_designation) }}"
+
+                                <select id="deployed_designation" name="deployed_designation"
                                     class="mt-1 w-full p-2 border border-gray-300 dark:border-gray-700 rounded-lg
                                         dark:bg-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
 
-                                <span id="error_designation" class="text-red-500 text-sm hidden">Designation is required when deployed.</span>
+                                    <option value="">Select Designation</option>
+
+                                    @foreach ($departments as $department)
+                                    <option value="{{ $department->name }}"
+                                        {{ old('deployed_designation', $asset->deployed_designation) == $department->name ? 'selected' : '' }}>
+                                        {{ $department->name }}
+                                    </option>
+                                    @endforeach
+                                </select>
+
+                                <span id="error_designation" class="text-red-500 text-sm hidden">
+                                    Designation is required when deployed.
+                                </span>
                             </div>
                         </div>
 
