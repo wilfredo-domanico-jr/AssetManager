@@ -55,13 +55,18 @@ Route::get('/export-lifecycle-summary-csv', function () {
 
 /* =================================== ADMIN SETTINGS =================================== */
 
-// CATEGORY MAINTENANCE
 
-Route::resource('/admin/category', CategoryController::class);
-Route::resource('/admin/department', DepartmentController::class);
-Route::resource('/admin/user', UserController::class);
+Route::middleware(['auth', 'admin'])->group(function () {
 
-Route::get('/admin/report-email-setting', [ReportEmailSettingController::class, 'index'])->name('admin.report-email-setting.index');
-Route::post('/admin/report-email-setting/update', [ReportEmailSettingController::class, 'update'])->name('admin.report-email-setting.update');
+    // CATEGORY MAINTENANCE
+
+    Route::resource('/admin/category', CategoryController::class);
+    Route::resource('/admin/department', DepartmentController::class);
+    Route::resource('/admin/user', UserController::class);
+
+    Route::get('/admin/report-email-setting', [ReportEmailSettingController::class, 'index'])->name('admin.report-email-setting.index');
+    Route::post('/admin/report-email-setting/update', [ReportEmailSettingController::class, 'update'])->name('admin.report-email-setting.update');
+});
+
 
 require __DIR__ . '/auth.php';
