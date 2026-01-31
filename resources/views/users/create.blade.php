@@ -20,11 +20,6 @@
                     <p class="text-sm text-gray-500 dark:text-gray-400">Fill out the details to register a new user</p>
                 </div>
 
-                <a href="{{ route('user.create') }}"
-                    class="inline-flex items-center mt-4 sm:mt-0 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg shadow-sm transition">
-                    <i class="fa-solid fa-plus mr-2"></i>
-                    Add User
-                </a>
             </div>
 
             {{-- Flash Message --}}

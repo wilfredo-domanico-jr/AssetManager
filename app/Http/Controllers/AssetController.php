@@ -64,6 +64,8 @@ class AssetController extends Controller
 
     public function store(Request $request)
     {
+
+        // dd($request->all());
         $validated = $request->validate([
             'asset_name' => 'required|string|max:255',
             'category_id' => 'required|string|max:255',
