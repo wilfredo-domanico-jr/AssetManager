@@ -82,90 +82,68 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
 
-                <!-- Card 1 -->
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 flex justify-between items-center hover:shadow-md transition">
-                    <div>
-                        <h3 class="text-sm text-gray-500 dark:text-gray-400">Assets by Category</h3>
-                        <p class="text-lg font-bold text-gray-900 dark:text-gray-100 mt-1">{{ $highestByCategory->category_name ?? 'N/A' }}</p>
-                    </div>
-                    <!-- Number in bordered box -->
-                    <div class="flex items-center justify-center w-14 h-14 border-2 border-purple-500 rounded-xl text-purple-600 font-bold text-2xl">
-                        {{ $highestByCategory->total ?? 0 }}
-                    </div>
-                </div>
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 w-full">
 
-                <!-- Card 2 -->
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 flex justify-between items-center hover:shadow-md transition">
-                    <div>
-                        <h3 class="text-sm text-gray-500 dark:text-gray-400">Assets by Condition</h3>
-                        <p class="text-lg font-bold text-gray-900 dark:text-gray-100 mt-1">{{$highestCondition->condition ?? 'N/A' }}</p>
-                    </div>
-                    <!-- Number in bordered box -->
-                    <div class="flex items-center justify-center w-14 h-14 border-2 border-teal-500 rounded-xl text-teal-600 font-bold text-2xl">
-                        {{$highestCondition->total ?? 0 }}
-                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Asset by Category</h3>
+
+                    <div id="categoryPieChart" style="max-width: 400px; margin: auto;"></div>
                 </div>
 
 
-            </div>
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 w-full">
+                    <!-- Header -->
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Recent Assets</h3>
 
+                        @if ($recentAssets->isNotEmpty())
+                        <a href="{{ route('assets.index') }}" class="text-sm text-indigo-600 dark:text-indigo-400 hover:underline">
+                            View All
+                        </a>
+                        @endif
+                    </div>
 
-
-
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 w-full">
-                <!-- Header -->
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Recent Assets</h3>
-
-                    @if ($recentAssets->isNotEmpty())
-                    <a href="{{ route('assets.index') }}" class="text-sm text-indigo-600 dark:text-indigo-400 hover:underline">
-                        View All
-                    </a>
-                    @endif
-                </div>
-
-                <!-- Asset List -->
-                <div class="divide-y divide-gray-200 dark:divide-gray-700">
-                    @if ($recentAssets->isNotEmpty())
-                    @foreach ($recentAssets as $asset)
-                    <div class="flex justify-between items-center py-4 border-b border-gray-200 dark:border-gray-700">
-                        <div>
-                            <p class="font-semibold text-gray-800 dark:text-gray-100">{{ $asset->asset_name ?? 'N/A' }}</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">{{ $asset->category->name ?? 'No category' }}</p>
-                        </div>
-
-                        <div class="flex items-center space-x-3">
-                            <div class="text-right">
-                                <p class="font-semibold text-gray-800 dark:text-gray-100">
-
-                                    @php
-
-
-                                    $purchaseCost = $asset->purchase_cost ?? 0;
-
-                                    $purchaseCost = $asset->purchase_cost ?? 0;
-                                    $usefulLife = $asset->useful_life ?? 1; // prevent divide by zero
-
-                                    // Parse the purchase date safely
-                                    $purchaseDate = $asset->purchase_date ? \Carbon\Carbon::parse($asset->purchase_date) : null;
-
-                                    // Ensure monthsUsed is always positive
-                                    $monthsUsed = $purchaseDate ? $purchaseDate->diffInMonths(\Carbon\Carbon::now()) : 0;
-
-                                    // Convert to years (decimal, not rounded)
-                                    $yearsUsed = $monthsUsed / 12;
-
-                                    // Straight-line depreciation
-                                    $depreciationPerYear = $purchaseCost / $usefulLife;
-                                    $bookValue = max($purchaseCost - ($depreciationPerYear * $yearsUsed), 0);
-                                    @endphp
-
-                                    ₱{{ number_format($bookValue, 2) }}
-                                </p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">Book Value</p>
+                    <!-- Asset List -->
+                    <div class="divide-y divide-gray-200 dark:divide-gray-700">
+                        @if ($recentAssets->isNotEmpty())
+                        @foreach ($recentAssets as $asset)
+                        <div class="flex justify-between items-center py-4 border-b border-gray-200 dark:border-gray-700">
+                            <div>
+                                <p class="font-semibold text-gray-800 dark:text-gray-100">{{ $asset->asset_name ?? 'N/A' }}</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ $asset->category->name ?? 'No category' }}</p>
                             </div>
 
-                            <span class="px-3 py-1 rounded-full text-xs font-medium
+                            <div class="flex items-center space-x-3">
+                                <div class="text-right">
+                                    <p class="font-semibold text-gray-800 dark:text-gray-100">
+
+                                        @php
+
+
+                                        $purchaseCost = $asset->purchase_cost ?? 0;
+
+                                        $purchaseCost = $asset->purchase_cost ?? 0;
+                                        $usefulLife = $asset->useful_life ?? 1; // prevent divide by zero
+
+                                        // Parse the purchase date safely
+                                        $purchaseDate = $asset->purchase_date ? \Carbon\Carbon::parse($asset->purchase_date) : null;
+
+                                        // Ensure monthsUsed is always positive
+                                        $monthsUsed = $purchaseDate ? $purchaseDate->diffInMonths(\Carbon\Carbon::now()) : 0;
+
+                                        // Convert to years (decimal, not rounded)
+                                        $yearsUsed = $monthsUsed / 12;
+
+                                        // Straight-line depreciation
+                                        $depreciationPerYear = $purchaseCost / $usefulLife;
+                                        $bookValue = max($purchaseCost - ($depreciationPerYear * $yearsUsed), 0);
+                                        @endphp
+
+                                        ₱{{ number_format($bookValue, 2) }}
+                                    </p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Book Value</p>
+                                </div>
+
+                                <span class="px-3 py-1 rounded-full text-xs font-medium
                             @if ($asset->condition == 'Excellent')
                                 bg-green-100 text-green-700
                             @elseif ($asset->condition == 'Good')
@@ -175,22 +153,52 @@
                             @else
                                 bg-gray-100 text-gray-700
                             @endif">
-                                {{ $asset->condition ?? 'Unknown' }}
-                            </span>
+                                    {{ $asset->condition ?? 'Unknown' }}
+                                </span>
+                            </div>
                         </div>
+                        @endforeach
+                        @else
+                        <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+                            No recent asset
+                        </div>
+                        @endif
                     </div>
-                    @endforeach
-                    @else
-                    <div class="text-center py-8 text-gray-500 dark:text-gray-400">
-                        No recent asset
-                    </div>
-                    @endif
                 </div>
+
+
+
             </div>
+
+
+
 
 
 
 
         </div>
     </div>
+
+    <script>
+        var categories = @json($assetByCategory);
+
+        var labels = [];
+        var series = [];
+
+        categories.forEach(function(item) {
+            labels.push(item.category_name);
+            series.push(item.total);
+        });
+
+        var options = {
+            chart: {
+                type: 'pie'
+            },
+            series: series,
+            labels: labels
+        };
+
+        var chart = new ApexCharts(document.querySelector("#categoryPieChart"), options);
+        chart.render();
+    </script>
 </x-app-layout>

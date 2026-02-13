@@ -29,25 +29,12 @@ class DashboardController extends Controller
             ->take(3)
             ->get();
 
-        // Group assets by condition and count
-        $assetByCondition = Asset::select('condition', DB::raw('COUNT(*) as total'))
-            ->groupBy('condition')
-            ->orderByDesc('total')
-            ->get();
-
-
-        // Get the condition with the highest count
-        $highestCondition = $assetByCondition->first();
-
-
-        // Group assets by category and count
         $assetByCategory = Asset::join('categories', 'assets.category_id', '=', 'categories.id')
             ->select('categories.name as category_name', DB::raw('COUNT(*) as total'))
             ->groupBy('categories.name')
             ->orderByDesc('total')
             ->get();
 
-        $highestByCategory = $assetByCategory->first();
 
         // I-compile dito yung data
         $data = [
@@ -56,8 +43,7 @@ class DashboardController extends Controller
             'inStockAssets' => $inStockAssets,
             'criticalAsset' => $criticalAsset,
             'recentAssets' => $recentAssets,
-            'highestCondition' => $highestCondition,
-            'highestByCategory' => $highestByCategory
+            'assetByCategory' => $assetByCategory
         ];
 
         // dd($data);
