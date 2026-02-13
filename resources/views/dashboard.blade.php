@@ -84,9 +84,9 @@
 
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 w-full">
 
-                    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Asset by Category</h3>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4 dark:text-gray-100">Asset by Category</h3>
 
-                    <div id="categoryPieChart" style="max-width: 400px; margin: auto;"></div>
+                    <div id="categoryPieChart" style="max-width: 450px; margin: auto;"></div>
                 </div>
 
 
