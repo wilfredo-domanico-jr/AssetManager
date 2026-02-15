@@ -27,5 +27,6 @@ Thumbs.db
 
 front-end/node_modules
 front-end/dist
+front-end/.env
 front-end/dist-ssr
 front-end/*.local
