@@ -1,32 +1,55 @@
+# ======================
+# GLOBAL
+# ======================
 *.log
 .DS_Store
-.env
-.env.backup
-.env.production
+Thumbs.db
+.idea
+.vscode
 .phpactor.json
-.phpunit.result.cache
 /.fleet
-/.idea
-/.nova
-/.phpunit.cache
-/.vscode
 /.zed
 /auth.json
-/node_modules
-/public/build
-/public/hot
-/public/storage
-/storage/*.key
-/storage/pail
-/vendor
-Homestead.json
-Homestead.yaml
-Thumbs.db
 
-
-
+# ======================
+# FRONTEND (Vue)
+# ======================
 front-end/node_modules
 front-end/dist
 front-end/.env
 front-end/dist-ssr
 front-end/*.local
+
+# ======================
+# BACKEND (Laravel)
+# ======================
+back-end/vendor
+back-end/node_modules
+back-end/.env
+back-end/.env.*
+back-end/.env.backup
+back-end/.env.production
+back-end/storage/*.key
+back-end/storage/pail
+back-end/storage/logs
+back-end/storage/framework
+back-end/public/storage
+back-end/public/build
+back-end/public/hot
+back-end/.vscode
+back-end/.phpunit.cache
+back-end/.phpunit.result.cache
+back-end/.nova
+
+# ======================
+# HOMESTEAD / VAGRANT
+# ======================
+back-end/Homestead.json
+back-end/Homestead.yaml
+
+# ======================
+# CACHE & TEMP
+# ======================
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
