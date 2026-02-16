@@ -85,7 +85,7 @@ onMounted(() => {
 });
 
 async function submitLogin() {
-  errorMessage.value = "";
+  errorMessage.value = ""; 
   loading.value = true;
 
   try {

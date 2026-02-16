@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -27,6 +30,20 @@ class AuthController extends Controller
             'token' => $token
         ]);
     }
+    public function forgotPassword(Request $request)
+    {
+        $request->validate([
+            'email' => ['required', 'email'],
+        ]);
+
+
+        Password::sendResetLink($request->only('email'));
+
+        return response()->json([
+            'message' =>  'Password reset link has been sent to your email.'
+        ], 200);
+    }
+
 
     // Logout
     public function logout(Request $request)
