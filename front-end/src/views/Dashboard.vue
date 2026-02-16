@@ -1,157 +1,133 @@
 <template>
   <div class="py-8">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-      <!-- Dashboard Header and Add Button -->
+      <!-- Dashboard Header -->
       <SubHeader
         pageName="Dashboard"
         pageDescription="Overview of your asset inventory and depreciation"
       />
 
+      <!-- Stats Cards -->
       <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-5">
-        <!-- Card 1 -->
-        <div
-          class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 flex justify-between items-center hover:shadow-md transition"
-        >
-          <div>
-            <h3 class="text-sm text-gray-500 dark:text-gray-400">
-              Total Assets
-            </h3>
-            <p class="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-1">
-              1
-            </p>
-            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-              Registered Items
-            </p>
-          </div>
-          <div class="text-indigo-500">
-            <i class="fa-solid fa-box text-3xl"></i>
-          </div>
-        </div>
-
-        <!-- Card 2 -->
-        <div
-          class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 flex justify-between items-center hover:shadow-md transition"
-        >
-          <div>
-            <h3 class="text-sm text-gray-500 dark:text-gray-400">
-              Deployed Asset
-            </h3>
-            <p class="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-1">
-              2
-            </p>
-            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-              Active Deployment
-            </p>
-          </div>
-          <div class="text-green-500">
-            <i class="fa-solid fa-truck text-3xl"></i>
-          </div>
-        </div>
-
-        <!-- Card 3 -->
-        <div
-          class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 flex justify-between items-center hover:shadow-md transition"
-        >
-          <div>
-            <h3 class="text-sm text-gray-500 dark:text-gray-400">In stock</h3>
-            <p class="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-1">
-              3
-            </p>
-            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-              Available items in storage
-            </p>
-          </div>
-          <div class="text-yellow-500">
-            <i class="fa-solid fa-boxes-stacked text-3xl"></i>
-          </div>
-        </div>
-
-        <!-- Card 4 -->
-        <div
-          class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 flex justify-between items-center hover:shadow-md transition"
-        >
-          <div>
-            <h3 class="text-sm text-gray-500 dark:text-gray-400">
-              Critial Assets
-            </h3>
-            <p class="text-3xl font-bold text-gray-900 dark:text-gray-100 mt-1">
-              4
-            </p>
-            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-              Need Attention
-            </p>
-          </div>
-          <div class="text-red-500">
-            <i class="fa-solid fa-triangle-exclamation text-3xl"></i>
-          </div>
-        </div>
+        <DashboardCard
+          title="Total Assets"
+          :value="totalAssets"
+          subtitle="Registered Items"
+          icon="fa-box"
+          iconColor="text-indigo-500"
+        />
+        <DashboardCard
+          title="Deployed Asset"
+          :value="deployedAssets"
+          subtitle="Active Deployment"
+          icon="fa-truck"
+          iconColor="text-green-500"
+        />
+        <DashboardCard
+          title="In Stock"
+          :value="inStockAssets"
+          subtitle="Available items in storage"
+          icon="fa-boxes-stacked"
+          iconColor="text-yellow-500"
+        />
+        <DashboardCard
+          title="Critical Assets"
+          :value="criticalAsset"
+          subtitle="Need Attention"
+          icon="fa-triangle-exclamation"
+          iconColor="text-red-500"
+        />
       </div>
 
+      <!-- Charts & Recent Assets -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
+        <!-- Assets by Category Chart -->
         <div
           class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 w-full"
         >
           <h3
             class="text-lg font-semibold text-gray-800 mb-4 dark:text-gray-100"
           >
-            Asset by Category
+            Assets by Category
           </h3>
-
           <div
+            v-if="assetByCategory.length"
             id="categoryPieChart"
             style="max-width: 450px; margin: auto"
           ></div>
+          <p v-else class="text-center text-gray-500 dark:text-gray-400 py-6">
+            No asset category data
+          </p>
         </div>
 
+        <!-- Recent Assets -->
         <div
           class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 w-full"
         >
-          <!-- Header -->
           <div class="flex justify-between items-center mb-4">
             <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">
               Recent Assets
             </h3>
-
-            <a
-              href=""
+            <router-link
+              to="/assets"
               class="text-sm text-indigo-600 dark:text-indigo-400 hover:underline"
             >
               View All
-            </a>
+            </router-link>
           </div>
 
-          <!-- Asset List -->
-          <div class="divide-y divide-gray-200 dark:divide-gray-700">
+          <div
+            v-if="recentAssets.length"
+            class="divide-y divide-gray-200 dark:divide-gray-700"
+          >
             <div
+              v-for="asset in recentAssets"
+              :key="asset.id"
               class="flex justify-between items-center py-4 border-b border-gray-200 dark:border-gray-700"
             >
               <div>
                 <p class="font-semibold text-gray-800 dark:text-gray-100">
-                  Asset Name
+                  {{ asset.asset_name }}
                 </p>
-                <p class="text-sm text-gray-500 dark:text-gray-400">Category</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                  {{ asset.category?.name || "No Category" }}
+                </p>
               </div>
 
               <div class="flex items-center space-x-3">
                 <div class="text-right">
                   <p class="font-semibold text-gray-800 dark:text-gray-100">
-                    ₱2
+                    ₱{{ calculateBookValue(asset).toFixed(2) || 0 }}
                   </p>
                   <p class="text-xs text-gray-500 dark:text-gray-400">
                     Book Value
                   </p>
                 </div>
 
-                <span class="px-3 py-1 rounded-full text-xs font-medium">
-                  Condition
+                <span
+                  class="px-3 py-1 rounded-full text-xs font-medium"
+                  :class="{
+                    'bg-green-100 text-green-700':
+                      asset.condition === 'Excellent',
+                    'bg-blue-100 text-blue-700': asset.condition === 'Good',
+                    'bg-yellow-100 text-yellow-700':
+                      asset.condition === 'Needs Repair',
+                    'bg-gray-100 text-gray-700':
+                      !asset.condition ||
+                      ['Excellent', 'Good', 'Needs Repair'].indexOf(
+                        asset.condition,
+                      ) === -1,
+                  }"
+                >
+                  {{ asset.condition || "Unknown" }}
                 </span>
               </div>
             </div>
-
-            <div class="text-center py-8 text-gray-500 dark:text-gray-400">
-              No recent asset
-            </div>
           </div>
+
+          <p v-else class="text-center text-gray-500 dark:text-gray-400 py-8">
+            No recent asset
+          </p>
         </div>
       </div>
     </div>
@@ -160,7 +136,92 @@
 
 <script setup>
 import SubHeader from "../components/SubHeader.vue";
+import DashboardCard from "../components/DashboardCard.vue"; // Create this reusable card component
+import { ref, onMounted, nextTick } from "vue";
+import api from "../plugins/api";
 
+const totalAssets = ref(0);
+const deployedAssets = ref(0);
+const inStockAssets = ref(0);
+const criticalAsset = ref(0);
+const recentAssets = ref([]);
+const assetByCategory = ref([]);
+const errorMessage = ref("");
 
+let categoryChart = null;
 
+onMounted(async () => {
+  try {
+    const response = await api.get("/getDashboardData");
+    const data = response.data;
+
+    totalAssets.value = data.totalAssets || 0;
+    deployedAssets.value = data.deployedAssets || 0;
+    inStockAssets.value = data.inStockAssets || 0;
+    criticalAsset.value = data.criticalAsset || 0;
+    recentAssets.value = data.recentAssets || [];
+    assetByCategory.value = data.assetByCategory || [];
+
+    // Wait for DOM to update before rendering chart
+    await nextTick();
+    renderCategoryPieChart(assetByCategory.value);
+  } catch (error) {
+    errorMessage.value = "Unable to fetch dashboard data.";
+    console.error(error);
+  }
+});
+
+function calculateBookValue(asset) {
+  const purchaseCost = asset.purchase_cost ?? 0;
+  const usefulLife = asset.useful_life ?? 1; // prevent divide by zero
+  const purchaseDate = asset.purchase_date
+    ? new Date(asset.purchase_date)
+    : null;
+
+  if (!purchaseDate) return purchaseCost;
+
+  const now = new Date();
+
+  // Calculate total difference in months more accurately
+  let monthsUsed =
+    (now.getFullYear() - purchaseDate.getFullYear()) * 12 +
+    (now.getMonth() - purchaseDate.getMonth());
+
+  // Adjust for days in the month
+  if (now.getDate() < purchaseDate.getDate()) {
+    monthsUsed -= 1;
+  }
+
+  // Fractional years including leftover days
+  const daysInMonth = (date) =>
+    new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+
+  const leftoverDays = now.getDate() - purchaseDate.getDate();
+  const fractionalMonth = leftoverDays / daysInMonth(purchaseDate);
+
+  const yearsUsed = monthsUsed / 12 + fractionalMonth / 12;
+
+  const depreciationPerYear = purchaseCost / usefulLife;
+  const bookValue = Math.max(purchaseCost - depreciationPerYear * yearsUsed, 0);
+
+  return bookValue;
+}
+
+function renderCategoryPieChart(categories) {
+  const element = document.querySelector("#categoryPieChart");
+  if (!element || !categories.length) return;
+
+  const labels = categories.map((c) => c.category_name);
+  const series = categories.map((c) => c.total);
+
+  const options = {
+    chart: { type: "pie" },
+    series,
+    labels,
+  };
+
+  if (categoryChart) categoryChart.destroy();
+  categoryChart = new ApexCharts(element, options);
+  categoryChart.render();
+}
 </script>
