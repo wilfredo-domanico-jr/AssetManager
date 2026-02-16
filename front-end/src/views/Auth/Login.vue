@@ -55,7 +55,7 @@
       </router-link>
 
       <PrimaryButton type="submit" :disabled="loading" class="ms-3">
-        {{ loading ? "Logging in..." : "Login" }}
+        {{ loading ? "Logging in..." : "Log in" }}
       </PrimaryButton>
     </div>
   </form>

@@ -75,7 +75,6 @@ async function submitResetPassword() {
   loading.value = true;
 
   try {
-    console.log(token);
     const response = await api.post("/reset-password", {
       token: token.value,
       email: email.value,
