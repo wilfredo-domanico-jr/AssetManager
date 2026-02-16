@@ -45,6 +45,34 @@ class AuthController extends Controller
     }
 
 
+    public function resetPassword(Request $request)
+    {
+
+   
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|confirmed|min:8',
+        ]);
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) {
+                $user->password = bcrypt($password);
+                $user->save();
+            }
+        );
+
+        
+
+        if ($status == Password::PASSWORD_RESET) {
+            return response()->json(['message' => 'Password has been reset successfully.']);
+        }
+
+        return response()->json(['message' => 'Invalid token or email.'], 400);
+    }
+
+
     // Logout
     public function logout(Request $request)
     {

@@ -141,9 +141,16 @@
 <script setup>
 import { useAuthStore } from "./store/auth";
 import { useRouter } from "vue-router";
+import { onMounted } from "vue";
 
 const auth = useAuthStore();
 const router = useRouter();
+
+onMounted(() => {
+  if (!auth.isLoggedIn) {
+    router.replace("/login"); // redirect to login if unauthenticated
+  }
+});
 
 function handleLogout() {
   auth.logout();

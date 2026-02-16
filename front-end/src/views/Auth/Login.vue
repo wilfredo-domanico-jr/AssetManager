@@ -85,24 +85,16 @@ onMounted(() => {
 });
 
 async function submitLogin() {
-  errorMessage.value = ""; 
+  errorMessage.value = "";
   loading.value = true;
 
   try {
-    console.log("Eto Email:", email.value);
-    const response = await api.post("/login", {
+    await auth.login({
       email: email.value,
       password: password.value,
     });
 
-    console.log("Eto Response:", response.data);
     router.push("/");
-
-    const token = response.data.token;
-
-    localStorage.setItem("token", token);
-
-    console.log("Login success", response.data.user);
   } catch (error) {
     errorMessage.value = error.response?.data?.message || "Login failed";
   } finally {
