@@ -22,7 +22,7 @@ export default {
   name: "DashboardCard",
   props: {
     title: { type: String, required: true },
-    value: { type: [Number, String], default: 0 },
+    value: { type: Number, default: 0 },
     subtitle: { type: String, default: "" },
     icon: { type: String, default: "fa-box" },
     iconColor: { type: String, default: "text-indigo-500" },

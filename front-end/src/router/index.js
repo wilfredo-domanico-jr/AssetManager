@@ -1,11 +1,20 @@
+// === IMPORTS ===
 import { createRouter, createWebHistory } from "vue-router";
 
+// === LAYOUTS ===
 import DefaultLayout from "../DefaultLayout.vue";
 import AuthenticationLayout from "../AuthenticationLayout.vue";
-import Dashboard from "../views/Dashboard.vue";
+
+// === AUTHENTICATION ===
 import Login from "../views/Auth/Login.vue";
 import ForgotPassword from "../views/Auth/ForgotPassword.vue";
 import ResetPassword from "../views/Auth/ResetPassword.vue";
+
+// === DASHBOARD ===
+import DashboardIndex from "../views/Dashboard/Index.vue";
+
+// === ASSETS ===
+import AssetsIndex from "../views/Assets/Index.vue";
 
 const routes = [
   {
@@ -15,7 +24,12 @@ const routes = [
       {
         path: "",
         name: "Dashboard",
-        component: Dashboard,
+        component: DashboardIndex,
+      },
+      {
+        path: "assets",
+        name: "Assets",
+        component: AssetsIndex,
       },
     ],
   },

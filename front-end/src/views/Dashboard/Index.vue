@@ -10,32 +10,13 @@
       <!-- Stats Cards -->
       <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-5">
         <DashboardCard
-          title="Total Assets"
-          :value="totalAssets"
-          subtitle="Registered Items"
-          icon="fa-box"
-          iconColor="text-indigo-500"
-        />
-        <DashboardCard
-          title="Deployed Asset"
-          :value="deployedAssets"
-          subtitle="Active Deployment"
-          icon="fa-truck"
-          iconColor="text-green-500"
-        />
-        <DashboardCard
-          title="In Stock"
-          :value="inStockAssets"
-          subtitle="Available items in storage"
-          icon="fa-boxes-stacked"
-          iconColor="text-yellow-500"
-        />
-        <DashboardCard
-          title="Critical Assets"
-          :value="criticalAsset"
-          subtitle="Need Attention"
-          icon="fa-triangle-exclamation"
-          iconColor="text-red-500"
+          v-for="(stat, index) in dashboardStats"
+          :key="index"
+          :title="stat.title"
+          :value="stat.value"
+          :subtitle="stat.subtitle"
+          :icon="stat.icon"
+          :iconColor="stat.iconColor"
         />
       </div>
 
@@ -135,10 +116,10 @@
 </template>
 
 <script setup>
-import SubHeader from "../components/SubHeader.vue";
-import DashboardCard from "../components/DashboardCard.vue"; // Create this reusable card component
-import { ref, onMounted, nextTick } from "vue";
-import api from "../plugins/api";
+import SubHeader from "../../components/SubHeader.vue";
+import DashboardCard from "./components/DashboardCard.vue";
+import { ref, onMounted, nextTick, computed } from "vue";
+import api from "../../plugins/api";
 
 const totalAssets = ref(0);
 const deployedAssets = ref(0);
@@ -170,6 +151,37 @@ onMounted(async () => {
     console.error(error);
   }
 });
+
+const dashboardStats = computed(() => [
+  {
+    title: "Total Assets",
+    value: totalAssets.value,
+    subtitle: "Registered Items",
+    icon: "fa-box",
+    iconColor: "text-indigo-500",
+  },
+  {
+    title: "Deployed Asset",
+    value: deployedAssets.value,
+    subtitle: "Active Deployment",
+    icon: "fa-truck",
+    iconColor: "text-green-500",
+  },
+  {
+    title: "In Stock",
+    value: inStockAssets.value,
+    subtitle: "Available items in storage",
+    icon: "fa-boxes-stacked",
+    iconColor: "text-yellow-500",
+  },
+  {
+    title: "Critical Assets",
+    value: criticalAsset.value,
+    subtitle: "Need Attention",
+    icon: "fa-triangle-exclamation",
+    iconColor: "text-red-500",
+  },
+]);
 
 function calculateBookValue(asset) {
   const purchaseCost = asset.purchase_cost ?? 0;

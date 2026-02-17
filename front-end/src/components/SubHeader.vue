@@ -10,6 +10,10 @@
         {{ pageDescription }}
       </p>
     </div>
+
+    <div v-if="$slots.actionLink" class="mt-4 sm:mt-0">
+      <slot name="actionLink" />
+    </div>
   </div>
 </template>
 

@@ -27,7 +27,7 @@
           <SidebarLink
             icon="fa-boxes-stacked"
             label="Assets"
-            route-name="ForgotPassword"
+            route-name="Assets"
           />
           <SidebarLink
             icon="fa-file-lines"
