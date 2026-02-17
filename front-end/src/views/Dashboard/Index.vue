@@ -133,7 +133,7 @@ let categoryChart = null;
 
 onMounted(async () => {
   try {
-    const response = await api.get("/getDashboardData");
+    const response = await api.get("/dashboard");
     const data = response.data;
 
     totalAssets.value = data.totalAssets || 0;

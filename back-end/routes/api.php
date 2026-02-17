@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AssetsController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\DashboardController;
 use Illuminate\Http\Request;
@@ -21,5 +22,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     // FOR DASHBOARD
-    Route::get('/getDashboardData', [DashboardController::class, 'getDashboardData']);
+    Route::get('/dashboard', [DashboardController::class, 'index']);
+
+
+    // FOR ASSETS
+    Route::get('/assets', [AssetsController::class, 'index']);
 });

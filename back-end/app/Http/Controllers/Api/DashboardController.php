@@ -9,10 +9,9 @@ use Illuminate\Support\Facades\DB;
 class DashboardController extends Controller
 {
 
-    public function getDashboardData()
+    public function index()
     {
 
-        // Bilangin lahat ng asset na nacreate.
         $totalAssets = Asset::count();
         $deployedAssets = Asset::whereIsDeployed(true)->count();
 
@@ -22,9 +21,6 @@ class DashboardController extends Controller
             ->whereNotNull('useful_life')
             ->whereRaw("DATE_ADD(purchase_date, INTERVAL useful_life YEAR) <= DATE_ADD(CURDATE(), INTERVAL 3 MONTH)")
             ->count();
-
-
-        // Get the top 3 recent assets
 
         $recentAssets = Asset::with('category')
             ->orderBy('created_at', 'desc')
@@ -37,8 +33,6 @@ class DashboardController extends Controller
             ->orderByDesc('total')
             ->get();
 
-
-        // I-compile dito yung data
         $data = [
             'totalAssets' => $totalAssets,
             'deployedAssets' => $deployedAssets,
