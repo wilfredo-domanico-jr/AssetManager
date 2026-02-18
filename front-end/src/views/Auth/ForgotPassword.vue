@@ -5,7 +5,6 @@
     one.
   </div>
 
-  <!-- Alert message for success or error -->
   <AlertMessage :message="alert.message" :type="alert.type" />
 
   <form @submit.prevent="submitForgotPassword">

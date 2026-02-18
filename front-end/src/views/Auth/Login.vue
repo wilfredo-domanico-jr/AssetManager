@@ -1,10 +1,5 @@
 <template>
-  <div
-    v-if="errorMessage"
-    class="mb-4 text-center text-sm font-medium text-red-700 bg-red-100 dark:bg-red-900 dark:text-red-300 px-4 py-2 rounded"
-  >
-    {{ errorMessage }}
-  </div>
+  <AlertMessage v-if="errorMessage" type="error" :message="errorMessage" />
 
   <form @submit.prevent="submitLogin">
     <!-- Email -->
@@ -63,12 +58,12 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import api from "../../plugins/api";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../../store/auth";
 import InputLabel from "../../components/InputLabel.vue";
 import TextInput from "../../components/TextInput.vue";
 import PrimaryButton from "../../components/PrimaryButton.vue";
+import AlertMessage from "../../components/AlertMessage.vue";
 
 const auth = useAuthStore();
 const router = useRouter();

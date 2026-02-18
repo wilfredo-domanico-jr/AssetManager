@@ -16,6 +16,13 @@
         </template>
       </SubHeader>
 
+      <AlertMessage
+        v-if="errorMessage"
+        type="error"
+        :message="errorMessage"
+        :dismissible="false"
+      />
+
       <SearchFilter
         :categories="categories"
         :departments="departments"
@@ -52,10 +59,12 @@ import SubHeader from "../../components/SubHeader.vue";
 import SearchFilter from "./components/SearchFilter.vue";
 import EmptyState from "./components/EmptyState.vue";
 import Pagination from "../../components/Pagination.vue";
+import AlertMessage from "../../components/AlertMessage.vue";
 
 const assets = ref({});
 const categories = ref([]);
 const departments = ref([]);
+const errorMessage = ref("");
 
 const pagination = ref({
   current_page: 1,
@@ -85,6 +94,7 @@ const fetchAssets = async (page = 1) => {
       links: data.assets.links,
     };
   } catch (err) {
+    errorMessage.value = "Unable to fetch assets data.";
     console.error("Error fetching assets:", err);
   }
 };

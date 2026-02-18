@@ -7,6 +7,13 @@
         pageDescription="Overview of your asset inventory and depreciation"
       />
 
+      <AlertMessage
+        v-if="errorMessage"
+        type="error"
+        :message="errorMessage"
+        :dismissible="false"
+      />
+
       <!-- Stats Cards -->
       <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-5">
         <DashboardCard
@@ -118,6 +125,7 @@
 <script setup>
 import SubHeader from "../../components/SubHeader.vue";
 import DashboardCard from "./components/DashboardCard.vue";
+import AlertMessage from "../../components/AlertMessage.vue";
 import { ref, onMounted, nextTick, computed } from "vue";
 import api from "../../plugins/api";
 
