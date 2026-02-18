@@ -49,7 +49,7 @@
         >Forgot your password?
       </router-link>
 
-      <PrimaryButton type="submit" :disabled="loading" class="ms-3">
+      <PrimaryButton type="submit" :disabled="loading" class="ms-3 uppercase">
         {{ loading ? "Logging in..." : "Log in" }}
       </PrimaryButton>
     </div>

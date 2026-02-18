@@ -189,7 +189,6 @@ import DropdownInput from "../../components/DropdownInput.vue";
 import TextAreaInput from "../../components/TextAreaInput.vue";
 import ImageInput from "../../components/ImageInput.vue";
 import PrimaryButton from "../../components/PrimaryButton.vue";
-import SecondaryButton from "../../components/SecondaryButton.vue";
 
 // Form fields
 const assetName = ref("");

@@ -20,7 +20,7 @@
     </div>
 
     <div class="flex items-center justify-end mt-4">
-      <PrimaryButton type="submit" class="ms-3" :disabled="loading">
+      <PrimaryButton type="submit" class="ms-3 uppercase" :disabled="loading">
         {{ loading ? "Sending..." : "Email Password Reset Link" }}
       </PrimaryButton>
     </div>

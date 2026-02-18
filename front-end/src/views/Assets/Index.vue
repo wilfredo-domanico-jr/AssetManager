@@ -6,13 +6,18 @@
         pageDescription="Manage your inventory and equipment"
       >
         <template #actionLink>
-          <router-link
+          <!-- <router-link
             to="/assets/create"
             class="inline-flex items-center px-4 py-2 bg-gray-800 hover:bg-gray-900 text-white text-sm font-medium rounded-lg shadow-sm transition text-white hover:bg-gray-800 dark:bg-indigo-600"
           >
             <i class="fa-solid fa-plus mr-2"></i>
             Add Asset
-          </router-link>
+          </router-link> -->
+
+          <PrimaryLink to="/assets/create">
+            <i class="fa-solid fa-plus mr-2"></i>
+            Add Assets
+          </PrimaryLink>
         </template>
       </SubHeader>
 
@@ -60,6 +65,7 @@ import SearchFilter from "./components/SearchFilter.vue";
 import EmptyState from "./components/EmptyState.vue";
 import Pagination from "../../components/Pagination.vue";
 import AlertMessage from "../../components/AlertMessage.vue";
+import PrimaryLink from "../../components/PrimaryLink.vue";
 
 const assets = ref({});
 const categories = ref([]);
