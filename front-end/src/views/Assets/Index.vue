@@ -8,7 +8,7 @@
         <template #actionLink>
           <router-link
             to="/assets/create"
-            class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg shadow-sm transition"
+            class="inline-flex items-center px-4 py-2 bg-gray-800 hover:bg-gray-900 text-white text-sm font-medium rounded-lg shadow-sm transition text-white hover:bg-gray-800 dark:bg-indigo-600"
           >
             <i class="fa-solid fa-plus mr-2"></i>
             Add Asset
@@ -78,6 +78,7 @@ const pagination = ref({
 
 const fetchAssets = async (page = 1) => {
   try {
+    errorMessage.value = "";
     const response = await api.get("/assets", { params: { page } });
     const data = response.data;
 
@@ -102,6 +103,7 @@ const fetchAssets = async (page = 1) => {
 onMounted(() => fetchAssets());
 const applyFilter = async (filters) => {
   try {
+    errorMessage.value = "";
     const params = { ...filters };
     const response = await api.get("/assets", { params });
     const data = response.data;
@@ -119,6 +121,7 @@ const applyFilter = async (filters) => {
       links: data.assets.links,
     };
   } catch (err) {
+    errorMessage.value = "Unable to fetch assets data.";
     console.error("Failed to fetch filtered assets:", err);
   }
 };

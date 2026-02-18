@@ -7,14 +7,14 @@
       <button
         @click="changePage(pagination.current_page - 1)"
         :disabled="pagination.current_page === 1"
-        class="relative inline-flex items-center rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-gray-200 hover:bg-white/10 disabled:opacity-50"
+        class="relative inline-flex items-center rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white dark:text-white"
       >
         Previous
       </button>
       <button
         @click="changePage(pagination.current_page + 1)"
         :disabled="pagination.current_page === pagination.last_page"
-        class="relative ml-3 inline-flex items-center rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-gray-200 hover:bg-white/10 disabled:opacity-50"
+        class="relative ml-3 inline-flex items-center rounded-md border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white dark:text-white"
       >
         Next
       </button>
@@ -34,9 +34,8 @@
         <button
           @click="changePage(pagination.current_page - 1)"
           :disabled="pagination.current_page === 1"
-          class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-700 hover:bg-white/5 disabled:opacity-50"
+          class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-700 hover:bg-gray-800 hover:text-white dark:text-white"
         >
-          <span class="sr-only">Previous</span>
           <ChevronLeftIcon class="w-5 h-5" aria-hidden="true" />
         </button>
 
@@ -52,9 +51,8 @@
         <button
           @click="changePage(pagination.current_page + 1)"
           :disabled="pagination.current_page === pagination.last_page"
-          class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-700 hover:bg-white/5 disabled:opacity-50"
+          class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-700 hover:bg-gray-800 hover:text-white dark:text-white"
         >
-          <span class="sr-only">Next</span>
           <ChevronRightIcon class="w-5 h-5" aria-hidden="true" />
         </button>
       </nav>
@@ -94,8 +92,8 @@ const pages = computed(() => {
 // Dynamic classes for current page
 const pageClass = (page) => {
   return page === props.pagination.current_page
-    ? "relative z-10 inline-flex items-center bg-indigo-500 px-4 py-2 text-sm font-semibold text-white"
-    : "relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-200 ring-1 ring-inset ring-gray-700 hover:bg-white/5";
+    ? "relative z-10 inline-flex items-center bg-gray-800 px-4 py-2 text-sm font-semibold text-white dark:bg-indigo-600"
+    : "relative inline-flex items-center px-4 py-2 text-sm font-semibold text-black ring-1 ring-inset ring-gray-700 hover:bg-gray-800 hover:text-white dark:text-white";
 };
 
 const changePage = (page) => {

@@ -22,9 +22,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     // FOR DASHBOARD
-    Route::get('/dashboard', [DashboardController::class, 'index']);
-
+    Route::resource('dashboard', DashboardController::class);
 
     // FOR ASSETS
-    Route::get('/assets', [AssetsController::class, 'index']);
+    Route::resource('assets', AssetsController::class);
 });

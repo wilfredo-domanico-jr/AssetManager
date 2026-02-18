@@ -64,4 +64,16 @@ class AssetsController extends Controller
             ]
         ]);
     }
+
+
+    public function create()
+    {
+        $categories = Category::all();
+        $departments = Department::all();
+
+        return response()->json([
+            'categories' => $categories,
+            'departments' => $departments
+        ]);
+    }
 }

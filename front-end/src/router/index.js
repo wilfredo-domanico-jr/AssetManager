@@ -15,6 +15,7 @@ import DashboardIndex from "../views/Dashboard/Index.vue";
 
 // === ASSETS ===
 import AssetsIndex from "../views/Assets/Index.vue";
+import AssetsCreate from "../views/Assets/Create.vue";
 
 const routes = [
   {
@@ -30,6 +31,11 @@ const routes = [
         path: "assets",
         name: "Assets",
         component: AssetsIndex,
+      },
+      {
+        path: "assets/create",
+        name: "AssetsCreate",
+        component: AssetsCreate,
       },
     ],
   },
