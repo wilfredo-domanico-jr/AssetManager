@@ -106,14 +106,17 @@ const submitCategory = async () => {
     errorMessage.value = "";
     successMessage.value = "";
 
-    const formData = new FormData();
-    formData.append("name", name.value);
-    formData.append("description", description.value);
-
     // Make PUT request
-    await api.post(`/categories/${categoryId}`, formData, {
-      params: { _method: "PUT" },
-    });
+    await api.post(
+      `/categories/${categoryId}`,
+      {
+        name: name.value,
+        description: description.value,
+      },
+      {
+        params: { _method: "PUT" },
+      },
+    );
 
     successMessage.value = "Category updated successfully!";
   } catch (err) {

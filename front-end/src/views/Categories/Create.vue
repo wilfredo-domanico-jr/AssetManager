@@ -91,18 +91,10 @@ const submitCategory = async () => {
     errorMessage.value = "";
     successMessage.value = "";
 
-    const formData = new FormData();
-    const fields = ["name", "description"];
-
-    fields.forEach((field) => {
-      const valueMap = {
-        name: name.value,
-        description: description.value || "",
-      };
-      formData.append(field, valueMap[field]);
+    const response = await api.post("/categories", {
+      name: name.value,
+      description: name.value,
     });
-
-    const response = await api.post("/categories", formData);
 
     successMessage.value = response.data.message;
 
