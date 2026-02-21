@@ -56,7 +56,7 @@ import { ref, onMounted } from "vue";
 import api from "../../plugins/api";
 import SubHeader from "../../components/SubHeader.vue";
 import SearchFilter from "./components/SearchFilter.vue";
-import EmptyState from "./components/EmptyState.vue";
+import EmptyState from "../../components/EmptyState.vue";
 import Pagination from "../../components/Pagination.vue";
 import AlertMessage from "../../components/AlertMessage.vue";
 import PrimaryLink from "../../components/PrimaryLink.vue";
