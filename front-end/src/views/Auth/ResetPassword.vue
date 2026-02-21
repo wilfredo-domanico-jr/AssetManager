@@ -88,7 +88,7 @@ async function submitResetPassword() {
     };
     // Redirect to login after successful reset
     setTimeout(() => {
-      router.push("/login");
+      router.push("/auth/login");
     }, 1000);
   } catch (error) {
     alert.value = {

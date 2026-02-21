@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AssetController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\DepartmentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,7 +28,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // FOR ASSETS
     Route::resource('assets', AssetController::class);
-    // FOR CATEGOEIS
+    // FOR CATEGORIES
     Route::resource('categories', CategoryController::class);
-    
+    // FOR DEPARTMENTS
+    Route::resource('departments', DepartmentController::class);
 });

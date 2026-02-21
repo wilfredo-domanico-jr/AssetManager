@@ -23,6 +23,11 @@ import CategoriesIndex from "../views/Categories/Index.vue";
 import CategoriesCreate from "../views/Categories/Create.vue";
 import CategoriesEdit from "../views/Categories/Edit.vue";
 
+// === DEPARTMENTS ===
+import DepartmentsIndex from "../views/Departments/Index.vue";
+// import CategoriesCreate from "../views/Categories/Create.vue";
+// import CategoriesEdit from "../views/Categories/Edit.vue";
+
 const routes = [
   {
     path: "/",
@@ -63,13 +68,19 @@ const routes = [
         path: "categories/:id/edit",
         name: "CategoriesEdit",
         component: CategoriesEdit,
+        props: true,
+      },
+      {
+        path: "departments",
+        name: "Departments",
+        component: DepartmentsIndex,
       },
     ],
   },
 
   // Authentication routes
   {
-    path: "/",
+    path: "/auth",
     component: AuthenticationLayout,
     children: [
       {

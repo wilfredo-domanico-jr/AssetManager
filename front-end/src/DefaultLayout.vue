@@ -50,7 +50,7 @@
           <SidebarLink
             icon="fa-building"
             label="Departments"
-            route-name="ForgotPassword"
+            route-name="Departments"
           />
           <SidebarLink
             icon="fa-users"
@@ -106,12 +106,12 @@ const router = useRouter();
 
 onMounted(() => {
   if (!auth.isLoggedIn) {
-    router.replace("/login");
+    router.replace("/auth/login");
   }
 });
 
 function handleLogout() {
   auth.logout();
-  router.push("/login");
+  router.push("/auth/login");
 }
 </script>
