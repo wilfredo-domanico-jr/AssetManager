@@ -25,8 +25,8 @@ import CategoriesEdit from "../views/Categories/Edit.vue";
 
 // === DEPARTMENTS ===
 import DepartmentsIndex from "../views/Departments/Index.vue";
-// import CategoriesCreate from "../views/Categories/Create.vue";
-// import CategoriesEdit from "../views/Categories/Edit.vue";
+import DepartmentsCreate from "../views/Departments/Create.vue";
+import DepartmentsEdit from "../views/Departments/Edit.vue";
 
 const routes = [
   {
@@ -74,6 +74,17 @@ const routes = [
         path: "departments",
         name: "Departments",
         component: DepartmentsIndex,
+      },
+      {
+        path: "departments/create",
+        name: "DepartmentsCreate",
+        component: DepartmentsCreate,
+      },
+      {
+        path: "departments/:id/edit",
+        name: "DepartmentsEdit",
+        component: DepartmentsEdit,
+        props: true,
       },
     ],
   },

@@ -5,18 +5,18 @@
     <div class="flex justify-between items-start mb-4">
       <div>
         <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">
-          {{ category.name }}
+          {{ department.name }}
         </h3>
         <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-          {{ category.description || "No Description" }}
+          {{ department.description || "No Description" }}
         </p>
       </div>
       <div class="flex space-x-3 text-gray-500 dark:text-gray-300">
-        <router-link :to="`/categories/${category.id}/edit`">
+        <router-link :to="`/departments/${department.id}/edit`">
           <i class="fa-solid fa-pen hover:text-blue-500 cursor-pointer"></i>
         </router-link>
 
-        <button @click="$emit('delete', category.id)">
+        <button @click="$emit('delete', department.id)">
           <i class="fa-solid fa-trash hover:text-red-500 cursor-pointer"></i>
         </button>
       </div>
@@ -31,15 +31,15 @@
 import { computed } from "vue";
 
 const props = defineProps({
-  category: {
+  department: {
     type: Object,
     required: true,
   },
 });
 
 const formattedDate = computed(() => {
-  if (!props.category.created_at) return "";
-  const date = new Date(props.category.created_at);
+  if (!props.department.created_at) return "";
+  const date = new Date(props.department.created_at);
   return date.toLocaleDateString(undefined, {
     year: "numeric",
     month: "short",

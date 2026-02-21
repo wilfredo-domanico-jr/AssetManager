@@ -24,50 +24,49 @@ class DepartmentController extends Controller
 
 
 
-    // public function edit(Category $category)
-    // {
-    //     return response()->json(['category' => $category], 200);
-    // }
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
 
-    // public function store(Request $request)
-    // {
-    //     $request->validate([
-    //         'name' => 'required|string|max:255',
-    //         'description' => 'nullable|string',
-    //     ]);
+        Department::create($request->only('name', 'description'));
 
-    //     Category::create($request->only('name', 'description'));
+        return response()->json([
+            'message' => 'Department added successfully!'
+        ], 201);
+    }
 
-    //     return response()->json([
-    //         'message' => 'Category added successfully!'
-    //     ], 201);
-    // }
-
-
-
-    // public function update(Request $request, Category $category)
-    // {
-    //     $request->validate([
-    //         'name' => 'required|string|max:255',
-    //         'description' => 'nullable|string',
-    //     ]);
-
-    //     $category->update($request->only('name', 'description'));
+    public function edit(Department $department)
+    {
+        return response()->json(['department' => $department], 200);
+    }
 
 
-    //     return response()->json([
-    //         'message' => 'Category updated successfully!',
-    //         'category' => $category
-    //     ], 200);
-    // }
+    public function update(Request $request, Department $department)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        $department->update($request->only('name', 'description'));
+
+
+        return response()->json([
+            'message' => 'Department updated successfully!',
+            'department' => $department
+        ], 200);
+    }
 
 
 
-    // public function destroy(Category $category)
-    // {
-    //     $category->delete();
-    //     return response()->json([
-    //         'message' => 'Category deleted successfully!'
-    //     ]);
-    // }
+    public function destroy(Department $department)
+    {
+        $department->delete();
+        return response()->json([
+            'message' => 'Department deleted successfully!'
+        ]);
+    }
 }

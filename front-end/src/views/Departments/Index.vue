@@ -2,13 +2,13 @@
   <div class="py-8">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
       <SubHeader
-        pageName="Categories"
-        pageDescription="Manage asset categories"
+        pageName="Departments"
+        pageDescription="Manage asset departments"
       >
         <template #actionLink>
-          <PrimaryLink to="/categories/create">
+          <PrimaryLink to="/departments/create">
             <i class="fa-solid fa-plus mr-2"></i>
-            Add Category
+            Add Department
           </PrimaryLink>
         </template>
       </SubHeader>
@@ -32,16 +32,16 @@
       <div
         class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm p-4 space-y-4"
       >
-        <CategoryCard
-          v-for="category in categories"
-          :key="category.id"
-          :category="category"
+        <DepartmentCard
+          v-for="department in departments"
+          :key="department.id"
+          :department="department"
           @delete="handleDelete"
         />
 
         <EmptyState
-          v-if="categories.length === 0"
-          message="No category found."
+          v-if="departments.length === 0"
+          message="No department found."
           icon-class="fa-solid fa-folder-open"
         />
 
@@ -60,9 +60,9 @@ import EmptyState from "../../components/EmptyState.vue";
 import Pagination from "../../components/Pagination.vue";
 import AlertMessage from "../../components/AlertMessage.vue";
 import PrimaryLink from "../../components/PrimaryLink.vue";
-import CategoryCard from "./components/CategoryCard.vue";
+import DepartmentCard from "./components/DepartmentCard.vue";
 
-const categories = ref({});
+const departments = ref({});
 
 const errorMessage = ref("");
 const successMessage = ref("");
@@ -77,77 +77,77 @@ const pagination = ref({
   links: [],
 });
 
-const fetchCategories = async (page = 1) => {
+const fetchDepartments = async (page = 1) => {
   try {
     errorMessage.value = "";
-    const response = await api.get("/categories", { params: { page } });
+    const response = await api.get("/departments", { params: { page } });
     const data = response.data;
 
-    categories.value = data.categories.data;
+    departments.value = data.departments.data;
 
     pagination.value = {
-      current_page: data.categories.current_page,
-      per_page: data.categories.per_page,
-      total: data.categories.total,
-      from: data.categories.from,
-      to: data.categories.to,
-      last_page: data.categories.last_page,
-      links: data.categories.links,
+      current_page: data.departments.current_page,
+      per_page: data.departments.per_page,
+      total: data.departments.total,
+      from: data.departments.from,
+      to: data.departments.to,
+      last_page: data.departments.last_page,
+      links: data.departments.links,
     };
   } catch (err) {
-    errorMessage.value = "Unable to fetch categories data.";
-    console.error("Error fetching categories:", err);
+    errorMessage.value = "Unable to fetch departments data.";
+    console.error("Error fetching departments:", err);
   }
 };
 
-onMounted(() => fetchCategories());
+onMounted(() => fetchDepartments());
 const applyFilter = async (filters) => {
   try {
     errorMessage.value = "";
     const params = { ...filters };
-    const response = await api.get("/categories", { params });
+    const response = await api.get("/departments", { params });
     const data = response.data;
 
-    categories.value = data.categories.data;
+    departments.value = data.departments.data;
 
     pagination.value = {
-      current_page: data.categories.current_page,
-      per_page: data.categories.per_page,
-      total: data.categories.total,
-      from: data.categories.from,
-      to: data.categories.to,
-      last_page: data.categories.last_page,
-      links: data.categories.links,
+      current_page: data.departments.current_page,
+      per_page: data.departments.per_page,
+      total: data.departments.total,
+      from: data.departments.from,
+      to: data.departments.to,
+      last_page: data.departments.last_page,
+      links: data.departments.links,
     };
   } catch (err) {
-    errorMessage.value = "Unable to fetch categories data.";
-    console.error("Failed to fetch filtered categories:", err);
+    errorMessage.value = "Unable to fetch departments data.";
+    console.error("Failed to fetch filtered departments:", err);
   }
 };
 
 const handleDelete = async (id) => {
-  if (!confirm("Are you sure you want to delete this category?")) return;
+  if (!confirm("Are you sure you want to delete this department?")) return;
   try {
     successMessage.value = "";
     errorMessage.value = "";
-    const response = await api.delete(`/categories/${id}`);
+    const response = await api.delete(`/departments/${id}`);
 
-    await fetchCategories(pagination.value.current_page);
+    await fetchDepartments(pagination.value.current_page);
 
     successMessage.value = response.data.message;
 
     // Refetch the current page so pagination stays correct
-    await fetchCategories(pagination.value.current_page);
+    await fetchDepartments(pagination.value.current_page);
 
     // Auto-hide success message after 3 seconds
     setTimeout(() => {
       successMessage.value = "";
     }, 3000);
   } catch (err) {
-    errorMessage.value = "Failed to delete category";
-    console.error("Failed to delete category:", err);
+    errorMessage.value = "Failed to delete department";
+    console.error("Failed to delete department:", err);
   }
 };
 
-const fetchPage = (page) => fetchCategories(page);
+const fetchPage = (page) => fetchDepartments(page);
 </script>
