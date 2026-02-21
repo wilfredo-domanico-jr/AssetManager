@@ -33,7 +33,7 @@
       </div>
 
       <div class="flex space-x-3 text-gray-500 dark:text-gray-300">
-        <router-link :to="`/assets/edit/${asset.id}`">
+        <router-link :to="`/assets/${asset.id}/edit`">
           <i class="fa-solid fa-pen hover:text-blue-500 cursor-pointer"></i>
         </router-link>
 

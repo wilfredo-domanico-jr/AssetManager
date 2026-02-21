@@ -76,4 +76,46 @@ class AssetsController extends Controller
             'departments' => $departments
         ]);
     }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'asset_name' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'department_id' => 'required|exists:departments,id',
+            'purchase_date' => 'required|date',
+            'purchase_cost' => 'required|numeric',
+            'useful_life' => 'required|integer|min:1',
+            'supplier' => 'required|string|max:255',
+            'condition' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('assets', 'public');
+        }
+
+        $asset = Asset::create($validated);
+
+        return response()->json([
+            'message' => 'Asset added successfully!',
+            'asset' => $asset
+        ], 201);
+    }
+
+
+    public function edit(Asset $asset)
+    {
+        // Add full URL for the image if it exists
+        $asset->image = $asset->image
+            ? asset('storage/' . $asset->image)
+            : null;
+
+        return response()->json([
+            'asset' => $asset,
+            'categories' => Category::all(),
+            'departments' => Department::all(),
+        ]);
+    }
 }

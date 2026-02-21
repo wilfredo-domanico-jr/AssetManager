@@ -6,17 +6,9 @@
         pageDescription="Manage your inventory and equipment"
       >
         <template #actionLink>
-          <!-- <router-link
-            to="/assets/create"
-            class="inline-flex items-center px-4 py-2 bg-gray-800 hover:bg-gray-900 text-white text-sm font-medium rounded-lg shadow-sm transition text-white hover:bg-gray-800 dark:bg-indigo-600"
-          >
-            <i class="fa-solid fa-plus mr-2"></i>
-            Add Asset
-          </router-link> -->
-
           <PrimaryLink to="/assets/create">
             <i class="fa-solid fa-plus mr-2"></i>
-            Add Assets
+            Add Asset
           </PrimaryLink>
         </template>
       </SubHeader>

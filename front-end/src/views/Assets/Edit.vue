@@ -2,22 +2,15 @@
   <div class="py-8">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
       <SubHeader
-        pageName="Add New Asset"
-        pageDescription="Fill out the details to register a new equipment asset"
+        pageName="Edit Asset"
+        pageDescription="Update the details of your asset"
       />
 
-      <AlertMessage
-        v-if="errorMessage"
-        type="error"
-        :message="errorMessage"
-        :dismissible="false"
-      />
-
+      <AlertMessage v-if="errorMessage" type="error" :message="errorMessage" />
       <AlertMessage
         v-if="successMessage"
         type="success"
         :message="successMessage"
-        :dismissible="false"
       />
 
       <div
@@ -115,11 +108,7 @@
 
             <div class="md:col-span-2">
               <InputLabel value="Upload Image" for="assetImage" />
-              <ImageInput
-                v-model="assetImage"
-                :key="imageInputKey"
-                class="mt-1 block w-full"
-              />
+              <ImageInput v-model="assetImage" class="mt-1 block w-full" />
               <div v-if="assetPreviewUrl" class="mt-3 flex justify-center">
                 <img
                   :src="assetPreviewUrl"
@@ -151,7 +140,7 @@
               :disabled="loading"
               class="ms-3 uppercase"
             >
-              {{ loading ? "Saving Asset..." : "Save Asset" }}
+              {{ loading ? "Updating Asset..." : "Update Asset" }}
             </PrimaryButton>
           </div>
         </form>
@@ -161,8 +150,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
+import { useRoute } from "vue-router";
 import api from "../../plugins/api";
+
 import SubHeader from "../../components/SubHeader.vue";
 import AlertMessage from "../../components/AlertMessage.vue";
 import InputLabel from "../../components/InputLabel.vue";
@@ -173,6 +164,11 @@ import ImageInput from "../../components/ImageInput.vue";
 import PrimaryButton from "../../components/PrimaryButton.vue";
 import SecondaryLink from "../../components/SecondaryLink.vue";
 
+// Asset ID from route
+const route = useRoute();
+const assetId = route.params.id;
+
+// Form fields
 const assetName = ref("");
 const category = ref("");
 const department = ref("");
@@ -184,10 +180,13 @@ const condition = ref("");
 const assetImage = ref(null);
 const assetPreviewUrl = ref(null);
 const description = ref("");
+
+// Messages & loading
 const errorMessage = ref("");
 const successMessage = ref("");
 const loading = ref(false);
 
+// Options
 const categories = ref([]);
 const departments = ref([]);
 const conditionOptions = [
@@ -201,25 +200,45 @@ const categoryOptions = computed(() => [
   { value: "", label: "Select Category" },
   ...categories.value.map((c) => ({ value: c.id, label: c.name })),
 ]);
+
 const departmentOptions = computed(() => [
   { value: "", label: "Select Department" },
   ...departments.value.map((d) => ({ value: d.id, label: d.name })),
 ]);
 
-onMounted(async () => {
-  try {
-    const res = await api.get("/assets/create");
-    categories.value = res.data.categories;
-    departments.value = res.data.departments;
-  } catch {
-    errorMessage.value = "Unable to fetch categories and departments data.";
-  }
-});
-
+// Watch image for preview
 watch(assetImage, (file) => {
   assetPreviewUrl.value = file ? URL.createObjectURL(file) : null;
 });
 
+// Fetch asset data
+onMounted(async () => {
+  try {
+    const res = await api.get(`/assets/${assetId}/edit`);
+    const data = res.data;
+    const asset = data.asset;
+
+    assetName.value = asset.asset_name;
+    category.value = asset.category_id;
+    department.value = asset.department_id;
+    purchaseDate.value = asset.purchase_date
+      ? asset.purchase_date.slice(0, 10)
+      : "";
+    purchaseCost.value = asset.purchase_cost;
+    usefulLife.value = asset.useful_life;
+    supplier.value = asset.supplier;
+    condition.value = asset.condition;
+    description.value = asset.description || "";
+    if (asset.image) assetPreviewUrl.value = asset.image;
+
+    categories.value = data.categories;
+    departments.value = data.departments;
+  } catch {
+    errorMessage.value = "Unable to fetch asset details.";
+  }
+});
+
+// Submit updated asset
 const submitAsset = async () => {
   try {
     loading.value = true;
@@ -227,63 +246,28 @@ const submitAsset = async () => {
     successMessage.value = "";
 
     const formData = new FormData();
-    const fields = [
-      "asset_name",
-      "category_id",
-      "department_id",
-      "purchase_date",
-      "purchase_cost",
-      "useful_life",
-      "supplier",
-      "condition",
-      "description",
-    ];
-
-    fields.forEach((field) => {
-      const valueMap = {
-        asset_name: assetName.value,
-        category_id: category.value,
-        department_id: department.value,
-        purchase_date: purchaseDate.value,
-        purchase_cost: purchaseCost.value,
-        useful_life: usefulLife.value,
-        supplier: supplier.value,
-        condition: condition.value,
-        description: description.value || "",
-      };
-      formData.append(field, valueMap[field]);
-    });
+    formData.append("asset_name", assetName.value);
+    formData.append("category_id", category.value);
+    formData.append("department_id", department.value);
+    formData.append("purchase_date", purchaseDate.value);
+    formData.append("purchase_cost", purchaseCost.value);
+    formData.append("useful_life", usefulLife.value);
+    formData.append("supplier", supplier.value);
+    formData.append("condition", condition.value);
+    formData.append("description", description.value);
 
     if (assetImage.value) formData.append("image", assetImage.value);
 
-    const response = await api.post("/assets", formData, {
+    await api.post(`/assets/${assetId}`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
+      method: "PUT",
     });
 
-    successMessage.value = response.data.message;
-
-    // Clear form fields
-    assetName.value = "";
-    category.value = "";
-    department.value = "";
-    purchaseDate.value = "";
-    purchaseCost.value = null;
-    usefulLife.value = null;
-    supplier.value = "";
-    condition.value = "";
-    assetImage.value = null;
-    assetPreviewUrl.value = null;
-    description.value = "";
-    const imageInputKey = ref(Date.now());
+    successMessage.value = "Asset updated successfully!";
   } catch (err) {
-    if (err.response?.data?.errors) {
-      errorMessage.value = Object.values(err.response.data.errors)
-        .flat()
-        .join(" ");
-    } else {
-      errorMessage.value =
-        err.response?.data?.message || "Failed to save asset.";
-    }
+    errorMessage.value = err.response?.data?.errors
+      ? Object.values(err.response.data.errors).flat().join(" ")
+      : err.response?.data?.message || "Failed to update asset.";
   } finally {
     loading.value = false;
   }
