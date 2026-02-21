@@ -31,6 +31,10 @@ import DepartmentsEdit from "../views/Departments/Edit.vue";
 // === REPORT EMAIL SETTING ===
 import ReportEmailSettingIndex from "../views/ReportEmailSetting/Index.vue";
 
+// === USERS ===
+import UsersIndex from "../views/Users/Index.vue";
+import UsersCreate from "../views/Users/Create.vue";
+
 const routes = [
   {
     path: "/",
@@ -93,6 +97,16 @@ const routes = [
         path: "report-email-setting",
         name: "ReportEmailSetting",
         component: ReportEmailSettingIndex,
+      },
+      {
+        path: "users",
+        name: "Users",
+        component: UsersIndex,
+      },
+      {
+        path: "users/create",
+        name: "UsersCreate",
+        component: UsersCreate,
       },
     ],
   },

@@ -27,11 +27,6 @@
 import { reactive, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 
-const props = defineProps({
-  categories: { type: Array, default: () => [] },
-  departments: { type: Array, default: () => [] },
-});
-
 const emits = defineEmits(["filter-changed"]);
 
 const route = useRoute();

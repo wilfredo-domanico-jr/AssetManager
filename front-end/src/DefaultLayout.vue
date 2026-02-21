@@ -52,11 +52,7 @@
             label="Departments"
             route-name="Departments"
           />
-          <SidebarLink
-            icon="fa-users"
-            label="Users"
-            route-name="ForgotPassword"
-          />
+          <SidebarLink icon="fa-users" label="Users" route-name="Users" />
           <SidebarLink
             icon="fa-paper-plane"
             label="Report Email Setting"
