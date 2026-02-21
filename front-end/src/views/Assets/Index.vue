@@ -139,8 +139,9 @@ const handleDelete = async (id) => {
     errorMessage.value = "";
     const response = await api.delete(`/assets/${id}`);
 
-    await fetchAssets(pagination.value.current_page);
+    console.log("This is the response:", response.data);
 
+    await fetchAssets(pagination.value.current_page);
     successMessage.value = response.data.message;
 
     // Refetch the current page so pagination stays correct

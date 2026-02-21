@@ -99,8 +99,7 @@ class AssetController extends Controller
         $asset = Asset::create($validated);
 
         return response()->json([
-            'message' => 'Asset added successfully!',
-            'asset' => $asset
+            'message' => 'Asset added successfully!'
         ], 201);
     }
 
@@ -170,6 +169,6 @@ class AssetController extends Controller
 
         return response()->json([
             'message' => 'Asset deleted successfully!'
-        ], 204);
+        ]);
     }
 }

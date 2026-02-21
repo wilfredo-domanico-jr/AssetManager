@@ -8,7 +8,7 @@
           {{ category.name }}
         </h3>
         <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-          {{ category.description }}
+          {{ category.description || "No Description" }}
         </p>
       </div>
       <div class="flex space-x-3 text-gray-500 dark:text-gray-300">
