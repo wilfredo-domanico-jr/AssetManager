@@ -35,29 +35,31 @@
             route-name="ForgotPassword"
           />
 
-          <hr class="border-t border-gray-300 dark:border-gray-700 my-2" />
-          <div
-            class="text-xs font-semibold text-gray-400 uppercase tracking-wider mt-4 mb-2 px-3"
-          >
-            Admin Section
-          </div>
+          <template v-if="auth.user?.role === 'Admin'">
+            <hr class="border-t border-gray-300 dark:border-gray-700 my-2" />
+            <div
+              class="text-xs font-semibold text-gray-400 uppercase tracking-wider mt-4 mb-2 px-3"
+            >
+              Admin Section
+            </div>
 
-          <SidebarLink
-            icon="fa-folder"
-            label="Categories"
-            route-name="Categories"
-          />
-          <SidebarLink
-            icon="fa-building"
-            label="Departments"
-            route-name="Departments"
-          />
-          <SidebarLink icon="fa-users" label="Users" route-name="Users" />
-          <SidebarLink
-            icon="fa-paper-plane"
-            label="Report Email Setting"
-            route-name="ReportEmailSetting"
-          />
+            <SidebarLink
+              icon="fa-folder"
+              label="Categories"
+              route-name="Categories"
+            />
+            <SidebarLink
+              icon="fa-building"
+              label="Departments"
+              route-name="Departments"
+            />
+            <SidebarLink icon="fa-users" label="Users" route-name="Users" />
+            <SidebarLink
+              icon="fa-paper-plane"
+              label="Report Email Setting"
+              route-name="ReportEmailSetting"
+            />
+          </template>
         </nav>
 
         <!-- Logout -->

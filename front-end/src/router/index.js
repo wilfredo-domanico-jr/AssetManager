@@ -1,6 +1,6 @@
 // === IMPORTS ===
 import { createRouter, createWebHistory } from "vue-router";
-
+import { useAuthStore } from "../store/auth";
 // === LAYOUTS ===
 import DefaultLayout from "../DefaultLayout.vue";
 import AuthenticationLayout from "../AuthenticationLayout.vue";
@@ -65,48 +65,57 @@ const routes = [
         path: "categories",
         name: "Categories",
         component: CategoriesIndex,
+        meta: { requiresAdmin: true },
       },
       {
         path: "categories/create",
         name: "CategoriesCreate",
         component: CategoriesCreate,
+        meta: { requiresAdmin: true },
       },
       {
         path: "categories/:id/edit",
         name: "CategoriesEdit",
         component: CategoriesEdit,
         props: true,
+        meta: { requiresAdmin: true },
       },
       {
         path: "departments",
         name: "Departments",
         component: DepartmentsIndex,
+        meta: { requiresAdmin: true },
       },
       {
         path: "departments/create",
         name: "DepartmentsCreate",
         component: DepartmentsCreate,
+        meta: { requiresAdmin: true },
       },
       {
         path: "departments/:id/edit",
         name: "DepartmentsEdit",
         component: DepartmentsEdit,
         props: true,
+        meta: { requiresAdmin: true },
       },
       {
         path: "report-email-setting",
         name: "ReportEmailSetting",
         component: ReportEmailSettingIndex,
+        meta: { requiresAdmin: true },
       },
       {
         path: "users",
         name: "Users",
         component: UsersIndex,
+        meta: { requiresAdmin: true },
       },
       {
         path: "users/create",
         name: "UsersCreate",
         component: UsersCreate,
+        meta: { requiresAdmin: true },
       },
     ],
   },
@@ -138,6 +147,18 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(), // uses HTML5 history mode
   routes,
+});
+
+router.beforeEach(async (to, from, next) => {
+  const auth = useAuthStore();
+
+  // Check admin-only routes
+  if (to.meta.requiresAdmin && auth.user?.role !== "Admin") {
+    // Optionally redirect to dashboard or show a 403 page
+    return next({ name: "Dashboard" });
+  }
+
+  next();
 });
 
 export default router;
