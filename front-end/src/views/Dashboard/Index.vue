@@ -57,6 +57,7 @@
               Recent Assets
             </h3>
             <router-link
+              v-show="recentAssets.length != 0"
               to="/assets"
               class="text-sm text-indigo-600 dark:text-indigo-400 hover:underline"
             >
