@@ -28,6 +28,9 @@ import DepartmentsIndex from "../views/Departments/Index.vue";
 import DepartmentsCreate from "../views/Departments/Create.vue";
 import DepartmentsEdit from "../views/Departments/Edit.vue";
 
+// === REPORT EMAIL SETTING ===
+import ReportEmailSettingIndex from "../views/ReportEmailSetting/Index.vue";
+
 const routes = [
   {
     path: "/",
@@ -85,6 +88,11 @@ const routes = [
         name: "DepartmentsEdit",
         component: DepartmentsEdit,
         props: true,
+      },
+      {
+        path: "report-email-setting",
+        name: "ReportEmailSetting",
+        component: ReportEmailSettingIndex,
       },
     ],
   },

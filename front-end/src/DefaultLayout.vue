@@ -60,7 +60,7 @@
           <SidebarLink
             icon="fa-paper-plane"
             label="Report Email Setting"
-            route-name="ForgotPassword"
+            route-name="ReportEmailSetting"
           />
         </nav>
 

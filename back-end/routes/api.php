@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\DepartmentController;
+use App\Http\Controllers\Api\ReportEmailSettingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,4 +33,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('categories', CategoryController::class);
     // FOR DEPARTMENTS
     Route::resource('departments', DepartmentController::class);
+    // FOR REPORT EMAIL SETTINGS
+    Route::resource('report-email-setting', ReportEmailSettingController::class);
 });
