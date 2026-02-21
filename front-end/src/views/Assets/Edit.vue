@@ -256,11 +256,14 @@ const submitAsset = async () => {
     formData.append("condition", condition.value);
     formData.append("description", description.value);
 
-    if (assetImage.value) formData.append("image", assetImage.value);
+    if (assetImage.value) {
+      formData.append("image", assetImage.value);
+    }
 
+    // Make PUT request
     await api.post(`/assets/${assetId}`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
-      method: "PUT",
+      params: { _method: "PUT" }, // Laravel will treat it as PUT
     });
 
     successMessage.value = "Asset updated successfully!";

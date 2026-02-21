@@ -81,8 +81,8 @@ class AssetsController extends Controller
     {
         $validated = $request->validate([
             'asset_name' => 'required|string|max:255',
-            'category_id' => 'required|exists:categories,id',
-            'department_id' => 'required|exists:departments,id',
+            'category_id' => 'required|integer|exists:categories,id',
+            'department_id' => 'required|integer|exists:departments,id',
             'purchase_date' => 'required|date',
             'purchase_cost' => 'required|numeric',
             'useful_life' => 'required|integer|min:1',
@@ -117,5 +117,45 @@ class AssetsController extends Controller
             'categories' => Category::all(),
             'departments' => Department::all(),
         ]);
+    }
+
+    public function update(Request $request, Asset $asset)
+    {
+
+        $validated = $request->validate([
+            'asset_name' => 'required|string|max:255',
+            'category_id' => 'required|integer|exists:categories,id',
+            'department_id' => 'required|integer|exists:departments,id',
+            'purchase_date' => 'required|date',
+            'purchase_cost' => 'required|numeric',
+            'useful_life' => 'required|integer|min:1',
+            'supplier' => 'required|string|max:255',
+            'condition' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+        ]);
+
+        $asset->is_deployed = $request->has('is_deployed');
+
+        if ($asset->is_deployed) {
+            $asset->deployed_name = $request->deployed_name;
+            $asset->deployed_designation = $request->deployed_designation;
+        } else {
+            // Clear fields when not deployed
+            $asset->deployed_name = null;
+            $asset->deployed_designation = null;
+        }
+
+
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('assets', 'public');
+        }
+
+        $asset->update($validated);
+
+        return response()->json([
+            'message' => 'Asset updated successfully!',
+            'asset' => $asset
+        ], 200);
     }
 }

@@ -183,6 +183,7 @@ const supplier = ref("");
 const condition = ref("");
 const assetImage = ref(null);
 const assetPreviewUrl = ref(null);
+const imageInputKey = ref(Date.now());
 const description = ref("");
 const errorMessage = ref("");
 const successMessage = ref("");
@@ -274,7 +275,9 @@ const submitAsset = async () => {
     assetImage.value = null;
     assetPreviewUrl.value = null;
     description.value = "";
-    const imageInputKey = ref(Date.now());
+
+    imageInputKey.value = Date.now();
+    
   } catch (err) {
     if (err.response?.data?.errors) {
       errorMessage.value = Object.values(err.response.data.errors)
