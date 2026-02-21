@@ -27,7 +27,7 @@ class AuthController extends Controller
         return response()->json([
             'user' => $user,
             'token' => $token
-        ]);
+        ], 200);
     }
     public function forgotPassword(Request $request)
     {
@@ -65,7 +65,7 @@ class AuthController extends Controller
 
 
         if ($status == Password::PASSWORD_RESET) {
-            return response()->json(['message' => 'Password has been reset successfully.']);
+            return response()->json(['message' => 'Password has been reset successfully.'], 200);
         }
 
         return response()->json(['message' => 'Invalid token or email.'], 400);
@@ -85,6 +85,6 @@ class AuthController extends Controller
     // Get Authenticated User
     public function me(Request $request)
     {
-        return response()->json($request->user());
+        return response()->json($request->user(), 200);
     }
 }

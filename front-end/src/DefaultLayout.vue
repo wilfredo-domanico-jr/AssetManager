@@ -45,7 +45,7 @@
           <SidebarLink
             icon="fa-folder"
             label="Categories"
-            route-name="ForgotPassword"
+            route-name="Categories"
           />
           <SidebarLink
             icon="fa-building"

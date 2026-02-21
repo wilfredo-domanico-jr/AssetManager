@@ -42,6 +42,6 @@ class DashboardController extends Controller
             'assetByCategory' => $assetByCategory
         ];
 
-        return response()->json($data);
+        return response()->json($data, 200);
     }
 }

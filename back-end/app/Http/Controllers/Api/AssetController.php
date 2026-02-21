@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
-class AssetsController extends Controller
+class AssetController extends Controller
 {
 
     public function index(Request $request)
@@ -62,7 +62,7 @@ class AssetsController extends Controller
                 'recentAssets' => $recentAssets,
                 'assetByCategory' => $assetByCategory
             ]
-        ]);
+        ], 200);
     }
 
 
@@ -74,7 +74,7 @@ class AssetsController extends Controller
         return response()->json([
             'categories' => $categories,
             'departments' => $departments
-        ]);
+        ], 200);
     }
 
     public function store(Request $request)
@@ -116,7 +116,7 @@ class AssetsController extends Controller
             'asset' => $asset,
             'categories' => Category::all(),
             'departments' => Department::all(),
-        ]);
+        ], 200);
     }
 
     public function update(Request $request, Asset $asset)
@@ -170,6 +170,6 @@ class AssetsController extends Controller
 
         return response()->json([
             'message' => 'Asset deleted successfully!'
-        ], 200);
+        ], 204);
     }
 }
