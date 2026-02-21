@@ -3,7 +3,7 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
       <SubHeader
         pageName="Edit Asset"
-        pageDescription="Update the details of your asset"
+        pageDescription="Modify the details of this existing asset record"
       />
 
       <AlertMessage v-if="errorMessage" type="error" :message="errorMessage" />

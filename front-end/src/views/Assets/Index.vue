@@ -20,6 +20,13 @@
         :dismissible="false"
       />
 
+      <AlertMessage
+        v-if="successMessage"
+        type="success"
+        :message="successMessage"
+        :dismissible="false"
+      />
+
       <SearchFilter
         :categories="categories"
         :departments="departments"
@@ -63,6 +70,7 @@ const assets = ref({});
 const categories = ref([]);
 const departments = ref([]);
 const errorMessage = ref("");
+const successMessage = ref("");
 
 const pagination = ref({
   current_page: 1,
@@ -124,14 +132,26 @@ const applyFilter = async (filters) => {
   }
 };
 
-console.log("This is the assets:", assets.data);
-
 const handleDelete = async (id) => {
   if (!confirm("Are you sure you want to delete this asset?")) return;
   try {
-    await api.delete(`/assets/${id}`);
-    assets.value = assets.value.filter((a) => a.id !== id);
+    successMessage.value = "";
+    errorMessage.value = "";
+    const response = await api.delete(`/assets/${id}`);
+
+    await fetchAssets(pagination.value.current_page);
+
+    successMessage.value = response.data.message;
+
+    // Refetch the current page so pagination stays correct
+    await fetchAssets(pagination.value.current_page);
+
+    // Auto-hide success message after 3 seconds
+    setTimeout(() => {
+      successMessage.value = "";
+    }, 3000);
   } catch (err) {
+    errorMessage.value = "Failed to delete asset";
     console.error("Failed to delete asset:", err);
   }
 };

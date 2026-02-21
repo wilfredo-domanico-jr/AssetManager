@@ -158,4 +158,18 @@ class AssetsController extends Controller
             'asset' => $asset
         ], 200);
     }
+
+
+    public function destroy(Asset $asset)
+    {
+        if ($asset->image) {
+            \Storage::disk('public')->delete($asset->image);
+        }
+
+        $asset->delete();
+
+        return response()->json([
+            'message' => 'Asset deleted successfully!'
+        ], 200);
+    }
 }
