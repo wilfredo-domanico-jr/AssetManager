@@ -22,6 +22,13 @@ class CategoryController extends Controller
         ], 200);
     }
 
+
+
+    public function edit(Category $category)
+    {
+        return response()->json(['category' => $category], 200);
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -34,6 +41,24 @@ class CategoryController extends Controller
         return response()->json([
             'message' => 'Category added successfully!'
         ], 201);
+    }
+
+
+
+    public function update(Request $request, Category $category)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        $category->update($request->only('name', 'description'));
+
+
+        return response()->json([
+            'message' => 'Category updated successfully!',
+            'category' => $category
+        ], 200);
     }
 
 

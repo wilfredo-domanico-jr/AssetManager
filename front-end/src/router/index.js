@@ -21,6 +21,7 @@ import AssetsEdit from "../views/Assets/Edit.vue";
 // === CATEGORIES ===
 import CategoriesIndex from "../views/Categories/Index.vue";
 import CategoriesCreate from "../views/Categories/Create.vue";
+import CategoriesEdit from "../views/Categories/Edit.vue";
 
 const routes = [
   {
@@ -57,6 +58,11 @@ const routes = [
         path: "categories/create",
         name: "CategoriesCreate",
         component: CategoriesCreate,
+      },
+      {
+        path: "categories/:id/edit",
+        name: "CategoriesEdit",
+        component: CategoriesEdit,
       },
     ],
   },
