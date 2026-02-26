@@ -32,7 +32,7 @@
           <SidebarLink
             icon="fa-file-lines"
             label="Reports"
-            route-name="ForgotPassword"
+            route-name="DepreciationReport"
           />
 
           <template v-if="auth.user?.role === 'Admin'">

@@ -107,6 +107,7 @@ const fetchAssets = async (page = 1) => {
 };
 
 onMounted(() => fetchAssets());
+
 const applyFilter = async (filters) => {
   try {
     errorMessage.value = "";

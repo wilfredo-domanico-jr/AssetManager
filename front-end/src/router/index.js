@@ -18,6 +18,10 @@ import AssetsIndex from "../views/Assets/Index.vue";
 import AssetsCreate from "../views/Assets/Create.vue";
 import AssetsEdit from "../views/Assets/Edit.vue";
 
+// === REPORTS ===
+
+import DepreciationReportIndex from "../views/Reports/Depreciation/Index.vue";
+
 // === CATEGORIES ===
 import CategoriesIndex from "../views/Categories/Index.vue";
 import CategoriesCreate from "../views/Categories/Create.vue";
@@ -60,6 +64,11 @@ const routes = [
         name: "AssetsEdit",
         component: AssetsEdit,
         props: true,
+      },
+      {
+        path: "depreciation",
+        name: "DepreciationReport",
+        component: DepreciationReportIndex,
       },
       {
         path: "categories",
