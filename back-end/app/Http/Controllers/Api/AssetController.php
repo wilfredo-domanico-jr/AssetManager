@@ -131,10 +131,13 @@ class AssetController extends Controller
             'supplier' => 'required|string|max:255',
             'condition' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'is_deployed' => 'required|boolean',
+            'deployed_name' => 'required_if:is_deployed,true|string|max:255',
+            'deployed_designation' => 'required_if:is_deployed,true|integer|exists:departments,id',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
-        $asset->is_deployed = $request->has('is_deployed');
+        $asset->is_deployed = $request->boolean('is_deployed');
 
         if ($asset->is_deployed) {
             $asset->deployed_name = $request->deployed_name;

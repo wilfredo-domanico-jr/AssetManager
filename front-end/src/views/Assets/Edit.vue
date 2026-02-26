@@ -129,6 +129,63 @@
             />
           </div>
 
+          <!-- Start Toggle Deployment -->
+          <div class="md:col-span-2 flex items-center space-x-3 mt-4">
+            <InputLabel value="Deployed ?" for="isDeployed" />
+
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input
+                v-model="isDeployed"
+                type="checkbox"
+                class="sr-only peer"
+              />
+
+              <div
+                class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:bg-indigo-600 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"
+              ></div>
+            </label>
+          </div>
+          <!-- End Toggle Deployment -->
+
+          <!-- Start Deployment Field -->
+
+          <div
+            v-show="isDeployed"
+            class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 mt-4"
+          >
+            <div class="md:col-span-2">
+              <hr class="border-t border-gray-200 dark:border-gray-700 mb-3" />
+              <label
+                class="block text-center font-medium text-gray-700 dark:text-gray-300"
+              >
+                Deployment Details
+              </label>
+            </div>
+
+            <div>
+              <InputLabel value="Name" for="name" />
+
+              <TextInput
+                v-model="deployedName"
+                type="text"
+                class="block mt-1 w-full"
+                :required="isDeployed"
+              />
+            </div>
+
+            <div>
+              <InputLabel value="Designation" for="designation" />
+
+              <DropdownInput
+                v-model="deployedDepartment"
+                :options="departmentOptions"
+                class="mt-1 w-full"
+                :required="isDeployed"
+              />
+            </div>
+          </div>
+
+          <!-- End Deployment Field -->
           <div
             class="flex justify-end space-x-2 pt-4 border-t border-gray-200 dark:border-gray-700"
           >
@@ -180,6 +237,9 @@ const condition = ref("");
 const assetImage = ref(null);
 const assetPreviewUrl = ref(null);
 const description = ref("");
+const isDeployed = ref(false);
+const deployedName = ref("");
+const deployedDepartment = ref("");
 
 // Messages & loading
 const errorMessage = ref("");
@@ -230,7 +290,9 @@ onMounted(async () => {
     condition.value = asset.condition;
     description.value = asset.description || "";
     if (asset.image) assetPreviewUrl.value = asset.image;
-
+    isDeployed.value = asset.is_deployed === 1;
+    deployedName.value = asset.deployed_name;
+    deployedDepartment.value = asset.deployed_designation;
     categories.value = data.categories;
     departments.value = data.departments;
   } catch {
@@ -255,6 +317,9 @@ const submitAsset = async () => {
     formData.append("supplier", supplier.value);
     formData.append("condition", condition.value);
     formData.append("description", description.value);
+    formData.append("is_deployed", isDeployed.value ? 1 : 0);
+    formData.append("deployed_name", deployedName.value);
+    formData.append("deployed_designation", deployedDepartment.value);
 
     if (assetImage.value) {
       formData.append("image", assetImage.value);
