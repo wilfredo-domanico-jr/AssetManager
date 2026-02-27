@@ -4,13 +4,12 @@ namespace App\Http\Controllers\Api\Reports;
 
 use App\Models\Asset;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class DepreciationController extends Controller
 {
 
-    public function index(Request $request)
+    public function index()
     {
 
         $assets = Asset::all();

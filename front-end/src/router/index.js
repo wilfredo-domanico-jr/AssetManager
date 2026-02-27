@@ -21,6 +21,7 @@ import AssetsEdit from "../views/Assets/Edit.vue";
 // === REPORTS ===
 
 import DepreciationReportIndex from "../views/Reports/Depreciation/Index.vue";
+import InventoryReportIndex from "../views/Reports/Inventory/Index.vue";
 
 // === CATEGORIES ===
 import CategoriesIndex from "../views/Categories/Index.vue";
@@ -69,6 +70,11 @@ const routes = [
         path: "depreciation",
         name: "DepreciationReport",
         component: DepreciationReportIndex,
+      },
+      {
+        path: "inventory",
+        name: "InventoryReport",
+        component: InventoryReportIndex,
       },
       {
         path: "categories",

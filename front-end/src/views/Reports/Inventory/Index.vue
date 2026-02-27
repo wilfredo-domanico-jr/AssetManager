@@ -26,16 +26,16 @@
             <h2
               class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-100"
             >
-              Depreciation Report
+              Inventory Summary Report
             </h2>
             <p class="text-sm text-gray-500 dark:text-gray-400">
-              Asset depreciation analysis and book values
+              Complete asset inventory with current values
             </p>
           </div>
 
           <!-- Export button -->
           <button
-            @click="exportDepreciationCSV"
+            @click="exportInventorySummaryCSV"
             class="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg shadow-sm transition-all dark:bg-blue-500 dark:hover:bg-blue-600 w-full sm:w-auto"
           >
             <i class="fa-solid fa-download"></i>
@@ -43,58 +43,7 @@
           </button>
         </div>
 
-        <!-- Stat Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-          <!-- Total Purchase Cost -->
-          <div
-            class="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg p-4 shadow-sm text-center"
-          >
-            <h3
-              class="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1"
-            >
-              Total Purchase Cost
-            </h3>
-            <p
-              class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100"
-            >
-              {{ totPurchaseCost.toFixed(2) }}
-            </p>
-          </div>
-
-          <!-- Total Purchase Value -->
-          <div
-            class="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg p-4 shadow-sm text-center"
-          >
-            <h3
-              class="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1"
-            >
-              Total Purchase Value
-            </h3>
-            <p
-              class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100"
-            >
-              {{ totPurchaseValue.toFixed(2) }}
-            </p>
-          </div>
-
-          <!-- Total Depreciation -->
-          <div
-            class="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg p-4 shadow-sm text-center"
-          >
-            <h3
-              class="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1"
-            >
-              Total Depreciation
-            </h3>
-            <p
-              class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100"
-            >
-              {{ totDepreciationValue.toFixed(2) }}
-            </p>
-          </div>
-        </div>
-
-        <DepreciationAssetsCard
+        <InventorySummaryAssetsCard
           v-for="asset in assets"
           :key="asset.id"
           :asset="asset"
@@ -117,19 +66,17 @@
 </template>
 
 <script setup>
-import DepreciationAssetsCard from "./components/DepreciationAssetsCard.vue";
+import ReportTabs from "../components/ReportTabs.vue";
+import InventorySummaryAssetsCard from "./components/InventorySummaryAssetsCard.vue";
 import SubHeader from "../../../components/SubHeader.vue";
 import EmptyState from "../../../components/EmptyState.vue";
 import Pagination from "../../../components/Pagination.vue";
 import AlertMessage from "../../../components/AlertMessage.vue";
-import ReportTabs from "../components/ReportTabs.vue";
+
 import { ref, onMounted } from "vue";
 import api from "../../../plugins/api";
 
 const errorMessage = ref("");
-const totPurchaseCost = ref(0.0);
-const totPurchaseValue = ref(0.0);
-const totDepreciationValue = ref(0.0);
 const assets = ref([]);
 
 const pagination = ref({
@@ -142,17 +89,14 @@ const pagination = ref({
   links: [],
 });
 
-onMounted(() => fetchDepreciationData());
+onMounted(() => fetchInvSummaryData());
 
-const fetchDepreciationData = async (page = 1) => {
+const fetchInvSummaryData = async (page = 1) => {
   try {
     errorMessage.value = "";
-    const response = await api.get("/depreciation", { params: { page } });
+    const response = await api.get("/inventory", { params: { page } });
     const data = response.data;
 
-    totPurchaseCost.value = parseFloat(data.totalPurchaseCost);
-    totPurchaseValue.value = parseFloat(data.totalBookValue);
-    totDepreciationValue.value = parseFloat(data.totalDepreciation);
     assets.value = data.assets.data;
 
     pagination.value = {
@@ -170,9 +114,9 @@ const fetchDepreciationData = async (page = 1) => {
   }
 };
 
-const exportDepreciationCSV = async () => {
+const exportInventorySummaryCSV = async () => {
   try {
-    const response = await api.get("/export-depreciation-summary-csv", {
+    const response = await api.get("/export-inventory-summary-csv", {
       responseType: "blob",
     });
 
@@ -184,17 +128,17 @@ const exportDepreciationCSV = async () => {
 
     const link = document.createElement("a");
     link.href = url;
-    link.setAttribute("download", "depreciation-summary.csv");
+    link.setAttribute("download", "inventory-summary.csv");
     document.body.appendChild(link);
     link.click();
 
     link.remove();
     window.URL.revokeObjectURL(url);
   } catch (error) {
-    errorMessage.value = "Exporting Depreciation Report to CSV Failed.";
+    errorMessage.value = "Exporting Inventory Summary Report to CSV Failed.";
     console.error("Export failed:", error);
   }
 };
 
-const fetchPage = (page) => fetchDepreciationData(page);
+const fetchPage = (page) => fetchInvSummaryData(page);
 </script>
