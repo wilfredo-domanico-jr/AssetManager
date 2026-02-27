@@ -2,6 +2,7 @@
 
 use App\Exports\DepreciationSummaryCsvExport;
 use App\Exports\InventorySummaryCsvExport;
+use App\Exports\LifeCycleSummaryCsvExport;
 use App\Http\Controllers\Api\AssetController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\Api\DepartmentController;
 use App\Http\Controllers\Api\ReportEmailSettingController;
 use App\Http\Controllers\Api\Reports\DepreciationController;
 use App\Http\Controllers\Api\Reports\InventorySummaryController;
+use App\Http\Controllers\Api\Reports\LifeCycleSummaryController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -38,7 +40,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('assets', AssetController::class);
     //FOR DEPRECIATION REPORT
     Route::get('depreciation', [DepreciationController::class, 'index']);
-    // EXPORT DEPRECIATION CSV 
+    // EXPORT DEPRECIATION SUMMARY CSV 
     Route::get('export-depreciation-summary-csv', function () {
         return Excel::download(new DepreciationSummaryCsvExport, 'depreciation-summary.csv');
     });
@@ -47,6 +49,12 @@ Route::middleware('auth:sanctum')->group(function () {
     // EXPORT INVENTORY SUMMARY CSV 
     Route::get('export-inventory-summary-csv', function () {
         return Excel::download(new InventorySummaryCsvExport, 'inventory-summary.csv');
+    });
+    //FOR LIFECYCLE SUMMARY REPORT
+    Route::get('lifecycle', [LifeCycleSummaryController::class, 'index']);
+    // EXPORT LIFECYCLE SUMMARY CSV 
+    Route::get('export-lifecycle-summary-csv', function () {
+        return Excel::download(new LifeCycleSummaryCsvExport, 'lifecycle-summary.csv');
     });
 
     // FOR CATEGORIES
