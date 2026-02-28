@@ -173,9 +173,18 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const auth = useAuthStore();
 
-  // Check admin-only routes
+  // Always attempt to restore user on refresh
+  if (!auth.user) {
+    await auth.fetchUser();
+  }
+
+  // If not logged in and trying to access protected route
+  if (!auth.user && to.name !== "Login") {
+    return next({ name: "Login" });
+  }
+
+  // Admin check
   if (to.meta.requiresAdmin && auth.user?.role !== "Admin") {
-    // Optionally redirect to dashboard or show a 403 page
     return next({ name: "Dashboard" });
   }
 

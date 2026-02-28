@@ -93,20 +93,12 @@
 <script setup>
 import { useAuthStore } from "./store/auth";
 import { useRouter } from "vue-router";
-import { onMounted } from "vue";
-
 // Sidebar link component
 import SidebarLink from "./components/SidebarLink.vue";
 import Header from "./components/Header.vue";
 
 const auth = useAuthStore();
 const router = useRouter();
-
-onMounted(() => {
-  if (!auth.isLoggedIn) {
-    router.replace("/auth/login");
-  }
-});
 
 function handleLogout() {
   auth.logout();
