@@ -57,7 +57,7 @@
             <p
               class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100"
             >
-              {{ totPurchaseCost.toFixed(2) }}
+              {{ formatCurrency(totPurchaseCost) }}
             </p>
           </div>
 
@@ -73,7 +73,7 @@
             <p
               class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100"
             >
-              {{ totPurchaseValue.toFixed(2) }}
+              {{ formatCurrency(totPurchaseValue) }}
             </p>
           </div>
 
@@ -89,7 +89,7 @@
             <p
               class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100"
             >
-              {{ totDepreciationValue.toFixed(2) }}
+              {{ formatCurrency(totDepreciationValue) }}
             </p>
           </div>
         </div>
@@ -125,11 +125,12 @@ import AlertMessage from "../../../components/AlertMessage.vue";
 import ReportTabs from "../components/ReportTabs.vue";
 import { ref, onMounted } from "vue";
 import api from "../../../plugins/api";
+import { formatCurrency } from "../../../utils/currency-formatter";
 
 const errorMessage = ref("");
-const totPurchaseCost = ref(0.0);
-const totPurchaseValue = ref(0.0);
-const totDepreciationValue = ref(0.0);
+const totPurchaseCost = ref(0);
+const totPurchaseValue = ref(0);
+const totDepreciationValue = ref(0);
 const assets = ref([]);
 
 const pagination = ref({
@@ -150,9 +151,9 @@ const fetchDepreciationData = async (page = 1) => {
     const response = await api.get("/depreciation", { params: { page } });
     const data = response.data;
 
-    totPurchaseCost.value = parseFloat(data.totalPurchaseCost);
-    totPurchaseValue.value = parseFloat(data.totalBookValue);
-    totDepreciationValue.value = parseFloat(data.totalDepreciation);
+    totPurchaseCost.value = data.totalPurchaseCost;
+    totPurchaseValue.value = data.totalBookValue;
+    totDepreciationValue.value = data.totalDepreciation;
     assets.value = data.assets.data;
 
     pagination.value = {

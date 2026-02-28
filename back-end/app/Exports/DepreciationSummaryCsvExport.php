@@ -3,7 +3,6 @@
 namespace App\Exports;
 
 use App\Models\Asset;
-use Illuminate\Support\Carbon;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -33,46 +32,20 @@ class DepreciationSummaryCsvExport implements FromCollection, WithHeadings, With
 
     public function map($asset): array
     {
-        $purchaseCost = $asset->purchase_cost ?? 0;
-        $usefulLife = $asset->useful_life ?? 1;
-
-        $purchaseDate = $asset->purchase_date
-            ? Carbon::parse($asset->purchase_date)
-            : null;
-
-        $monthsUsed = $purchaseDate
-            ? $purchaseDate->diffInMonths(Carbon::now())
-            : 0;
-
-        $yearsUsed = $monthsUsed / 12;
-
-        $depreciationPerYear = $purchaseCost / $usefulLife;
-
-        $accumulatedDep = min($depreciationPerYear * $yearsUsed, $purchaseCost);
-
-        $bookValue = max($purchaseCost - $accumulatedDep, 0);
-
-        $depreciationRate = $purchaseCost > 0
-            ? ($accumulatedDep / $purchaseCost) * 100
-            : 0;
-
-        $status  =  $yearsUsed < $usefulLife;
-
+        $status  =  $asset->years_used < $asset->useful_life;
         $isActive = "Active";
-
         if (!$status) {
             $isActive = "Fully Depreciated";
         }
-
 
         return [
             $asset->asset_name ?? 'N/A',
             $asset->category?->name ?? 'N/A',
             $isActive,
-            number_format($purchaseCost, 2),
-            number_format($accumulatedDep, 2),
-            number_format($bookValue, 2),
-            number_format($depreciationRate, 2) . '%',
+            number_format($asset->purchase_cost ?? 0, 2),
+            number_format($asset->accumulated_depreciation, 2),
+            number_format($asset->book_value, 2),
+            number_format($asset->depreciation_rate, 2) . '%',
         ];
     }
 }

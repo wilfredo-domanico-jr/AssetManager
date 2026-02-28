@@ -86,7 +86,7 @@
               <div class="flex items-center space-x-3">
                 <div class="text-right">
                   <p class="font-semibold text-gray-800 dark:text-gray-100">
-                    ₱{{ calculateBookValue(asset).toFixed(2) || 0 }}
+                    {{ formatCurrency(asset.book_value) }}
                   </p>
                   <p class="text-xs text-gray-500 dark:text-gray-400">
                     Book Value
@@ -127,6 +127,7 @@
 import SubHeader from "../../components/SubHeader.vue";
 import DashboardCard from "./components/DashboardCard.vue";
 import AlertMessage from "../../components/AlertMessage.vue";
+import { formatCurrency } from "../../utils/currency-formatter";
 import { ref, onMounted, nextTick, computed } from "vue";
 import api from "../../plugins/api";
 
@@ -191,42 +192,6 @@ const dashboardStats = computed(() => [
     iconColor: "text-red-500",
   },
 ]);
-
-function calculateBookValue(asset) {
-  const purchaseCost = asset.purchase_cost ?? 0;
-  const usefulLife = asset.useful_life ?? 1; // prevent divide by zero
-  const purchaseDate = asset.purchase_date
-    ? new Date(asset.purchase_date)
-    : null;
-
-  if (!purchaseDate) return purchaseCost;
-
-  const now = new Date();
-
-  // Calculate total difference in months more accurately
-  let monthsUsed =
-    (now.getFullYear() - purchaseDate.getFullYear()) * 12 +
-    (now.getMonth() - purchaseDate.getMonth());
-
-  // Adjust for days in the month
-  if (now.getDate() < purchaseDate.getDate()) {
-    monthsUsed -= 1;
-  }
-
-  // Fractional years including leftover days
-  const daysInMonth = (date) =>
-    new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-
-  const leftoverDays = now.getDate() - purchaseDate.getDate();
-  const fractionalMonth = leftoverDays / daysInMonth(purchaseDate);
-
-  const yearsUsed = monthsUsed / 12 + fractionalMonth / 12;
-
-  const depreciationPerYear = purchaseCost / usefulLife;
-  const bookValue = Math.max(purchaseCost - depreciationPerYear * yearsUsed, 0);
-
-  return bookValue;
-}
 
 function renderCategoryPieChart(categories) {
   const element = document.querySelector("#categoryPieChart");

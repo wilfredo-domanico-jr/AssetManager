@@ -42,9 +42,9 @@ class DepreciationController extends Controller
         $assets = Asset::with('category', 'department')->paginate(3);
 
         $data = [
-            'totalPurchaseCost' => $totalPurchaseCost,
-            'totalBookValue' => $totalBookValue,
-            'totalDepreciation' => $totalDepreciation,
+            'totalPurchaseCost' => round($totalPurchaseCost, 2),
+            'totalBookValue' => round($totalBookValue, 2),
+            'totalDepreciation' => round($totalDepreciation, 2),
             'assets' => $assets
         ];
 

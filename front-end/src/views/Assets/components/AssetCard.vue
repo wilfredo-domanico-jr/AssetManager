@@ -49,7 +49,7 @@
           >Purchase Cost</span
         >
         <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
-          ₱{{ formatNumber(asset.purchase_cost) }}
+          {{ formatCurrency(asset.purchase_cost) }}
         </p>
       </div>
 
@@ -58,14 +58,14 @@
           >Book Value</span
         >
         <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
-          ₱{{ formatNumber(bookValue) }}
+          {{ formatCurrency(asset.book_value) }}
         </p>
       </div>
 
       <div>
         <span class="text-md text-gray-600 dark:text-gray-400 block">Age</span>
         <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
-          {{ yearsUsed.toFixed(2) }} {{ yearsUsed <= 1 ? "year" : "years" }}
+          {{ asset.years_used }} {{ asset.years_used <= 1 ? "year" : "years" }}
         </p>
       </div>
 
@@ -82,37 +82,12 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
-import dayjs from "dayjs";
+import { formatCurrency } from "../../../utils/currency-formatter";
 
 const props = defineProps({
   asset: {
     type: Object,
     required: true,
   },
-});
-
-const formatNumber = (num) =>
-  (num ?? 0).toLocaleString(undefined, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-
-const yearsUsed = computed(() => {
-  const purchaseDate = props.asset.purchase_date
-    ? dayjs(props.asset.purchase_date)
-    : null;
-  if (!purchaseDate) return 0;
-  const months = purchaseDate.diff(dayjs(), "month") * -1; // ensure positive
-  return months / 12;
-});
-
-const bookValue = computed(() => {
-  const purchaseCost = props.asset.purchase_cost ?? 0;
-  const usefulLife = props.asset.useful_life ?? 1;
-  return Math.max(
-    purchaseCost - (purchaseCost / usefulLife) * yearsUsed.value,
-    0,
-  );
 });
 </script>

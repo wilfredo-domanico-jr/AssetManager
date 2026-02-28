@@ -7,50 +7,6 @@ const props = defineProps({
     required: true,
   },
 });
-
-const lifecycle = computed(() => {
-  const purchaseCost = Number(props.asset.purchase_cost) || 0;
-  const usefulLife = Number(props.asset.useful_life) || 1; // default 1 yr
-
-  if (!props.asset.purchase_date) {
-    return {
-      yearsUsed: 0,
-      usefulLife,
-      remainingLife: usefulLife,
-      status: "Good",
-      bookValue: purchaseCost,
-    };
-  }
-
-  const purchaseDate = new Date(props.asset.purchase_date);
-  const now = new Date();
-
-  // Calculate months difference
-  const monthsUsed =
-    (now.getFullYear() - purchaseDate.getFullYear()) * 12 +
-    (now.getMonth() - purchaseDate.getMonth());
-
-  const yearsUsed = monthsUsed / 12;
-
-  // Straight-line depreciation
-  const depreciationPerYear = purchaseCost / usefulLife;
-  const bookValue = Math.max(purchaseCost - depreciationPerYear * yearsUsed, 0);
-
-  const remainingLife = Math.max(usefulLife - yearsUsed, 0);
-
-  // Determine status
-  let status = "Good";
-  if (remainingLife <= 0) status = "Fully Depreciated";
-  else if (remainingLife / usefulLife <= 0.2) status = "Near End";
-
-  return {
-    yearsUsed,
-    usefulLife,
-    remainingLife,
-    status,
-    bookValue,
-  };
-});
 </script>
 <template>
   <div
@@ -87,7 +43,7 @@ const lifecycle = computed(() => {
       <div>
         <span class="text-md text-gray-600 dark:text-gray-400 block">Age</span>
         <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
-          {{ lifecycle.yearsUsed.toFixed(1) }} yrs
+          {{ asset.years_used }} {{ asset.years_used <= 1 ? "year" : "years" }}
         </p>
       </div>
 
@@ -97,7 +53,8 @@ const lifecycle = computed(() => {
           >Useful Life</span
         >
         <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
-          {{ lifecycle.usefulLife }} yrs
+          {{ asset.useful_life }}
+          {{ asset.useful_life <= 1 ? "year" : "years" }}
         </p>
       </div>
 
@@ -107,7 +64,8 @@ const lifecycle = computed(() => {
           >Remaining Life</span
         >
         <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
-          {{ lifecycle.remainingLife.toFixed(1) }} yrs
+          {{ asset.years_remaining }}
+          {{ asset.years_remaining <= 1 ? "year" : "years" }}
         </p>
       </div>
 
@@ -117,7 +75,7 @@ const lifecycle = computed(() => {
           >Status</span
         >
         <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
-          {{ lifecycle.status }}
+          {{ asset.life_cycle_status }}
         </p>
       </div>
     </div>

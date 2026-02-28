@@ -1,34 +1,10 @@
 <script setup>
-import { computed } from "vue";
-
+import { formatCurrency } from "../../../../utils/currency-formatter";
 const props = defineProps({
   asset: {
     type: Object,
     required: true,
   },
-});
-
-const currentValue = computed(() => {
-  const purchaseCost = Number(props.asset.purchase_cost) || 0;
-  const usefulLife = Number(props.asset.useful_life) || 1;
-
-  if (!props.asset.purchase_date) return purchaseCost;
-
-  const purchaseDate = new Date(props.asset.purchase_date);
-  const now = new Date();
-
-  // Calculate months difference
-  const monthsUsed =
-    (now.getFullYear() - purchaseDate.getFullYear()) * 12 +
-    (now.getMonth() - purchaseDate.getMonth());
-
-  const yearsUsed = monthsUsed / 12;
-
-  const depreciationPerYear = purchaseCost / usefulLife;
-
-  const bookValue = purchaseCost - depreciationPerYear * yearsUsed;
-
-  return Math.max(bookValue, 0);
 });
 </script>
 <template>
@@ -91,7 +67,7 @@ const currentValue = computed(() => {
           Original Cost
         </span>
         <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
-          ₱{{ Number(asset.purchase_cost).toFixed(2) }}
+          {{ formatCurrency(asset.purchase_cost) }}
         </p>
       </div>
 
@@ -100,7 +76,7 @@ const currentValue = computed(() => {
           Current Value
         </span>
         <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
-          ₱{{ currentValue.toFixed(2) }}
+          {{ formatCurrency(asset.book_value) }}
         </p>
       </div>
     </div>

@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from "vue";
+import { formatCurrency } from "../../../../utils/currency-formatter";
 
 const props = defineProps({
   asset: {
@@ -7,49 +7,6 @@ const props = defineProps({
     required: true,
   },
 });
-
-function calculateDepreciation(asset) {
-  const purchaseCost = Number(asset.purchase_cost) || 0;
-  const usefulLife = Number(asset.useful_life) || 1;
-
-  const purchaseDate = asset.purchase_date
-    ? new Date(asset.purchase_date)
-    : null;
-
-  const now = new Date();
-
-  const monthsUsed = purchaseDate
-    ? (now.getFullYear() - purchaseDate.getFullYear()) * 12 +
-      (now.getMonth() - purchaseDate.getMonth())
-    : 0;
-
-  const yearsUsed = monthsUsed / 12;
-
-  const depreciationPerYear = purchaseCost / usefulLife;
-  const accumulatedDep = Math.min(
-    depreciationPerYear * yearsUsed,
-    purchaseCost,
-  );
-
-  const bookValue = Math.max(purchaseCost - accumulatedDep, 0);
-
-  const depreciationRate =
-    purchaseCost > 0 ? (accumulatedDep / purchaseCost) * 100 : 0;
-
-  const isActive = yearsUsed < usefulLife;
-
-  return {
-    accumulatedDep,
-    bookValue,
-    depreciationRate,
-    status: isActive ? "Active" : "Fully Depreciated",
-    bgClass: isActive
-      ? "bg-green-100 text-green-700"
-      : "bg-gray-200 text-gray-700",
-  };
-}
-
-const depreciation = computed(() => calculateDepreciation(props.asset));
 </script>
 
 <template>
@@ -68,12 +25,15 @@ const depreciation = computed(() => calculateDepreciation(props.asset));
 
       <div class="flex space-x-2">
         <span
-          :class="[
-            'px-3 py-1 rounded-full text-xs font-medium',
-            depreciation.bgClass,
-          ]"
+          class="px-3 py-1 rounded-full text-xs font-medium"
+          :class="{
+            'bg-green-100 text-green-700':
+              asset.depreciation_status === 'Active',
+            'bg-gray-200 text-gray-700':
+              asset.depreciation_status === 'Fully Depreciated',
+          }"
         >
-          {{ depreciation.status }}
+          {{ asset.depreciation_status }}
         </span>
       </div>
     </div>
@@ -84,7 +44,7 @@ const depreciation = computed(() => calculateDepreciation(props.asset));
           Purchase Cost
         </span>
         <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
-          ₱{{ Number(asset.purchase_cost).toFixed(2) }}
+          {{ formatCurrency(asset.purchase_cost) }}
         </p>
       </div>
 
@@ -93,7 +53,7 @@ const depreciation = computed(() => calculateDepreciation(props.asset));
           Accumulated Dep.
         </span>
         <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
-          ₱{{ depreciation.accumulatedDep.toFixed(2) }}
+          {{ formatCurrency(asset.accumulated_depreciation) }}
         </p>
       </div>
 
@@ -102,7 +62,7 @@ const depreciation = computed(() => calculateDepreciation(props.asset));
           Book Value
         </span>
         <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
-          ₱{{ depreciation.bookValue.toFixed(2) }}
+          {{ formatCurrency(asset.book_value) }}
         </p>
       </div>
 
@@ -111,7 +71,7 @@ const depreciation = computed(() => calculateDepreciation(props.asset));
           Dep. Rate
         </span>
         <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
-          {{ depreciation.depreciationRate.toFixed(2) }}%
+          {{ formatCurrency(asset.depreciation_rate) }}%
         </p>
       </div>
     </div>

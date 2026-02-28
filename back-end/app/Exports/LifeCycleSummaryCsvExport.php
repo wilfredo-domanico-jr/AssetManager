@@ -3,7 +3,6 @@
 namespace App\Exports;
 
 use App\Models\Asset;
-use Illuminate\Support\Carbon;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -34,41 +33,23 @@ class LifeCycleSummaryCsvExport implements FromCollection, WithHeadings, WithMap
     public function map($asset): array
     {
 
-        $usefulLife = $asset->useful_life ?? 1; // in years
+        $yearsUsedText = $asset->years_used;
+        $yearsLabel = $asset->years_used <= 1 ? 'year' : 'years';
 
-        // Parse purchase date safely
-        $purchaseDate = $asset->purchase_date
-            ? \Carbon\Carbon::parse($asset->purchase_date)
-            : null;
+        $usefulLifeText = $asset->useful_life;
+        $usefulLifeLabel = $asset->useful_life <= 1 ? 'year' : 'years';
 
-        // Age in years (decimal)
-        $yearsUsed = $purchaseDate
-            ? $purchaseDate->diffInMonths(\Carbon\Carbon::now()) / 12
-            : 0;
-
-        // Remaining life
-        $remainingLife = max($usefulLife - $yearsUsed, 0);
-
-
-        // Determine status
-        if ($remainingLife <= 0) {
-            $status = "Fully Depreciated";
-        } elseif ($remainingLife / $usefulLife <= 0.2) { // less than 20% remaining
-            $status = "Near End";
-        } else {
-            $status = "Good";
-        }
-
+        $remaininglLifeText = $asset->years_remaining;
+        $remainingLifeLabel = $asset->years_remaining <= 1 ? 'year' : 'years';
 
         return [
             $asset->asset_name ?? 'N/A',
             $asset->category?->name ?? 'N/A',
-            $status,
+            $asset->life_cycle_status,
             $asset->condition,
-            number_format($yearsUsed, 1) . " yrs",
-            number_format($usefulLife, 1) . " yrs",
-            number_format($remainingLife, 1) . " yrs"
-
+            number_format($yearsUsedText, 1) . " $yearsLabel",
+            number_format($usefulLifeText, 1) . "$usefulLifeLabel",
+            number_format($remaininglLifeText, 1) . "$remainingLifeLabel"
         ];
     }
 }
