@@ -26,8 +26,19 @@ class AssetController extends Controller
             ->when($request->category, fn($q) => $q->where('category_id', $request->category))
             ->when($request->department, fn($q) => $q->where('department_id', $request->department))
             ->when($request->condition, fn($q) => $q->where('condition', $request->condition))
+            // Filter based on query param
+            ->when($request->status === 'deployed', fn($q) => $q->where('is_deployed', true))
+            ->when($request->status === 'instock', fn($q) => $q->where('is_deployed', false))
+            ->when(
+                $request->filter === 'critical',
+                fn($q) =>
+                $q->whereNotNull('purchase_date')
+                    ->whereNotNull('useful_life')
+                    ->whereRaw("DATE_ADD(purchase_date, INTERVAL useful_life YEAR) <= DATE_ADD(CURDATE(), INTERVAL 3 MONTH)")
+            )
             ->latest()
             ->paginate(3);
+
 
 
         $totalAssets = Asset::count();
@@ -65,6 +76,9 @@ class AssetController extends Controller
             ]
         ], 200);
     }
+
+
+
 
 
     public function create()

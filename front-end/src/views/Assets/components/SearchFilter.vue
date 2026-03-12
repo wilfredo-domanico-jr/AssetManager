@@ -106,7 +106,7 @@ watch(
     emits("filter-changed", { ...newFilters });
 
     // Optionally, update URL query params for SPA behavior
-    router.replace({ query: { ...newFilters } });
+    router.replace({ query: { ...route.query, ...newFilters } });
   },
   { deep: true },
 );

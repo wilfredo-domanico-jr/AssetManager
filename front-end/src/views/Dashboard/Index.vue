@@ -24,6 +24,7 @@
           :subtitle="stat.subtitle"
           :icon="stat.icon"
           :iconColor="stat.iconColor"
+          :to="stat.link"
         />
       </div>
 
@@ -169,6 +170,7 @@ const dashboardStats = computed(() => [
     subtitle: "Registered Items",
     icon: "fa-box",
     iconColor: "text-indigo-500",
+    link: "/assets",
   },
   {
     title: "Deployed Asset",
@@ -176,6 +178,7 @@ const dashboardStats = computed(() => [
     subtitle: "Active Deployment",
     icon: "fa-truck",
     iconColor: "text-green-500",
+    link: { path: "/assets", query: { status: "deployed" } },
   },
   {
     title: "In Stock",
@@ -183,6 +186,7 @@ const dashboardStats = computed(() => [
     subtitle: "Available items in storage",
     icon: "fa-boxes-stacked",
     iconColor: "text-yellow-500",
+    link: { path: "/assets", query: { status: "instock" } },
   },
   {
     title: "Critical Assets",
@@ -190,6 +194,7 @@ const dashboardStats = computed(() => [
     subtitle: "Need Attention",
     icon: "fa-triangle-exclamation",
     iconColor: "text-red-500",
+    link: { path: "/assets", query: { filter: "critical" } },
   },
 ]);
 

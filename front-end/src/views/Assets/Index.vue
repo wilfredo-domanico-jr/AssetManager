@@ -56,7 +56,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
+import { useRoute } from "vue-router";
 import api from "../../plugins/api";
 import AssetCard from "./components/AssetCard.vue";
 import SubHeader from "../../components/SubHeader.vue";
@@ -68,6 +69,7 @@ import PrimaryLink from "../../components/PrimaryLink.vue";
 import { useAuthStore } from "../../store/auth";
 
 const auth = useAuthStore();
+const route = useRoute();
 const assets = ref({});
 const categories = ref([]);
 const departments = ref([]);
@@ -87,7 +89,9 @@ const pagination = ref({
 const fetchAssets = async (page = 1) => {
   try {
     errorMessage.value = "";
-    const response = await api.get("/assets", { params: { page } });
+    const response = await api.get("/assets", {
+      params: { page, ...route.query },
+    });
     const data = response.data;
 
     assets.value = data.assets.data;
@@ -110,10 +114,18 @@ const fetchAssets = async (page = 1) => {
 
 onMounted(() => fetchAssets());
 
+// Refetch if query params change (user navigates via router-link)
+watch(
+  () => route.query,
+  () => {
+    fetchAssets();
+  },
+);
+
 const applyFilter = async (filters) => {
   try {
     errorMessage.value = "";
-    const params = { ...filters };
+    const params = { ...route.query, ...filters };
     const response = await api.get("/assets", { params });
     const data = response.data;
 
