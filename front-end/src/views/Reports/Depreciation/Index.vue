@@ -15,6 +15,12 @@
 
       <ReportTabs />
 
+      <SearchFilter
+        :categories="categories"
+        :departments="departments"
+        @filter-changed="applyFilter"
+      />
+
       <div
         class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-5 shadow-sm"
       >
@@ -123,15 +129,20 @@ import EmptyState from "../../../components/EmptyState.vue";
 import Pagination from "../../../components/Pagination.vue";
 import AlertMessage from "../../../components/AlertMessage.vue";
 import ReportTabs from "../components/ReportTabs.vue";
-import { ref, onMounted } from "vue";
+import SearchFilter from "../components/SearchFilter.vue";
+import { ref, onMounted, watch } from "vue";
 import api from "../../../plugins/api";
 import { formatCurrency } from "../../../utils/currency-formatter";
+import { useRoute } from "vue-router";
 
+const route = useRoute();
 const errorMessage = ref("");
 const totPurchaseCost = ref(0);
 const totPurchaseValue = ref(0);
 const totDepreciationValue = ref(0);
 const assets = ref([]);
+const categories = ref([]);
+const departments = ref([]);
 
 const pagination = ref({
   current_page: 1,
@@ -145,16 +156,27 @@ const pagination = ref({
 
 onMounted(() => fetchDepreciationData());
 
+watch(
+  () => route.query,
+  () => {
+    fetchDepreciationData();
+  },
+);
+
 const fetchDepreciationData = async (page = 1) => {
   try {
     errorMessage.value = "";
-    const response = await api.get("/depreciation", { params: { page } });
+    const response = await api.get("/depreciation", {
+      params: { page, ...route.query },
+    });
     const data = response.data;
 
     totPurchaseCost.value = data.totalPurchaseCost;
     totPurchaseValue.value = data.totalBookValue;
     totDepreciationValue.value = data.totalDepreciation;
     assets.value = data.assets.data;
+    categories.value = data.categories;
+    departments.value = data.departments;
 
     pagination.value = {
       current_page: data.assets.current_page,
@@ -168,6 +190,38 @@ const fetchDepreciationData = async (page = 1) => {
   } catch (err) {
     errorMessage.value = "Unable to fetch assets data.";
     console.error("Error fetching assets:", err);
+  }
+};
+
+const applyFilter = async (filters) => {
+  try {
+    errorMessage.value = "";
+    const params = { ...route.query, ...filters };
+
+    const response = await api.get("/depreciation", { params });
+
+    console.log("Response ng Apply filter", response.data);
+    const data = response.data;
+
+    totPurchaseCost.value = data.totalPurchaseCost;
+    totPurchaseValue.value = data.totalBookValue;
+    totDepreciationValue.value = data.totalDepreciation;
+    assets.value = data.assets.data;
+    categories.value = data.categories;
+    departments.value = data.departments;
+
+    pagination.value = {
+      current_page: data.assets.current_page,
+      per_page: data.assets.per_page,
+      total: data.assets.total,
+      from: data.assets.from,
+      to: data.assets.to,
+      last_page: data.assets.last_page,
+      links: data.assets.links,
+    };
+  } catch (err) {
+    errorMessage.value = "Unable to fetch assets data.";
+    console.error("Failed to fetch filtered assets:", err);
   }
 };
 

@@ -66,9 +66,7 @@ import EmptyState from "../../components/EmptyState.vue";
 import Pagination from "../../components/Pagination.vue";
 import AlertMessage from "../../components/AlertMessage.vue";
 import PrimaryLink from "../../components/PrimaryLink.vue";
-import { useAuthStore } from "../../store/auth";
 
-const auth = useAuthStore();
 const route = useRoute();
 const assets = ref({});
 const categories = ref([]);
