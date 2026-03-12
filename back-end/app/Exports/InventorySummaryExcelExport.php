@@ -3,49 +3,47 @@
 namespace App\Exports;
 
 use App\Models\Asset;
+use Illuminate\Support\Carbon;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
-class DepreciationSummaryCsvExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize
+class InventorySummaryExcelExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize
 {
     public function collection()
     {
         return Asset::with('category', 'department')->get();
     }
 
-
     public function headings(): array
     {
         return [
             'ASSET NAME',
+            'SUPPLIER',
             'CATEGORY',
-            'STATUS',
-            'PURCHASE COST',
-            'ACCUMULATED DEP.',
-            'BOOK VALUE',
-            'DEP. RATE'
+            'DEPARTMENT',
+            'PURCHASE DATE',
+            'ORIGINAL COST',
+            'CURRENT VALUE',
+            'CONDITION'
         ];
     }
 
-
     public function map($asset): array
     {
-        $status  =  $asset->years_used < $asset->useful_life;
-        $isActive = "Active";
-        if (!$status) {
-            $isActive = "Fully Depreciated";
-        }
+        $purchaseCost = $asset->purchase_cost ?? 0;
+        $purchaseDate = $asset->purchase_date ? Carbon::parse($asset->purchase_date) : null;
 
         return [
             $asset->asset_name ?? 'N/A',
+            $asset->supplier ?? 'N/A',
             $asset->category?->name ?? 'N/A',
-            $isActive,
-            number_format($asset->purchase_cost ?? 0, 2),
-            number_format($asset->accumulated_depreciation, 2),
+            $asset->department?->name ?? 'N/A',
+            $purchaseDate ? $purchaseDate->format('Y-m-d') : 'N/A',
+            number_format($purchaseCost, 2),
             number_format($asset->book_value, 2),
-            number_format($asset->depreciation_rate, 2) . '%',
+            $asset->condition ?? 'N/A',
         ];
     }
 }

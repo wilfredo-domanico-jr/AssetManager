@@ -1,8 +1,8 @@
 <?php
 
-use App\Exports\DepreciationSummaryCsvExport;
-use App\Exports\InventorySummaryCsvExport;
-use App\Exports\LifeCycleSummaryCsvExport;
+use App\Exports\DepreciationSummaryExcelExport;
+use App\Exports\InventorySummaryExcelExport;
+use App\Exports\LifeCycleSummaryExcelExport;
 use App\Http\Controllers\Api\AssetController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
@@ -46,21 +46,21 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('assets', AssetController::class);
     //FOR DEPRECIATION REPORT
     Route::get('depreciation', [DepreciationController::class, 'index']);
-    // EXPORT DEPRECIATION SUMMARY CSV 
-    Route::get('export-depreciation-summary-csv', function () {
-        return Excel::download(new DepreciationSummaryCsvExport, 'depreciation-summary.csv');
+    // EXPORT DEPRECIATION SUMMARY EXCEL 
+    Route::get('export-depreciation-summary-xlsx', function () {
+        return Excel::download(new DepreciationSummaryExcelExport, 'depreciation-summary.xlsx');
     });
     //FOR INVENTORY SUMMARY REPORT
     Route::get('inventory', [InventorySummaryController::class, 'index']);
-    // EXPORT INVENTORY SUMMARY CSV 
-    Route::get('export-inventory-summary-csv', function () {
-        return Excel::download(new InventorySummaryCsvExport, 'inventory-summary.csv');
+    // EXPORT INVENTORY SUMMARY EXCEL 
+    Route::get('export-inventory-summary-xlsx', function () {
+        return Excel::download(new InventorySummaryExcelExport, 'inventory-summary.xlsx');
     });
     //FOR LIFECYCLE SUMMARY REPORT
     Route::get('lifecycle', [LifeCycleSummaryController::class, 'index']);
-    // EXPORT LIFECYCLE SUMMARY CSV 
-    Route::get('export-lifecycle-summary-csv', function () {
-        return Excel::download(new LifeCycleSummaryCsvExport, 'lifecycle-summary.csv');
+    // EXPORT LIFECYCLE SUMMARY EXCEL 
+    Route::get('export-lifecycle-summary-xlsx', function () {
+        return Excel::download(new LifeCycleSummaryExcelExport, 'lifecycle-summary.xlsx');
     });
 
     // FOR CATEGORIES

@@ -15,7 +15,7 @@
       />
 
       <!-- Stats Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-5">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-5">
         <DashboardCard
           v-for="(stat, index) in dashboardStats"
           :key="index"
@@ -124,16 +124,17 @@
   </div>
 
   <!-- Floating Critical Asset Notification -->
-  <div
+  <router-link
     v-if="criticalAsset > 0"
-    class="fixed bottom-6 right-6 bg-red-600 text-white px-4 py-3 rounded-full shadow-lg flex items-center space-x-3 cursor-pointer animate-bounce z-50"
+    :to="{ path: '/assets', query: { filter: 'critical' } }"
+    class="fixed bottom-6 right-6 bg-red-600 text-white px-6 py-4 rounded-full shadow-xl flex items-center space-x-4 cursor-pointer animate-bounce z-50"
     title="View Critical Assets"
   >
-    <i class="fa-solid fa-bell text-lg"></i>
-    <span class="font-semibold text-sm">
+    <i class="fa-solid fa-bell text-2xl"></i>
+    <span class="font-bold text-lg">
       There are {{ criticalAsset }} critical assets
     </span>
-  </div>
+  </router-link>
 </template>
 
 <script setup>
@@ -199,14 +200,6 @@ const dashboardStats = computed(() => [
     icon: "fa-boxes-stacked",
     iconColor: "text-yellow-500",
     link: { path: "/assets", query: { status: "instock" } },
-  },
-  {
-    title: "Critical Assets",
-    value: criticalAsset.value,
-    subtitle: "Need Attention",
-    icon: "fa-triangle-exclamation",
-    iconColor: "text-red-500",
-    link: { path: "/assets", query: { filter: "critical" } },
   },
 ]);
 

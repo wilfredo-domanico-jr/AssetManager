@@ -35,11 +35,11 @@
 
           <!-- Export button -->
           <button
-            @click="exportDepreciationCSV"
+            @click="exportDepreciationExcel"
             class="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg shadow-sm transition-all dark:bg-blue-500 dark:hover:bg-blue-600 w-full sm:w-auto"
           >
             <i class="fa-solid fa-download"></i>
-            Export to CSV
+            Export to Excel
           </button>
         </div>
 
@@ -171,28 +171,29 @@ const fetchDepreciationData = async (page = 1) => {
   }
 };
 
-const exportDepreciationCSV = async () => {
+const exportDepreciationExcel = async () => {
   try {
-    const response = await api.get("/export-depreciation-summary-csv", {
+    const response = await api.get("/export-depreciation-summary-xlsx", {
       responseType: "blob",
     });
 
     const blob = new Blob([response.data], {
-      type: "text/csv",
+      type: "text/xlsx",
     });
 
     const url = window.URL.createObjectURL(blob);
 
     const link = document.createElement("a");
     link.href = url;
-    link.setAttribute("download", "depreciation-summary.csv");
+    link.setAttribute("download", "depreciation-summary.xlsx");
     document.body.appendChild(link);
     link.click();
 
     link.remove();
     window.URL.revokeObjectURL(url);
   } catch (error) {
-    errorMessage.value = "Exporting Depreciation Report to CSV Failed.";
+    errorMessage.value =
+      "Exporting Depreciation Summary Report to Excel Failed.";
     console.error("Export failed:", error);
   }
 };

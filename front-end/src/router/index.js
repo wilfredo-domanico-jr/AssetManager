@@ -60,7 +60,6 @@ const routes = [
         path: "assets/create",
         name: "AssetsCreate",
         component: AssetsCreate,
-        meta: { requiresAdmin: true },
       },
       {
         path: "assets/:id/edit",

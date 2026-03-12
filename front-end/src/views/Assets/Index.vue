@@ -5,7 +5,7 @@
         pageName="Assets"
         pageDescription="Manage your inventory and equipment"
       >
-        <template v-if="auth.user?.role === 'Admin'" #actionLink>
+        <template #actionLink>
           <PrimaryLink to="/assets/create">
             <i class="fa-solid fa-plus mr-2"></i>
             Add Asset

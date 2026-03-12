@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
-class LifeCycleSummaryCsvExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize
+class LifeCycleSummaryExcelExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize
 {
     public function collection()
     {
