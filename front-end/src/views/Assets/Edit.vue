@@ -31,6 +31,17 @@
             </div>
 
             <div>
+              <InputLabel value="Model" for="model" />
+              <TextInput
+                v-model="model"
+                type="text"
+                class="block mt-1 w-full"
+                required
+                placeholder="e.g., Dell Inspiron 15"
+              />
+            </div>
+
+            <div>
               <InputLabel value="Category" for="category_id" />
               <DropdownInput
                 v-model="category"
@@ -227,6 +238,7 @@ const assetId = route.params.id;
 
 // Form fields
 const assetName = ref("");
+const model = ref("");
 const category = ref("");
 const department = ref("");
 const purchaseDate = ref("");
@@ -279,6 +291,7 @@ onMounted(async () => {
     const asset = data.asset;
 
     assetName.value = asset.asset_name;
+    model.value = asset.model;
     category.value = asset.category_id;
     department.value = asset.department_id;
     purchaseDate.value = asset.purchase_date
@@ -309,6 +322,7 @@ const submitAsset = async () => {
 
     const formData = new FormData();
     formData.append("asset_name", assetName.value);
+    formData.append("model", model.value);
     formData.append("category_id", category.value);
     formData.append("department_id", department.value);
     formData.append("purchase_date", purchaseDate.value);

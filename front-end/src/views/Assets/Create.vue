@@ -38,6 +38,16 @@
             </div>
 
             <div>
+              <InputLabel value="Model" for="model" />
+              <TextInput
+                v-model="model"
+                type="text"
+                class="block mt-1 w-full"
+                placeholder="e.g., Dell Inspiron 15"
+              />
+            </div>
+
+            <div>
               <InputLabel value="Category" for="category_id" />
               <DropdownInput
                 v-model="category"
@@ -174,6 +184,7 @@ import PrimaryButton from "../../components/PrimaryButton.vue";
 import SecondaryLink from "../../components/SecondaryLink.vue";
 
 const assetName = ref("");
+const model = ref("");
 const category = ref("");
 const department = ref("");
 const purchaseDate = ref("");
@@ -230,6 +241,7 @@ const submitAsset = async () => {
     const formData = new FormData();
     const fields = [
       "asset_name",
+      "model",
       "category_id",
       "department_id",
       "purchase_date",
@@ -243,6 +255,7 @@ const submitAsset = async () => {
     fields.forEach((field) => {
       const valueMap = {
         asset_name: assetName.value,
+        model: model.value,
         category_id: category.value,
         department_id: department.value,
         purchase_date: purchaseDate.value,
@@ -265,6 +278,7 @@ const submitAsset = async () => {
 
     // Clear form fields
     assetName.value = "";
+    model.value = "";
     category.value = "";
     department.value = "";
     purchaseDate.value = "";
@@ -277,7 +291,6 @@ const submitAsset = async () => {
     description.value = "";
 
     imageInputKey.value = Date.now();
-    
   } catch (err) {
     if (err.response?.data?.errors) {
       errorMessage.value = Object.values(err.response.data.errors)

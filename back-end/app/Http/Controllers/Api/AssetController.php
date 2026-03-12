@@ -6,6 +6,7 @@ use App\Models\Asset;
 use App\Models\Category;
 use App\Models\Department;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
@@ -80,7 +81,8 @@ class AssetController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'asset_name' => 'required|string|max:255',
+            'asset_name' => 'required|string|max:255|unique:assets,asset_name',
+            'model' => 'required|string|max:255',
             'category_id' => 'required|integer|exists:categories,id',
             'department_id' => 'required|integer|exists:departments,id',
             'purchase_date' => 'required|date',
@@ -96,7 +98,7 @@ class AssetController extends Controller
             $validated['image'] = $request->file('image')->store('assets', 'public');
         }
 
-        $asset = Asset::create($validated);
+        Asset::create($validated);
 
         return response()->json([
             'message' => 'Asset added successfully!'
@@ -122,7 +124,13 @@ class AssetController extends Controller
     {
 
         $validated = $request->validate([
-            'asset_name' => 'required|string|max:255',
+            'asset_name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('assets', 'asset_name')->ignore($asset->id)
+            ],
+            'model' => 'required|string|max:255',
             'category_id' => 'required|integer|exists:categories,id',
             'department_id' => 'required|integer|exists:departments,id',
             'purchase_date' => 'required|date',
@@ -132,8 +140,8 @@ class AssetController extends Controller
             'condition' => 'required|string|max:255',
             'description' => 'nullable|string',
             'is_deployed' => 'required|boolean',
-            'deployed_name' => 'required_if:is_deployed,true|string|max:255',
-            'deployed_designation' => 'required_if:is_deployed,true|integer|exists:departments,id',
+            'deployed_name' => 'exclude_if:is_deployed,false|required|string|max:255',
+            'deployed_designation' => 'exclude_if:is_deployed,false|required|integer|exists:departments,id',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 

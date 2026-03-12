@@ -18,7 +18,7 @@ It helps organizations efficiently track and manage assets across their entire l
 ## Screenshot
 
 <p align="center">
-  <img src="screenshot.png" alt="Asset Management Screenshot" width="700">
+  <img src="screenshot_new.png" alt="Asset Management Screenshot" width="700">
 </p>
 
 ---
