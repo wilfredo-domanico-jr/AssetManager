@@ -4,9 +4,9 @@ namespace App\Console\Commands;
 
 use App\Mail\SendInventorySummaryMail;
 use App\Models\ReportEmail;
-use App\Exports\InventorySummaryCsvExport;
-use App\Exports\DepreciationSummaryCsvExport;
-use App\Exports\LifeCycleSummaryCsvExport;
+use App\Exports\InventorySummaryExcelExport;
+use App\Exports\DepreciationSummaryExcelExport;
+use App\Exports\LifeCycleSummaryExcelExport;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
@@ -35,18 +35,18 @@ class SendReportEmailCommand extends Command
         // Generate unique filenames
         $timestamp = now()->format('Y_m_d_His');
 
-        $inventorySummaryFile = "inventory_summary_{$timestamp}.csv";
-        $depreciationSummaryFile = "depreciation_summary_{$timestamp}.csv";
-        $lifecycleSummaryFile = "lifecycle_summary_{$timestamp}.csv";
+        $inventorySummaryFile = "inventory_summary_{$timestamp}.xlsx";
+        $depreciationSummaryFile = "depreciation_summary_{$timestamp}.xlsx";
+        $lifecycleSummaryFile = "lifecycle_summary_{$timestamp}.xlsx";
 
         // Paths to store
         $inventorySummaryFilePath = "generated_reports/{$inventorySummaryFile}";
         $depreciationSummaryFilePath = "generated_reports/{$depreciationSummaryFile}";
         $lifecycleSummaryFilePath = "generated_reports/{$lifecycleSummaryFile}";
-        // Generate CSV files
-        Excel::store(new InventorySummaryCsvExport, $inventorySummaryFilePath, 'public');
-        Excel::store(new DepreciationSummaryCsvExport, $depreciationSummaryFilePath, 'public');
-        Excel::store(new LifeCycleSummaryCsvExport, $lifecycleSummaryFilePath, 'public');
+        // Generate Excel files
+        Excel::store(new InventorySummaryExcelExport, $inventorySummaryFilePath, 'public');
+        Excel::store(new DepreciationSummaryExcelExport, $depreciationSummaryFilePath, 'public');
+        Excel::store(new LifeCycleSummaryExcelExport, $lifecycleSummaryFilePath, 'public');
 
         // Full storage paths
         $inventorySummary = storage_path("app/public/{$inventorySummaryFilePath}");
@@ -55,17 +55,17 @@ class SendReportEmailCommand extends Command
 
         // Safety checks
         if (!file_exists($inventorySummary)) {
-            $this->error("CSV file not found at: {$inventorySummary}");
+            $this->error("Excel file not found at: {$inventorySummary}");
             return Command::FAILURE;
         }
 
         if (!file_exists($depreciationSummary)) {
-            $this->error("CSV file not found at: {$depreciationSummary}");
+            $this->error("Excel file not found at: {$depreciationSummary}");
             return Command::FAILURE;
         }
 
         if (!file_exists($lifecycleSummary)) {
-            $this->error("CSV file not found at: {$lifecycleSummary}");
+            $this->error("Excel file not found at: {$lifecycleSummary}");
             return Command::FAILURE;
         }
 
