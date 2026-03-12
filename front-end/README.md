@@ -1,5 +1,94 @@
-# Vue 3 + Vite
+# Asset Manager Frontend
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+This is the **frontend application** for the Asset Manager System.
+It is built using **Vue.js** and communicates with the backend API to manage and monitor organizational assets.
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+The application provides an intuitive interface for users to view, manage, and track assets.
+
+---
+
+## Tech Stack
+
+- **Framework:** Vue.js
+- **Build Tool:** Vite
+- **Styling:** Tailwind CSS
+- **Routing:** Vue Router
+- **State Management:** Pinia
+- **HTTP Client:** Axios
+
+---
+
+## Features
+
+- User authentication
+- Asset listing and management
+- Role-based UI (Admin / User)
+- Asset creation and editing
+- Responsive UI
+- API integration with Laravel backend
+
+---
+
+## Installation
+
+### Install dependencies
+
+```bash
+npm install
+```
+
+---
+
+### Run development server
+
+```bash
+npm run dev
+```
+
+The application will run at:
+
+```
+http://localhost:5173
+```
+
+---
+
+## Build for Production
+
+```bash
+npm run build
+```
+
+---
+
+## Environment Configuration
+
+Create a `.env` file if needed for API configuration.
+
+Example:
+
+```
+VITE_API_URL=http://localhost:8000/api
+```
+
+---
+
+## Project Structure
+
+```
+src/
+ ├── components
+ ├── pages
+ ├── router
+ ├── stores
+ ├── services
+ └── assets
+```
+
+---
+
+## Backend API
+
+This frontend communicates with the **Laravel backend API**.
+
+See the backend folder for API setup instructions.
