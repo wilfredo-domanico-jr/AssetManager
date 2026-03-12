@@ -10,6 +10,7 @@ Thumbs.db
 /.fleet
 /.zed
 /auth.json
+node_modules/
 
 # ======================
 # FRONTEND (Vue)
