@@ -5,7 +5,7 @@
         pageName="Assets"
         pageDescription="Manage your inventory and equipment"
       >
-        <template #actionLink>
+        <template v-if="auth.user?.role === 'Admin'" #actionLink>
           <PrimaryLink to="/assets/create">
             <i class="fa-solid fa-plus mr-2"></i>
             Add Asset
@@ -65,7 +65,9 @@ import EmptyState from "../../components/EmptyState.vue";
 import Pagination from "../../components/Pagination.vue";
 import AlertMessage from "../../components/AlertMessage.vue";
 import PrimaryLink from "../../components/PrimaryLink.vue";
+import { useAuthStore } from "../../store/auth";
 
+const auth = useAuthStore();
 const assets = ref({});
 const categories = ref([]);
 const departments = ref([]);

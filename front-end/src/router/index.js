@@ -60,12 +60,14 @@ const routes = [
         path: "assets/create",
         name: "AssetsCreate",
         component: AssetsCreate,
+        meta: { requiresAdmin: true },
       },
       {
         path: "assets/:id/edit",
         name: "AssetsEdit",
         component: AssetsEdit,
         props: true,
+        meta: { requiresAdmin: true },
       },
       {
         path: "depreciation",
@@ -150,16 +152,19 @@ const routes = [
         path: "login",
         name: "Login",
         component: Login,
+        meta: { guest: true },
       },
       {
         path: "forgot-password",
         name: "ForgotPassword",
         component: ForgotPassword,
+        meta: { guest: true },
       },
       {
         path: "reset-password",
         name: "ResetPassword",
         component: ResetPassword,
+        meta: { guest: true },
       },
     ],
   },
@@ -179,7 +184,7 @@ router.beforeEach(async (to, from, next) => {
   }
 
   // If not logged in and trying to access protected route
-  if (!auth.user && to.name !== "Login") {
+  if (!auth.user && !to.meta.guest) {
     return next({ name: "Login" });
   }
 

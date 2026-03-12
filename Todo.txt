@@ -1,0 +1,7 @@
+1. Remove  edit function as an asset
+2. Clickable Yung Total Assets, Deployed, In Stock, Critical 
+3. Asset name as primary key
+4. Model field for asset
+6.Graph of asset plus clickable
+7. Critical Asset pop up lower left UI.
+8. Per category export function
