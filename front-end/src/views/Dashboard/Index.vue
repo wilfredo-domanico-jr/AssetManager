@@ -122,6 +122,18 @@
       </div>
     </div>
   </div>
+
+  <!-- Floating Critical Asset Notification -->
+  <div
+    v-if="criticalAsset > 0"
+    class="fixed bottom-6 right-6 bg-red-600 text-white px-4 py-3 rounded-full shadow-lg flex items-center space-x-3 cursor-pointer animate-bounce z-50"
+    title="View Critical Assets"
+  >
+    <i class="fa-solid fa-bell text-lg"></i>
+    <span class="font-semibold text-sm">
+      There are {{ criticalAsset }} critical assets
+    </span>
+  </div>
 </template>
 
 <script setup>
