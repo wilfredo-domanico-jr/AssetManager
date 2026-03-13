@@ -48,16 +48,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('depreciation', [DepreciationController::class, 'index']);
     // EXPORT DEPRECIATION SUMMARY EXCEL 
     Route::get('export-depreciation-summary-xlsx', [ExportReportController::class, 'exportDepreciation']);
+
     //FOR INVENTORY SUMMARY REPORT
     Route::get('inventory', [InventorySummaryController::class, 'index']);
     // EXPORT INVENTORY SUMMARY EXCEL 
     Route::get('export-inventory-summary-xlsx', [ExportReportController::class, 'exportInventory']);
+
+
     //FOR LIFECYCLE SUMMARY REPORT
     Route::get('lifecycle', [LifeCycleSummaryController::class, 'index']);
     // EXPORT LIFECYCLE SUMMARY EXCEL 
-    Route::get('export-lifecycle-summary-xlsx', function () {
-        return Excel::download(new LifeCycleSummaryExcelExport, 'lifecycle-summary.xlsx');
-    });
+    Route::get('export-lifecycle-summary-xlsx', [ExportReportController::class, 'exportLifeCycle']);
 
     // FOR CATEGORIES
     Route::resource('categories', CategoryController::class);

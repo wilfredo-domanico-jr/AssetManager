@@ -15,6 +15,12 @@
 
       <ReportTabs />
 
+      <SearchFilter
+        :categories="categories"
+        :departments="departments"
+        @filter-changed="applyFilter"
+      />
+
       <div
         class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-5 shadow-sm"
       >
@@ -69,15 +75,19 @@
 import ReportTabs from "../components/ReportTabs.vue";
 import LifeCycleSummaryCard from "./components/LifeCycleSummaryCard.vue";
 import SubHeader from "../../../components/SubHeader.vue";
+import SearchFilter from "../components/SearchFilter.vue";
 import EmptyState from "../../../components/EmptyState.vue";
 import Pagination from "../../../components/Pagination.vue";
 import AlertMessage from "../../../components/AlertMessage.vue";
-
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import api from "../../../plugins/api";
+import { useRoute } from "vue-router";
 
+const route = useRoute();
 const errorMessage = ref("");
 const assets = ref([]);
+const categories = ref([]);
+const departments = ref([]);
 
 const pagination = ref({
   current_page: 1,
@@ -91,13 +101,24 @@ const pagination = ref({
 
 onMounted(() => fetchLifeCycleSummaryData());
 
+watch(
+  () => route.query,
+  () => {
+    fetchLifeCycleSummaryData;
+  },
+);
+
 const fetchLifeCycleSummaryData = async (page = 1) => {
   try {
     errorMessage.value = "";
-    const response = await api.get("/lifecycle", { params: { page } });
+    const response = await api.get("/lifecycle", {
+      params: { page, ...route.query },
+    });
     const data = response.data;
 
     assets.value = data.assets.data;
+    categories.value = data.categories;
+    departments.value = data.departments;
 
     pagination.value = {
       current_page: data.assets.current_page,
@@ -114,9 +135,37 @@ const fetchLifeCycleSummaryData = async (page = 1) => {
   }
 };
 
+const applyFilter = async (filters) => {
+  try {
+    errorMessage.value = "";
+    const params = { ...route.query, ...filters };
+
+    const response = await api.get("/lifecycle", { params });
+
+    const data = response.data;
+    assets.value = data.assets.data;
+    categories.value = data.categories;
+    departments.value = data.departments;
+
+    pagination.value = {
+      current_page: data.assets.current_page,
+      per_page: data.assets.per_page,
+      total: data.assets.total,
+      from: data.assets.from,
+      to: data.assets.to,
+      last_page: data.assets.last_page,
+      links: data.assets.links,
+    };
+  } catch (err) {
+    errorMessage.value = "Unable to fetch assets data.";
+    console.error("Failed to fetch filtered assets:", err);
+  }
+};
+
 const exportLifeCycleSummaryExcel = async () => {
   try {
     const response = await api.get("/export-lifecycle-summary-xlsx", {
+      params: { ...route.query },
       responseType: "blob",
     });
 
