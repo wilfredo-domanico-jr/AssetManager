@@ -57,30 +57,31 @@ class UserController extends Controller
 
 
 
-    // public function edit(Category $category)
-    // {
-    //     return response()->json(['category' => $category], 200);
-    // }
+    public function edit(User $user)
+    {
+        return response()->json(['user' => $user], 200);
+    }
 
 
 
 
 
-    // public function update(Request $request, Category $category)
-    // {
-    //     $request->validate([
-    //         'name' => 'required|string|max:255',
-    //         'description' => 'nullable|string',
-    //     ]);
+    public function update(Request $request, User $user)
+    {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'role' => ['required', 'string', 'max:255'],
+        ]);
 
-    //     $category->update($request->only('name', 'description'));
+        $user->update($request->only('name', 'email', 'role'));
 
 
-    //     return response()->json([
-    //         'message' => 'Category updated successfully!',
-    //         'category' => $category
-    //     ], 200);
-    // }
+        return response()->json([
+            'message' => 'User updated successfully!',
+            'user' => $user
+        ], 200);
+    }
 
 
 

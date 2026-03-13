@@ -40,6 +40,7 @@ import ReportEmailSettingIndex from "../views/ReportEmailSetting/Index.vue";
 // === USERS ===
 import UsersIndex from "../views/Users/Index.vue";
 import UsersCreate from "../views/Users/Create.vue";
+import UsersEdit from "../views/Users/Edit.vue";
 
 const routes = [
   {
@@ -137,6 +138,12 @@ const routes = [
         path: "users/create",
         name: "UsersCreate",
         component: UsersCreate,
+        meta: { requiresAdmin: true },
+      },
+      {
+        path: "users/:id/edit",
+        name: "UsersEdit",
+        component: UsersEdit,
         meta: { requiresAdmin: true },
       },
     ],
