@@ -200,7 +200,6 @@ const applyFilter = async (filters) => {
 
     const response = await api.get("/depreciation", { params });
 
-    console.log("Response ng Apply filter", response.data);
     const data = response.data;
 
     totPurchaseCost.value = data.totalPurchaseCost;

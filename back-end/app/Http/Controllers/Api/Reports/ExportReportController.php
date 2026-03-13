@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Reports;
 
 use App\Exports\DepreciationSummaryExcelExport;
+use App\Exports\InventorySummaryExcelExport;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -21,6 +22,21 @@ class ExportReportController extends Controller
                 $request->condition
             ),
             'depreciation-summary.xlsx'
+        );
+    }
+
+
+    public function exportInventory(Request $request)
+    {
+
+        return Excel::download(
+            new InventorySummaryExcelExport(
+                $request->search,
+                $request->category,
+                $request->department,
+                $request->condition
+            ),
+            'inventory-summary.xlsx'
         );
     }
 }

@@ -11,10 +11,42 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 class InventorySummaryExcelExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize
 {
+    protected $search;
+    protected $category;
+    protected $department;
+    protected $condition;
+
+    public function __construct($search, $category, $department, $condition)
+    {
+        $this->search = $search;
+        $this->category = $category;
+        $this->department = $department;
+        $this->condition = $condition;
+    }
+
     public function collection()
     {
-        return Asset::with('category', 'department')->get();
+        $query = Asset::with('category', 'department');
+
+        if ($this->search) {
+            $query->where('asset_name', 'like', '%' . $this->search . '%');
+        }
+
+        if ($this->category) {
+            $query->where('category_id', $this->category);
+        }
+
+        if ($this->department) {
+            $query->where('department_id', $this->department);
+        }
+
+        if ($this->condition) {
+            $query->where('condition', $this->condition);
+        }
+
+        return $query->get();
     }
+
 
     public function headings(): array
     {

@@ -15,7 +15,6 @@ class DepreciationController extends Controller
     public function index(Request $request)
     {
 
-
         $query = Asset::with(['category', 'department'])
             ->when($request->search, fn($q) => $q->where('asset_name', 'like', "%{$request->search}%"))
             ->when($request->category, fn($q) => $q->where('category_id', $request->category))

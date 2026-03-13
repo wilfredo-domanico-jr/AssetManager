@@ -1,6 +1,6 @@
 <?php
 
-use App\Exports\InventorySummaryExcelExport;
+
 use App\Exports\LifeCycleSummaryExcelExport;
 use App\Http\Controllers\Api\AssetController;
 use App\Http\Controllers\Api\AuthController;
@@ -51,9 +51,7 @@ Route::middleware('auth:sanctum')->group(function () {
     //FOR INVENTORY SUMMARY REPORT
     Route::get('inventory', [InventorySummaryController::class, 'index']);
     // EXPORT INVENTORY SUMMARY EXCEL 
-    Route::get('export-inventory-summary-xlsx', function () {
-        return Excel::download(new InventorySummaryExcelExport, 'inventory-summary.xlsx');
-    });
+    Route::get('export-inventory-summary-xlsx', [ExportReportController::class, 'exportInventory']);
     //FOR LIFECYCLE SUMMARY REPORT
     Route::get('lifecycle', [LifeCycleSummaryController::class, 'index']);
     // EXPORT LIFECYCLE SUMMARY EXCEL 
