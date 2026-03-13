@@ -228,13 +228,13 @@ const applyFilter = async (filters) => {
 const exportDepreciationExcel = async () => {
   try {
     const response = await api.get("/export-depreciation-summary-xlsx", {
+      params: { ...route.query },
       responseType: "blob",
     });
 
     const blob = new Blob([response.data], {
-      type: "text/xlsx",
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-
     const url = window.URL.createObjectURL(blob);
 
     const link = document.createElement("a");

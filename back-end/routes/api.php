@@ -1,6 +1,5 @@
 <?php
 
-use App\Exports\DepreciationSummaryExcelExport;
 use App\Exports\InventorySummaryExcelExport;
 use App\Exports\LifeCycleSummaryExcelExport;
 use App\Http\Controllers\Api\AssetController;
@@ -10,12 +9,13 @@ use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\DepartmentController;
 use App\Http\Controllers\Api\ReportEmailSettingController;
 use App\Http\Controllers\Api\Reports\DepreciationController;
+use App\Http\Controllers\Api\Reports\ExportReportController;
 use App\Http\Controllers\Api\Reports\InventorySummaryController;
 use App\Http\Controllers\Api\Reports\LifeCycleSummaryController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Maatwebsite\Excel\Facades\Excel;
+
 
 
 Route::get('/', function () {
@@ -47,9 +47,7 @@ Route::middleware('auth:sanctum')->group(function () {
     //FOR DEPRECIATION REPORT
     Route::get('depreciation', [DepreciationController::class, 'index']);
     // EXPORT DEPRECIATION SUMMARY EXCEL 
-    Route::get('export-depreciation-summary-xlsx', function () {
-        return Excel::download(new DepreciationSummaryExcelExport, 'depreciation-summary.xlsx');
-    });
+    Route::get('export-depreciation-summary-xlsx', [ExportReportController::class, 'exportDepreciation']);
     //FOR INVENTORY SUMMARY REPORT
     Route::get('inventory', [InventorySummaryController::class, 'index']);
     // EXPORT INVENTORY SUMMARY EXCEL 

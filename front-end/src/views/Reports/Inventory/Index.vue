@@ -121,7 +121,7 @@ const exportInventorySummaryExcel = async () => {
     });
 
     const blob = new Blob([response.data], {
-      type: "text/xlsx",
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
 
     const url = window.URL.createObjectURL(blob);
