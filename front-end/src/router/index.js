@@ -69,7 +69,7 @@ const routes = [
         name: "AssetsEdit",
         component: AssetsEdit,
         props: true,
-        meta: { requiresAdmin: true, group: "asset" },
+        meta: { group: "asset" },
       },
       {
         path: "depreciation",

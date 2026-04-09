@@ -16,7 +16,7 @@
       <div
         class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm p-4 space-y-4"
       >
-        <form @submit.prevent="submitAsset" class="space-y-6">
+        <form v-if="isAdmin" @submit.prevent="submitAsset" class="space-y-6">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <InputLabel value="Asset Name" for="asset_name" />
@@ -212,6 +212,198 @@
             </PrimaryButton>
           </div>
         </form>
+
+        <form v-else class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <InputLabel value="Asset Name" for="asset_name" />
+              <TextInput
+                v-model="assetName"
+                type="text"
+                class="block mt-1 w-full"
+                required
+                autofocus
+                placeholder="e.g., ITV0002"
+                :disabled="!isAdmin"
+              />
+            </div>
+
+            <div>
+              <InputLabel value="Model" for="model" />
+              <TextInput
+                v-model="model"
+                type="text"
+                class="block mt-1 w-full"
+                required
+                placeholder="e.g., Dell Inspiron 15"
+                :disabled="!isAdmin"
+              />
+            </div>
+
+            <div>
+              <InputLabel value="Category" for="category_id" />
+              <DropdownInput
+                v-model="category"
+                :options="categoryOptions"
+                class="mt-1 w-full"
+                required
+                :disabled="!isAdmin"
+              />
+            </div>
+
+            <div>
+              <InputLabel value="Department" for="department_id" />
+              <DropdownInput
+                v-model="department"
+                :options="departmentOptions"
+                class="mt-1 w-full"
+                required
+                :disabled="!isAdmin"
+              />
+            </div>
+
+            <div>
+              <InputLabel value="Purchase Date" for="purchase_date" />
+              <TextInput
+                v-model="purchaseDate"
+                type="date"
+                class="mt-1 w-full"
+                required
+                :disabled="!isAdmin"
+              />
+            </div>
+
+            <div>
+              <InputLabel value="Purchase Cost (₱)" for="purchase_cost" />
+              <TextInput
+                v-model.number="purchaseCost"
+                type="number"
+                placeholder="0.00"
+                step="0.01"
+                min="0"
+                class="mt-1 w-full"
+                required
+                :disabled="!isAdmin"
+              />
+            </div>
+
+            <div>
+              <InputLabel value="Useful Life (Years)" for="useful_life" />
+              <TextInput
+                v-model.number="usefulLife"
+                type="number"
+                placeholder="e.g., 2"
+                min="1"
+                class="mt-1 w-full"
+                required
+                :disabled="!isAdmin"
+              />
+            </div>
+
+            <div>
+              <InputLabel value="Supplier" for="supplier" />
+              <TextInput
+                v-model="supplier"
+                type="text"
+                placeholder="e.g., EasyPC"
+                class="mt-1 w-full"
+                required
+                :disabled="!isAdmin"
+              />
+            </div>
+
+            <div>
+              <InputLabel value="Condition" for="condition" />
+              <DropdownInput
+                v-model="condition"
+                :options="conditionOptions"
+                class="mt-1 w-full"
+                required
+                :disabled="!isAdmin"
+              />
+            </div>
+
+            <div class="md:col-span-2">
+              <div v-if="assetPreviewUrl" class="mt-3 flex justify-center">
+                <img
+                  :src="assetPreviewUrl"
+                  class="w-48 h-48 object-cover rounded-lg shadow-md border border-gray-300 dark:border-gray-700"
+                  alt="Preview"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <InputLabel value="Description (Optional)" for="description" />
+            <TextAreaInput
+              v-model="description"
+              rows="3"
+              placeholder="Additional notes about this asset..."
+              class="mt-1 w-full"
+              :disabled="!isAdmin"
+            />
+          </div>
+
+          <!-- Start Toggle Deployment -->
+          <div class="md:col-span-2 flex items-center space-x-3 mt-4">
+            <InputLabel value="Deployed ?" for="isDeployed" />
+
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input
+                v-model="isDeployed"
+                type="checkbox"
+                class="sr-only peer"
+                :disabled="!isAdmin"
+              />
+
+              <div
+                class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:bg-indigo-600 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"
+              ></div>
+            </label>
+          </div>
+          <!-- End Toggle Deployment -->
+
+          <!-- Start Deployment Field -->
+
+          <div
+            v-show="isDeployed"
+            class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 mt-4"
+          >
+            <div class="md:col-span-2">
+              <hr class="border-t border-gray-200 dark:border-gray-700 mb-3" />
+              <label
+                class="block text-center font-medium text-gray-700 dark:text-gray-300"
+              >
+                Deployment Details
+              </label>
+            </div>
+
+            <div>
+              <InputLabel value="Name" for="name" />
+
+              <TextInput
+                v-model="deployedName"
+                type="text"
+                class="block mt-1 w-full"
+                :required="isDeployed"
+                :disabled="!isAdmin"
+              />
+            </div>
+
+            <div>
+              <InputLabel value="Designation" for="designation" />
+
+              <DropdownInput
+                v-model="deployedDepartment"
+                :options="departmentOptions"
+                class="mt-1 w-full"
+                :required="isDeployed"
+                :disabled="!isAdmin"
+              />
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -221,6 +413,10 @@
 import { ref, onMounted, computed, watch } from "vue";
 import { useRoute } from "vue-router";
 import api from "../../plugins/api";
+import { useAuthStore } from "../../store/auth";
+const auth = useAuthStore();
+
+const isAdmin = computed(() => auth.user?.role === "Admin");
 
 import SubHeader from "../../components/SubHeader.vue";
 import AlertMessage from "../../components/AlertMessage.vue";

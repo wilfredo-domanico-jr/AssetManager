@@ -44,6 +44,12 @@
           <i class="fa-solid fa-trash hover:text-red-500 cursor-pointer"></i>
         </button>
       </div>
+
+      <div v-else class="flex space-x-3 text-gray-500 dark:text-gray-300">
+        <router-link :to="{ name: 'AssetsEdit', params: { id: asset.id } }">
+          <i class="fa-solid fa-eye hover:text-blue-500 cursor-pointer"></i>
+        </router-link>
+      </div>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
