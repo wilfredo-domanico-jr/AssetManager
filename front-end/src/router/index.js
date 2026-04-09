@@ -1,0 +1,211 @@
+// === IMPORTS ===
+import { createRouter, createWebHistory } from "vue-router";
+import { useAuthStore } from "../store/auth";
+// === LAYOUTS ===
+import DefaultLayout from "../DefaultLayout.vue";
+import AuthenticationLayout from "../AuthenticationLayout.vue";
+
+// === AUTHENTICATION ===
+import Login from "../views/Auth/Login.vue";
+import ForgotPassword from "../views/Auth/ForgotPassword.vue";
+import ResetPassword from "../views/Auth/ResetPassword.vue";
+
+// === DASHBOARD ===
+import DashboardIndex from "../views/Dashboard/Index.vue";
+
+// === ASSETS ===
+import AssetsIndex from "../views/Assets/Index.vue";
+import AssetsCreate from "../views/Assets/Create.vue";
+import AssetsEdit from "../views/Assets/Edit.vue";
+
+// === REPORTS ===
+
+import DepreciationReportIndex from "../views/Reports/Depreciation/Index.vue";
+import InventoryReportIndex from "../views/Reports/Inventory/Index.vue";
+import LifeCycleReportIndex from "../views/Reports/LifeCycle/Index.vue";
+
+// === CATEGORIES ===
+import CategoriesIndex from "../views/Categories/Index.vue";
+import CategoriesCreate from "../views/Categories/Create.vue";
+import CategoriesEdit from "../views/Categories/Edit.vue";
+
+// === DEPARTMENTS ===
+import DepartmentsIndex from "../views/Departments/Index.vue";
+import DepartmentsCreate from "../views/Departments/Create.vue";
+import DepartmentsEdit from "../views/Departments/Edit.vue";
+
+// === REPORT EMAIL SETTING ===
+import ReportEmailSettingIndex from "../views/ReportEmailSetting/Index.vue";
+
+// === USERS ===
+import UsersIndex from "../views/Users/Index.vue";
+import UsersCreate from "../views/Users/Create.vue";
+import UsersEdit from "../views/Users/Edit.vue";
+
+const routes = [
+  {
+    path: "/",
+    component: DefaultLayout,
+    children: [
+      {
+        path: "",
+        name: "Dashboard",
+        component: DashboardIndex,
+      },
+      {
+        path: "assets",
+        name: "Assets",
+        component: AssetsIndex,
+        meta: { group: "asset" },
+      },
+      {
+        path: "assets/create",
+        name: "AssetsCreate",
+        component: AssetsCreate,
+        meta: { group: "asset" },
+      },
+      {
+        path: "assets/:id/edit",
+        name: "AssetsEdit",
+        component: AssetsEdit,
+        props: true,
+        meta: { group: "asset" },
+      },
+      {
+        path: "depreciation",
+        name: "DepreciationReport",
+        component: DepreciationReportIndex,
+        meta: { group: "report" },
+      },
+      {
+        path: "inventory",
+        name: "InventoryReport",
+        component: InventoryReportIndex,
+        meta: { group: "report" },
+      },
+      {
+        path: "lifecycle",
+        name: "LifeCycleReport",
+        component: LifeCycleReportIndex,
+        meta: { group: "report" },
+      },
+      {
+        path: "categories",
+        name: "Categories",
+        component: CategoriesIndex,
+        meta: { requiresAdmin: true },
+        meta: { group: "category" },
+      },
+      {
+        path: "categories/create",
+        name: "CategoriesCreate",
+        component: CategoriesCreate,
+        meta: { requiresAdmin: true, group: "category" },
+      },
+      {
+        path: "categories/:id/edit",
+        name: "CategoriesEdit",
+        component: CategoriesEdit,
+        props: true,
+        meta: { requiresAdmin: true, group: "category" },
+      },
+      {
+        path: "departments",
+        name: "Departments",
+        component: DepartmentsIndex,
+        meta: { requiresAdmin: true, group: "department" },
+      },
+      {
+        path: "departments/create",
+        name: "DepartmentsCreate",
+        component: DepartmentsCreate,
+        meta: { requiresAdmin: true, group: "department" },
+      },
+      {
+        path: "departments/:id/edit",
+        name: "DepartmentsEdit",
+        component: DepartmentsEdit,
+        props: true,
+        meta: { requiresAdmin: true, group: "department" },
+      },
+      {
+        path: "report-email-setting",
+        name: "ReportEmailSetting",
+        component: ReportEmailSettingIndex,
+        meta: { requiresAdmin: true },
+      },
+      {
+        path: "users",
+        name: "Users",
+        component: UsersIndex,
+        meta: { requiresAdmin: true, group: "user" },
+      },
+      {
+        path: "users/create",
+        name: "UsersCreate",
+        component: UsersCreate,
+        meta: { requiresAdmin: true, group: "user" },
+      },
+      {
+        path: "users/:id/edit",
+        name: "UsersEdit",
+        component: UsersEdit,
+        meta: { requiresAdmin: true, group: "user" },
+      },
+    ],
+  },
+
+  // Authentication routes
+  {
+    path: "/auth",
+    component: AuthenticationLayout,
+    children: [
+      {
+        path: "login",
+        name: "Login",
+        component: Login,
+        meta: { guest: true },
+      },
+      {
+        path: "forgot-password",
+        name: "ForgotPassword",
+        component: ForgotPassword,
+        meta: { guest: true },
+      },
+      {
+        path: "reset-password",
+        name: "ResetPassword",
+        component: ResetPassword,
+        meta: { guest: true },
+      },
+    ],
+  },
+];
+
+const router = createRouter({
+  history: createWebHistory(), // uses HTML5 history mode
+  routes,
+});
+
+router.beforeEach(async (to, from, next) => {
+  const auth = useAuthStore();
+
+  // Always attempt to restore user on refresh
+  if (!auth.user) {
+    await auth.fetchUser();
+  }
+
+  // If not logged in and trying to access protected route
+  if (!auth.user && !to.meta.guest) {
+    return next({ name: "Login" });
+  }
+
+  // Admin check
+  if (to.meta.requiresAdmin && auth.user?.role !== "Admin") {
+    return next({ name: "Dashboard" });
+  }
+
+  next();
+});
+
+export default router;
