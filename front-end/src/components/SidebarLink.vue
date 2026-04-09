@@ -17,9 +17,15 @@ const props = defineProps({
   icon: String,
   label: String,
   routeName: String,
+  group: String,
 });
 
 const route = useRoute();
 
-const isActive = computed(() => route.name === props.routeName);
+console.log(props.group);
+
+const isActive = computed(() => {
+  if (!props.group) return route.name === props.routeName;
+  return route.matched.some((record) => record.meta?.group === props.group);
+});
 </script>

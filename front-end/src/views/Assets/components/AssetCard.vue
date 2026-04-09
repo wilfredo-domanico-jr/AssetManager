@@ -36,7 +36,7 @@
         v-if="auth.user?.role === 'Admin'"
         class="flex space-x-3 text-gray-500 dark:text-gray-300"
       >
-        <router-link :to="`/assets/${asset.id}/edit`">
+        <router-link :to="{ name: 'AssetsEdit', params: { id: asset.id } }">
           <i class="fa-solid fa-pen hover:text-blue-500 cursor-pointer"></i>
         </router-link>
 

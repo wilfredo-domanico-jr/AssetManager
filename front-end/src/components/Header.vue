@@ -3,7 +3,13 @@
   <header
     class="bg-white dark:bg-gray-800 shadow flex items-center justify-between px-4 lg:px-8 py-4"
   >
-    <button class="lg:hidden text-gray-600 dark:text-gray-300">
+    <!-- Mobile hamburger -->
+    <button
+      type="button"
+      class="lg:hidden text-gray-600 dark:text-gray-300"
+      @click="$emit('open-sidebar')"
+      aria-label="Open sidebar"
+    >
       <i class="fa-solid fa-bars text-xl"></i>
     </button>
 
@@ -21,5 +27,6 @@
 <script>
 export default {
   name: "Header",
+  emits: ["open-sidebar"],
 };
 </script>

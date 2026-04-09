@@ -124,15 +124,17 @@
   </div>
 
   <!-- Floating Critical Asset Notification -->
+
   <router-link
     v-if="criticalAsset > 0"
     :to="{ path: '/assets', query: { filter: 'critical' } }"
-    class="fixed bottom-6 right-6 bg-red-600 text-white px-6 py-4 rounded-full shadow-xl flex items-center space-x-4 cursor-pointer animate-bounce z-50"
     title="View Critical Assets"
+    class="fixed bottom-4 right-4 z-20 flex items-center gap-2 rounded-full shadow-xl cursor-pointer animate-bounce bg-red-600 text-white px-4 py-2 text-sm sm:px-5 sm:py-3 sm:text-base lg:px-6 lg:py-4 lg:text-lg"
   >
-    <i class="fa-solid fa-bell text-2xl"></i>
-    <span class="font-bold text-lg">
-      There are {{ criticalAsset }} critical assets
+    <i class="fa-solid fa-bell text-base sm:text-lg lg:text-2xl"></i>
+
+    <span class="font-semibold whitespace-nowrap">
+      {{ criticalAsset }} critical asset<span v-if="criticalAsset > 1">s</span>
     </span>
   </router-link>
 </template>
@@ -211,9 +213,32 @@ function renderCategoryPieChart(categories) {
   const series = categories.map((c) => c.total);
 
   const options = {
-    chart: { type: "pie" },
-    series,
+    chart: {
+      type: "pie",
+      height: 350,
+    },
     labels,
+    series,
+
+    legend: {
+      position: "right",
+      horizontalAlign: "center",
+    },
+
+    responsive: [
+      {
+        breakpoint: 768,
+        options: {
+          chart: {
+            height: 300,
+          },
+          legend: {
+            position: "bottom",
+            horizontalAlign: "center",
+          },
+        },
+      },
+    ],
   };
 
   if (categoryChart) categoryChart.destroy();
