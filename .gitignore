@@ -20,6 +20,8 @@ front-end/dist
 front-end/.env
 front-end/dist-ssr
 front-end/*.local
+front-end/*.local
+front-end/.vscode
 
 # ======================
 # BACKEND (Laravel)
