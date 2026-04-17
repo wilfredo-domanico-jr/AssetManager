@@ -17,32 +17,44 @@ jobs:
           MYSQL_DATABASE: test_db
         ports:
           - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+          --health-start-period=20s
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.2
+          extensions: mbstring, pdo, pdo_mysql
 
-      - name: Install dependencies
+      - name: Install Composer dependencies
         working-directory: back-end
-        run: composer install
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
       - name: Setup .env
         working-directory: back-end
-        run: cp .env.example .env
+        run: |
+          cp .env.example .env
+          php artisan key:generate
 
-      - name: Generate key
+      - name: Configure Laravel for CI
         working-directory: back-end
-        run: php artisan key:generate
+        run: |
+          php artisan config:clear
+          php artisan cache:clear
 
       - name: Run migrations
         working-directory: back-end
-        run: php artisan migrate
+        run: php artisan migrate --force
 
-      - name: Run tests
+      - name: Run Laravel tests
         working-directory: back-end
         run: php artisan test
 
@@ -50,16 +62,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
 
       - name: Install dependencies
         working-directory: front-end
-        run: npm install
+        run: npm ci
 
       - name: Build Vue
         working-directory: front-end
