@@ -9,21 +9,6 @@ jobs:
   backend:
     runs-on: ubuntu-latest
 
-    services:
-      mysql:
-        image: mysql:8
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: test_db
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot --silent"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
-          --health-start-period=20s
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -32,29 +17,30 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.2
-          extensions: mbstring, pdo, pdo_mysql
+          extensions: mbstring, pdo, sqlite, pdo_sqlite
 
-      - name: Install Composer dependencies
+      - name: Install dependencies
         working-directory: back-end
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
-      - name: Setup .env
+      - name: Setup Laravel .env (SQLite)
         working-directory: back-end
         run: |
           cp .env.example .env
           php artisan key:generate
 
-      - name: Configure Laravel for CI
+          echo "DB_CONNECTION=sqlite" >> .env
+          echo "DB_DATABASE=:memory:" >> .env
+
+      - name: Clear cache
         working-directory: back-end
-        run: |
-          php artisan config:clear
-          php artisan cache:clear
+        run: php artisan config:clear
 
       - name: Run migrations
         working-directory: back-end
         run: php artisan migrate --force
 
-      - name: Run Laravel tests
+      - name: Run tests
         working-directory: back-end
         run: php artisan test
 
