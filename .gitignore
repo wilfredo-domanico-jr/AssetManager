@@ -23,16 +23,11 @@ front-end/*.local
 front-end/*.local
 front-end/.vscode
 
-# ======================
 # BACKEND (Laravel)
 # ======================
 back-end/vendor
 back-end/node_modules
 back-end/.env
-!back-end/.env.example
-back-end/.env.*
-back-end/.env.backup
-back-end/.env.production
 
 back-end/storage/*
 !back-end/storage/.gitignore
