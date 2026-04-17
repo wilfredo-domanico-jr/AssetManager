@@ -1,6 +1,6 @@
-# Asset Management System 🏢
+# 🏢 Asset Management System
 
-[![Laravel](https://img.shields.io/badge/Laravel-10-red)](https://laravel.com/)
+[![Laravel](https://img.shields.io/badge/Laravel-12-red)](https://laravel.com/)
 [![Vue.js](https://img.shields.io/badge/Vue.js-3-42b883)](https://vuejs.org/)
 [![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3.3-blue)](https://tailwindcss.com/)
 [![ApexCharts](https://img.shields.io/badge/ApexCharts-3-orange)](https://apexcharts.com/)
@@ -11,10 +11,11 @@
 
 ---
 
-## Project Description
+## 📌 Project Description
 
-**Asset Management System** is a modern web application with **Laravel API backend** and **Vue.js frontend**.  
-It allows organizations to efficiently track and manage assets across their lifecycle. The system includes:
+**Asset Management System** is a modern web application built with a **Laravel API backend** and **Vue.js frontend**.
+
+It allows organizations to efficiently track and manage assets across their lifecycle, including:
 
 - Asset deployment tracking
 - Depreciation and lifecycle reporting
@@ -22,11 +23,11 @@ It allows organizations to efficiently track and manage assets across their life
 - Automated weekly email notifications
 - Role-based access control
 
-The frontend is powered by **Vue.js**, using **Axios** for API calls, **Pinia** for state management, and **Tailwind CSS** for responsive UI. Interactive charts are built with **ApexCharts**, providing clear insights for better decision-making.
+The frontend is built with **Vue.js**, **Pinia**, **Axios**, and **Tailwind CSS**, while **ApexCharts** is used for data visualization.
 
 ---
 
-## Screenshot
+## 📸 Screenshot
 
 <p align="center">
   <img src="screenshot_new.png" alt="Asset Management Screenshot" width="700">
@@ -34,109 +35,115 @@ The frontend is powered by **Vue.js**, using **Axios** for API calls, **Pinia** 
 
 ---
 
-## Features
+## ⚡ Features
 
-- Track organizational assets throughout their lifecycle
-- Automatic depreciation and lifecycle reports
-- Inventory summaries for better visibility
-- Automated weekly email notifications
-- Role-based access control with Laravel Sanctum
-- Modern, responsive design with Vue.js and Tailwind CSS
-- Interactive charts with ApexCharts
-- API-driven architecture with Laravel backend and Vue.js frontend
+- Asset lifecycle tracking
+- Automated depreciation reports
+- Inventory management
+- Weekly email notifications
+- Role-based access control (Laravel Sanctum)
+- Responsive UI with Tailwind CSS
+- Interactive dashboards with ApexCharts
+- RESTful API architecture
 
 ---
 
-## Installation
+## 🐳 Docker Setup (Recommended)
 
-### Backend (Laravel API)
+This project includes a full Docker development environment:
 
-1. **Clone the repository**
+- Laravel backend API
+- Vue.js frontend (hot reload enabled)
+- MySQL database
+
+---
+
+### 📁 Project Structure
+
+```
+AssetManager/
+├── back-end/
+├── front-end/
+└── docker-compose.yml
+```
+
+---
+
+### 🚀 Run with Docker
+
+#### Build and start containers
 
 ```bash
+docker-compose up --build
+```
+
+#### Run in background
+
+```bash
+docker-compose up -d --build
+```
+
+#### Stop containers
+
+```bash
+docker-compose down
+```
+
+---
+
+### 🌐 Access URLs
+
+| Service               | URL                                            |
+| --------------------- | ---------------------------------------------- |
+| Frontend (Vue)        | [http://localhost:5173](http://localhost:5173) |
+| Backend (Laravel API) | [http://localhost:8000](http://localhost:8000) |
+| MySQL                 | localhost:3306                                 |
+
+---
+
+## 🛠️ Traditional Installation (Without Docker)
+
+### Backend (Laravel)
+
+```
 git clone https://github.com/wilfredo-domanico-jr/AssetManager.git
-cd AssetManager/backend
-```
-
-2. **Install PHP dependencies**
-
-```bash
+cd AssetManager/back-end
 composer install
-```
-
-3. **Set up environment variables**
-
-```bash
 cp .env.example .env
 php artisan key:generate
-```
-
-4. **Set up the database**
-
-```bash
-php artisan migrate
-php artisan db:seed
-```
-
-4. **Set up the database**
-
-```bash
-php artisan migrate
-php artisan db:seed
-```
-
-5. **Serve the API**
-
-```bash
+php artisan migrate --seed
 php artisan serve
 ```
 
+---
+
 ### Frontend (Vue.js)
 
-1. **Navigate to frontend folder**
-
-```bash
-cd ../frontend
 ```
-
-2. **Install Node dependencies**
-
-```bash
+cd ../front-end
 npm install
-```
-
-3. **Run the development server**
-
-```bash
 npm run dev
 ```
 
-3. **Open the app in your browser**
+---
 
-```
-Typically at http://localhost:5173 (Vite default port)
-```
+## 🧰 Technologies Used
+
+- Laravel 12
+- Vue.js 3
+- Tailwind CSS
+- Pinia
+- Axios
+- ApexCharts
+- MySQL
+- Docker
+- PHP 8+
+- Node.js / Vite
 
 ---
 
-## Usage
-
-1. Access the frontend in your browser.
-2. Log in or register as a user.
-3. Manage assets, view reports, and track lifecycle data.
-4. Interact with charts and receive notifications.
-
----
-
-## Technologies & Libraries
-
-- **Backend** – Laravel, MySQL, Laravel Sanctum
-- **Frontend** – Vue.js, Tailwind CSS, Pinia, Axios
-- **Charts** – ApexCharts
-- **Other** – PHP 8+, Composer, Node.js, NPM/Vite
-
----
-
-## License
+## 📄 License
 
 This project is licensed under the [MIT License](LICENSE).
+
+
