@@ -19,11 +19,11 @@ jobs:
           php-version: 8.2
           extensions: mbstring, pdo, sqlite, pdo_sqlite
 
-      - name: Install dependencies
+      - name: Install Composer dependencies
         working-directory: back-end
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
-      - name: Setup Laravel .env (SQLite)
+      - name: Prepare Laravel environment
         working-directory: back-end
         run: |
           cp .env.example .env
@@ -32,9 +32,19 @@ jobs:
           echo "DB_CONNECTION=sqlite" >> .env
           echo "DB_DATABASE=:memory:" >> .env
 
-      - name: Clear cache
+      - name: Fix Laravel storage permissions
         working-directory: back-end
-        run: php artisan config:clear
+        run: |
+          mkdir -p storage/framework/cache
+          mkdir -p storage/framework/views
+          mkdir -p storage/framework/sessions
+          mkdir -p bootstrap/cache
+
+          chmod -R 777 storage bootstrap/cache
+
+      - name: Clear Laravel cache
+        working-directory: back-end
+        run: php artisan optimize:clear
 
       - name: Run migrations
         working-directory: back-end
