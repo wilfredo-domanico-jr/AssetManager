@@ -1,0 +1,66 @@
+name: Asset Manager CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: test_db
+        ports:
+          - 3306:3306
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+
+      - name: Install dependencies
+        working-directory: back-end
+        run: composer install
+
+      - name: Setup .env
+        working-directory: back-end
+        run: cp .env.example .env
+
+      - name: Generate key
+        working-directory: back-end
+        run: php artisan key:generate
+
+      - name: Run migrations
+        working-directory: back-end
+        run: php artisan migrate
+
+      - name: Run tests
+        working-directory: back-end
+        run: php artisan test
+
+  frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        working-directory: front-end
+        run: npm install
+
+      - name: Build Vue
+        working-directory: front-end
+        run: npm run build
