@@ -31,6 +31,7 @@ jobs:
 
           echo "DB_CONNECTION=sqlite" >> .env
           echo "DB_DATABASE=:memory:" >> .env
+          echo "CACHE_DRIVER=file" >> .env
 
       - name: Fix Laravel storage permissions
         working-directory: back-end
