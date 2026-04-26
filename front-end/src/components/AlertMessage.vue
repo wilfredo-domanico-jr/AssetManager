@@ -26,7 +26,7 @@ const alertClasses = computed(() => {
       return "text-yellow-800 bg-yellow-50 border-l-4 border-yellow-500 dark:bg-gray-800 dark:text-yellow-300";
     case "error":
     default:
-      return "text-white bg-red-100 dark:bg-red-900 dark:text-red-300 border-l-4 border-red-500";
+      return "text-white bg-red-500 dark:bg-red-900 dark:text-red-300 border-l-4 border-red-500";
   }
 });
 
