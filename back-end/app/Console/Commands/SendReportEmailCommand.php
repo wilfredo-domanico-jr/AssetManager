@@ -44,9 +44,9 @@ class SendReportEmailCommand extends Command
         $depreciationSummaryFilePath = "generated_reports/{$depreciationSummaryFile}";
         $lifecycleSummaryFilePath = "generated_reports/{$lifecycleSummaryFile}";
         // Generate Excel files
-        Excel::store(new InventorySummaryExcelExport, $inventorySummaryFilePath, 'public');
-        Excel::store(new DepreciationSummaryExcelExport, $depreciationSummaryFilePath, 'public');
-        Excel::store(new LifeCycleSummaryExcelExport, $lifecycleSummaryFilePath, 'public');
+        Excel::store(new InventorySummaryExcelExport(null, null, null, null), $inventorySummaryFilePath, 'public');
+        Excel::store(new DepreciationSummaryExcelExport(null, null, null, null), $depreciationSummaryFilePath, 'public');
+        Excel::store(new LifeCycleSummaryExcelExport(null, null, null, null), $lifecycleSummaryFilePath, 'public');
 
         // Full storage paths
         $inventorySummary = storage_path("app/public/{$inventorySummaryFilePath}");
